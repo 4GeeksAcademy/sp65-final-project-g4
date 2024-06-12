@@ -73,6 +73,8 @@ class Rooms(db.Model):
     to_id_assigned_student = db.relationship('Students' , foreign_keys=[id_assigned_student])
     image_url_1 = db.Column(db.String() , nullable = False)
     image_url_2 = db.Column(db.String() , nullable = False)
+    flat_img = db.Column(db.Integer() , db.ForeignKey('albums.id'))
+    to_flat_img = db.relationship('Albums' , foreign_keys=[flat_img]) 
 
     def __repr__(self):
         return f'<Rooms {self.title}>'
@@ -86,7 +88,8 @@ class Rooms(db.Model):
             "id_assigned_student" : self.id_assigned_student, 
             "publication_date" : self.publication_date,
             "image_url_1" : self.image_url,
-            "image_url_2" : self.image_url}
+            "image_url_2" : self.image_url,
+            "flat_img": self.flat_img}
 
 
 class Favorites(db.Model):
