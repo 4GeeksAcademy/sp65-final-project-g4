@@ -11,7 +11,6 @@ class Users(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean(), unique=False, nullable=False)
 
-  
     def __repr__(self):
         return f'<User {self.email}>'
     def serialize(self):
@@ -27,6 +26,14 @@ class Universities(db.Model):
     longitude = db.Column(db.Float, unique=False, nullable=False)
     latitude = db.Column(db.Float, unique=False, nullable=False)
 
+    def __repr__(self):
+            return f'<User {self.id}>'
+    def serialize(self):
+            return {'id': self.id,
+                    'name': self.name,
+                    'latitude': self.latitude,
+                    'longitude': self.longitude}
+
 
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +47,19 @@ class Students(db.Model):
     dni = db.Column(db.String(9), unique=True, nullable=False)
     phone_number = db.Column(db.String(13), unique=True, nullable=True) # Formato 034-XXXXXXXXX 13 caracteres
     profile_picture = db.Column(db.String(), unique=True, nullable=True)
+
+    def __repr__(self):
+            return f'<Student {self.id}>'
+    def serialize(self):
+            return {'id': self.id,
+                    'id_university': self.id_university,
+                    'id_user': self.id_user,
+                    'name': self.name,
+                    'surname': self.surname,
+                    'birth_date': self.birth_date,
+                    'dni': self.dni,
+                    'phone_number': self.phone_number,
+                    'profile_picture': self.profile_picture}
 
 
 class Rooms(db.Model):
@@ -124,6 +144,7 @@ class Landlords(db.Model):
                 'phone_number': self.phone_number,
                 'profile_picture': self.profile_picture}
 
+
 class Flats(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_landlord = db.Column(db.Integer, db.ForeignKey('landlords.id'))
@@ -143,4 +164,3 @@ class Flats(db.Model):
                 'description': self.description,
                 'longitude': self.longitude,
                 'latitude': self.latitude}
-
