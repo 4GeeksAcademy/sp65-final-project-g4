@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from enum import Enum
 
 
 db = SQLAlchemy()
@@ -88,7 +89,7 @@ class Albums(db.Model):
     #id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     #to_id_student = db.relationship('Flats' , foreign_keys=[id_flat])
     url_photo = db.Column(db.String() , nullable = False , unique = True)
-    status = db.Column(db.String() , nullable = False , unique = True)
+    status = db.Column(db.Enum() , nullable = False , unique = True)
 
     def __repr__(self):
         return f'<Albums {self.id}>'
