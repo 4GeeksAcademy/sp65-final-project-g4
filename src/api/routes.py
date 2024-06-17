@@ -86,3 +86,52 @@ def handle_rooms_post():
     return response_body, 200
 
 
+@api.route('/rooms/<int:room_id>', methods=['GET'])
+def handle_room(room_id):
+    response_body = {}
+    room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
+    if room:
+        response_body['results'] = room.serialize()
+        response_body['message'] = 'Room found'
+        return response_body, 200
+    response_body['message'] = 'Room not found'
+    response_body['results'] = {}
+    return response_body, 404
+    
+    
+@api.route('/rooms/<int:room_id>', methods=['PUT' , 'DELETE'])
+@jwt_required()
+def handle_room_id(room_id):
+    response_body = {}
+    if request.method == 'PUT':
+        data = request.json
+        print(data)
+        room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
+        if room:
+            room.title = data['title']
+            room.description = data['description']
+            room.square_meters = data['square_meters']
+            room.price = data['price']
+            room.id_flat = data['id_flat']
+            room.publication_date = datetime.today()
+            room.image_url_1 = data['image_url_1']
+            room.image_url_2 = data['image_url_2']
+            room.flat_img = data['flat_img']
+            db.session.commit()
+            response_body['message'] = 'Room updated'
+            response_body['results'] = room.serialize()
+            return response_body, 200
+        response_body['message'] = 'Room not found'
+        response_body['results'] = {}
+        return response_body, 404
+    if request.method == 'DELETE':
+        room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
+        if room:
+            db.session.delete(room)
+            db.session.commit()
+            response_body['message'] = 'Room deleted'
+            response_body['results'] = {}
+        response_body['message'] = 'Room not found'
+        response_body['results'] = {}
+        return response_body, 200
+        
