@@ -65,8 +65,9 @@ class Students(db.Model):
 class Rooms(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String() , nullable = False)
-    square_meters = db.Column(db.Float() , unique = True , nullable = False)
-    price = db.Column(db.Float() , unique = True , nullable = False)
+    description = db.Column(db.String() , nullable=False, unique=False)
+    square_meters = db.Column(db.Float() , nullable = False)
+    price = db.Column(db.Float() , nullable = False)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     id_assigned_student = db.Column(db.Integer() , db.ForeignKey('students.id'))
@@ -75,6 +76,7 @@ class Rooms(db.Model):
     image_url_2 = db.Column(db.String() , nullable = False)
     flat_img = db.Column(db.Integer() , db.ForeignKey('albums.id'))
     to_flat_img = db.relationship('Albums' , foreign_keys=[flat_img]) 
+    publication_date = db.Column(db.Date() , unique = False)
 
     def __repr__(self):
         return f'<Rooms {self.title}>'
@@ -82,13 +84,14 @@ class Rooms(db.Model):
     def serialize(self):
         return {"id": self.id,
             "title": self.title,
+            "description": self.description,
             "square_meters": self.square_meters,
             "price" : self.price,
             "id_flat" : self.id_flat,
             "id_assigned_student" : self.id_assigned_student, 
             "publication_date" : self.publication_date,
-            "image_url_1" : self.image_url,
-            "image_url_2" : self.image_url,
+            "image_url_1" : self.image_url_1,
+            "image_url_2" : self.image_url_2,
             "flat_img": self.flat_img}
 
 
@@ -111,7 +114,7 @@ class Favorites(db.Model):
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
-    to_id_student = db.relationship('Flats' , foreign_keys=[id_flat])
+    to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     url_photo = db.Column(db.String() , nullable = False , unique = True)
 
     def __repr__(self):
@@ -156,6 +159,7 @@ class Flats(db.Model):
     description = db.Column(db.String())
     longitude = db.Column(db.Float(), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
+    
 
     def __repr__(self):
         return f'<Flat {self.address}>'
