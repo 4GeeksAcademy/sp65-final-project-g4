@@ -134,4 +134,5 @@ def handle_room_id(room_id):
         response_body['message'] = 'Room not found'
         response_body['results'] = {}
         return response_body, 200
-        
+
+
