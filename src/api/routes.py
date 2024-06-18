@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
-from api.models import db, Users , Rooms
+from api.models import db, Users , Rooms , Albums , Favorites
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -136,3 +136,133 @@ def handle_room_id(room_id):
         return response_body, 200
 
 
+@api.route('/albums' , methods=['GET'])
+def handle_albums():
+    response_body = {}
+    album = db.session.execute(db.select(Albums)).scalars()
+    results = [row.serialize() for row in album] 
+    response_body['results'] = results
+    response_body['message'] = 'Albums list'
+    return response_body, 200
+ 
+
+@api.route('/albums' , methods=['POST'])
+@jwt_required()
+def handle_albums_post():
+    response_body = {}
+    data = request.json
+    row = Albums()
+    row.id_flat = data['id_flat']
+    row.url_photo = data['url_photo']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Album posted'
+    return response_body, 200
+
+
+@api.route('/albums/<int:album_id>', methods=['GET'])
+def handle_album(album_id):
+    response_body = {}
+    album = db.session.execute(db.select(Albums).where(Albums.id == album_id)).scalar()
+    if album:
+        response_body['results'] = album.serialize()
+        response_body['message'] = 'Album found'
+        return response_body, 200
+    response_body['message'] = 'Album not found'
+    response_body['results'] = {}
+    return response_body, 404
+    
+    
+@api.route('/albums/<int:album_id>', methods=['PUT' , 'DELETE'])
+@jwt_required()
+def handle_album_id(album_id):
+    response_body = {}
+    if request.method == 'PUT':
+        data = request.json
+        print(data)
+        album = db.session.execute(db.select(Albums).where(Albums.id == album_id)).scalar()
+        if album:
+            album.id_flat = data['id_flat']
+            album.url_photo = data['url_photo']
+            db.session.commit()
+            response_body['message'] = 'Album updated'
+            response_body['results'] = album.serialize()
+            return response_body, 200
+        response_body['message'] = 'Album not found'
+        response_body['results'] = {}
+        return response_body, 404
+    if request.method == 'DELETE':
+        album = db.session.execute(db.select(Albums).where(Albums.id == album_id)).scalar()
+        if album:
+            db.session.delete(album)
+            db.session.commit()
+            response_body['message'] = 'Album deleted'
+            response_body['results'] = {}
+        response_body['message'] = 'Album not found'
+        response_body['results'] = {}
+        return response_body, 200
+
+
+@api.route('/favorites' , methods=['GET'])
+def handle_favorites():
+    response_body = {}
+    favorite = db.session.execute(db.select(Favorites)).scalars()
+    results = [row.serialize() for row in favorite] 
+    response_body['results'] = results
+    response_body['message'] = 'Favorites list'
+    return response_body, 200
+ 
+
+@api.route('/favorites' , methods=['POST'])
+@jwt_required()
+def handle_favorites_post():
+    response_body = {}
+    data = request.json
+    row = Favorites()
+    row.id_student = data['id_student']
+    row.id_room = data['id_room']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Favorite saved'
+    return response_body, 200
+
+    
+@api.route('/favorites/<int:favorite_id>', methods=['PUT' , 'DELETE' , 'GET'])
+@jwt_required()
+def handle_favorite_id(favorite_id):
+    response_body = {}
+    if request.method == 'PUT':
+        data = request.json
+        print(data)
+        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
+        if favorite:
+            favorite.id_student = data['id_student']
+            favorite.id_room = data['id_room']
+            db.session.commit()
+            response_body['message'] = 'Favorite updated'
+            response_body['results'] = favorite.serialize()
+            return response_body, 200
+        response_body['message'] = 'Favorite not found'
+        response_body['results'] = {}
+        return response_body, 404
+    if request.method == 'DELETE':
+        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
+        if favorite:
+            db.session.delete(favorite)
+            db.session.commit()
+            response_body['message'] = 'Favorite deleted'
+            response_body['results'] = {}
+        response_body['message'] = 'Favorite not found'
+        response_body['results'] = {}
+        return response_body, 200
+    if request.method == 'GET':
+        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
+        if favorite:
+            response_body['results'] = favorite.serialize()
+            response_body['message'] = 'Favorite found'
+            return response_body, 200
+        response_body['message'] = 'Favorite not found'
+        response_body['results'] = {}
+        return response_body, 404

@@ -27,7 +27,7 @@ class Universities(db.Model):
     latitude = db.Column(db.Float, unique=False, nullable=False)
 
     def __repr__(self):
-            return f'<User {self.id}>'
+            return f'<User {self.name}>'
     def serialize(self):
             return {'id': self.id,
                     'name': self.name,
@@ -49,7 +49,7 @@ class Students(db.Model):
     profile_picture = db.Column(db.String(), unique=True, nullable=True)
 
     def __repr__(self):
-            return f'<Student {self.id}>'
+            return f'<Student {self.dni , self.name}>'
     def serialize(self):
             return {'id': self.id,
                     'id_university': self.id_university,
@@ -113,12 +113,12 @@ class Favorites(db.Model):
 
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
+    id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id') , unique = True)
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     url_photo = db.Column(db.String() , nullable = False , unique = True)
 
     def __repr__(self):
-        return f'<Albums {self.id}>'
+        return f'<Albums {self.id , self.id_flat}>'
 
     def serialize(self):
         return {"id": self.id,
@@ -138,7 +138,7 @@ class Landlords(db.Model):
     profile_picture = db.Column(db.String())
     
     def __repr__(self):
-        return f'<Landlord {self.dni}>'
+        return f'<Landlord {self.dni , self.name}>'
 
     def serialize(self):
         return {'id': self.id,
@@ -159,6 +159,8 @@ class Flats(db.Model):
     description = db.Column(db.String())
     longitude = db.Column(db.Float(), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
+    id_album = db.Column(db.Integer(), db.ForeignKey('albums.id'), unique=True)
+    to_album_id = db.relationship('Albums' , foreign_keys=[id_album])
     
 
     def __repr__(self):
@@ -170,4 +172,5 @@ class Flats(db.Model):
                 'address': self.address,
                 'description': self.description,
                 'longitude': self.longitude,
-                'latitude': self.latitude}
+                'latitude': self.latitude,
+                'id_album': self.id_album}
