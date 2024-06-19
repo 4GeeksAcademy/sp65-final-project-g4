@@ -10,6 +10,7 @@ class Users(db.Model):
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean(), unique=False, nullable=False)
+    is_student = db.Column(db.Boolean(), unique=False, nullable=False)
     is_landlord = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
@@ -19,6 +20,7 @@ class Users(db.Model):
                 'email': self.email,
                 'is_active': self.is_active,
                 'is_admin': self.is_admin,
+                'is_student': self.is_student,
                 'is_landlord': self.is_landlord}
 
 
@@ -29,12 +31,17 @@ class Universities(db.Model):
     latitude = db.Column(db.Float, unique=False, nullable=False)
 
     def __repr__(self):
-            return f'<User {self.id}>'
+            return f'<User {self.name}>'
     def serialize(self):
             return {'id': self.id,
                     'name': self.name,
                     'latitude': self.latitude,
                     'longitude': self.longitude}
+    
+    def public_serialize(self):
+        return {'university_name': self.name,
+                'latitude': self.latitude,
+                'longitude': self.longitude}
 
 
 class Students(db.Model):
@@ -44,24 +51,33 @@ class Students(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(60), unique=False, nullable=False)
-    surname = db.Column(db.String(120), unique=False, nullable=False)
+    lastname = db.Column(db.String(120), unique=False, nullable=False)
     birth_date = db.Column(db.Date, unique=False, nullable=True)
     dni = db.Column(db.String(9), unique=True, nullable=False)
     phone_number = db.Column(db.String(13), unique=True, nullable=True) # Formato 034-XXXXXXXXX 13 caracteres
     profile_picture = db.Column(db.String(), unique=True, nullable=True)
 
     def __repr__(self):
-            return f'<Student {self.id}>'
+            return f'<Student {self.dni , self.name}>'
+
     def serialize(self):
             return {'id': self.id,
                     'id_university': self.id_university,
                     'id_user': self.id_user,
                     'name': self.name,
-                    'surname': self.surname,
+                    'lastname': self.lastname,
                     'birth_date': self.birth_date,
                     'dni': self.dni,
                     'phone_number': self.phone_number,
                     'profile_picture': self.profile_picture}
+
+    def public_serialize(self):
+        return {'student_name': self.name,
+                'student_lastname': self.lastname,
+                'birth_date': self.birth_date,
+                'dni': self.dni,
+                'phone_number': self.phone_number,
+                'profile_picture': self.profile_picture}
 
 
 class Rooms(db.Model):
@@ -113,19 +129,17 @@ class Favorites(db.Model):
             "id_room": self.id_room}
 
 
+
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
-    to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     url_photo = db.Column(db.String() , nullable = False , unique = True)
 
     def __repr__(self):
-        return f'<Albums {self.id}>'
+        return f'<Albums {self.id , self.id_flat}>'
 
     def serialize(self):
         return {"id": self.id,
-            "id_flat": self.id_flat,
-            "url_photo": self.url_photo}
+                "url_photo": self.url_photo}
       
       
 class Landlords(db.Model):
@@ -140,13 +154,21 @@ class Landlords(db.Model):
     profile_picture = db.Column(db.String())
     
     def __repr__(self):
-        return f'<Landlord {self.dni}>'
+        return f'<Landlord {self.dni , self.name}>'
 
     def serialize(self):
         return {'id': self.id,
                 'id_user': self.id_user,
                 'name': self.name,
                 'lastname': self.lastname,
+                'birth_date': self.birth_date,
+                'dni': self.dni,
+                'phone_number': self.phone_number,
+                'profile_picture': self.profile_picture}
+    
+    def public_serialize(self):
+        return {'landlord_name': self.name,
+                'landlord_lastname': self.lastname,
                 'birth_date': self.birth_date,
                 'dni': self.dni,
                 'phone_number': self.phone_number,
@@ -161,6 +183,8 @@ class Flats(db.Model):
     description = db.Column(db.String())
     longitude = db.Column(db.Float(), nullable=False)
     latitude = db.Column(db.Float(), nullable=False)
+    id_album = db.Column(db.Integer(), db.ForeignKey('albums.id'), unique=True)
+    to_album_id = db.relationship('Albums' , foreign_keys=[id_album])
     
 
     def __repr__(self):
@@ -172,4 +196,5 @@ class Flats(db.Model):
                 'address': self.address,
                 'description': self.description,
                 'longitude': self.longitude,
-                'latitude': self.latitude}
+                'latitude': self.latitude,
+                'id_album': self.id_album}
