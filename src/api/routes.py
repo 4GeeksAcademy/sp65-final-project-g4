@@ -289,3 +289,53 @@ def handle_rooms_post():
     response_body['results'] = row.serialize()
     response_body['message'] = 'Room posted'
     return response_body, 200
+
+
+@api.route('/universities' , methods=['GET'])
+def handle_universities():
+    response_body = {}
+    university = db.session.execute(db.select(Universities)).scalars()
+    results = [row.serialize() for row in university]  # Utilizo List Comprehension
+    response_body['results'] = results
+    response_body['message'] = 'Universities list'
+    return response_body, 200
+
+
+@api.route('/students' , methods=['GET'])
+def handle_students():
+    response_body = {}
+    student = db.session.execute(db.select(Students)).scalars()
+    results = [row.serialize() for row in student]  # Utilizo List Comprehension
+    response_body['results'] = results
+    response_body['message'] = 'Students list'
+    return response_body, 200
+
+
+@api.route('/students/<int:id>' , methods=['GET', 'PUT'])
+def handle_single_student(id):
+    response_body = {}
+    student = db.session.execute(db.select(Students).where(Students.id == id)).scalars()
+    results = [row.serialize() for row in student]  # No es necesario, preguntar en clase
+    response_body['results'] = results
+    return response_body, 200
+
+
+""" @api.route('/students' , methods=['PUT'])
+# Falta el JWT AUTH
+def handle_students_register():
+    response_body = {}
+    data = request.json
+    row = Students()
+    row.id_university = data['id_university']
+    row.id_user = data['id_user']
+    row.name = data['name']
+    row.lastname = data['lastname']
+    row.birth_date = data['birth_date']
+    row.dni = data['dni']
+    row.phone_number = data['phone_number']
+    row.profile_picture = data['profile_picture']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Student posted'
+    return response_body, 200 """
