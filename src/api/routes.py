@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
-from api.models import db, Users , Rooms , Albums , Favorites
+from api.models import db, Users , Rooms , Albums , Favorites , Students , Landlords
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -24,6 +24,59 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
+@api.route("/signupstudents", methods=["POST"])
+def signup_students():
+    response_body = {}
+    body = request.get_json()
+    email = body["email"].lower()
+    user = Users.query.filter_by(email=email).first()
+    if user is None:
+        user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False, is_student=True, is_landlord=False)
+        db.session.add(user)
+        db.session.commit()
+        name = body.get("name" , " ")
+        lastname = body.get("lastname" , " ")
+        dni = body.get("dni" , " ")
+        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id)
+        db.session.add(student)
+        db.session.commit()
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': True,
+                                                     'user_is_landlord': False,
+                                                     'email': user.email})
+        response_body['access_token'] = access_token
+        response_body['message'] = 'Student created and logged in'
+        return response_body , 200
+    else:
+        return jsonify({"msg": "Student already exists"}) , 401
+
+
+@api.route("/signuplandlords", methods=["POST"])
+def signup_landlords():
+    response_body = {}
+    body = request.get_json()
+    user = Users.query.filter_by(email=body["email"].lower()).first()
+    if user is None:
+        user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False, is_student=False, is_landlord=True)
+        db.session.add(user)
+        db.session.commit()
+        name = body.get("name" , " ")
+        lastname = body.get("lastname" , " ")
+        dni = body.get("dni" , " ")
+        landlord = Landlords(name=name, lastname=lastname, dni=dni, id_user=user.id)
+        db.session.add(landlord)
+        db.session.commit()
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': False,
+                                                     'user_is_landlord': True,
+                                                     'email': user.email})
+        response_body['access_token'] = access_token
+        response_body['message'] = 'Landlord created and logged in'
+        return response_body , 200
+    else:
+        return jsonify({"msg": "Landlord already exists"}) , 401
+
+
 @api.route("/login", methods=["POST"])
 def login():
     response_body = {}
@@ -34,24 +87,28 @@ def login():
         return jsonify({"msg": "Wrong email"}) , 401
     if password != user.password:
         return jsonify({"msg": "Wrong password"}) , 401
-    access_token = create_access_token(identity=email)
-    response_body['message'] = 'User logged in'
-    response_body['access_token'] = access_token
-    response_body['results'] = user.serialize()
-    return response_body, 200
-
-
-@api.route("/signup", methods=["POST"])
-def signup():
-    body = request.get_json()
-    user = Users.query.filter_by(email=body["email"]).first()
-    if user is None:
-        user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False)
-        db.session.add(user)
-        db.session.commit()
-        return jsonify({"msg": "User created"}) , 200
-    else:
-        return jsonify({"msg": "User already exists"}) , 401
+    if user.is_student:
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': True,
+                                                     'user_is_landlord': False,
+                                                     'email': user.email})
+        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+        serialized_data = {**user.serialize(), **student.serialize()}
+        response_body['message'] = 'Student logged in'
+        response_body['access_token'] = access_token
+        response_body['data'] = serialized_data
+        return response_body, 200
+    if user.is_landlord:
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': False,
+                                                     'user_is_landlord': True,
+                                                     'email': user.email})
+        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
+        serialized_data = {**user.serialize(), **landlord.serialize()}
+        response_body['message'] = 'Landlord logged in'
+        response_body['access_token'] = access_token
+        response_body['data'] = serialized_data
+        return response_body, 200
 
 
 @api.route('/rooms' , methods=['GET'])
