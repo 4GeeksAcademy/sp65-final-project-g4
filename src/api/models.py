@@ -10,6 +10,7 @@ class Users(db.Model):
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     is_admin = db.Column(db.Boolean(), unique=False, nullable=False)
+    is_landlord = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -17,7 +18,8 @@ class Users(db.Model):
         return {'id': self.id,
                 'email': self.email,
                 'is_active': self.is_active,
-                'is_admin': self.is_admin}
+                'is_admin': self.is_admin,
+                'is_landlord': self.is_landlord}
 
 
 class Universities(db.Model):
@@ -131,7 +133,7 @@ class Landlords(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(), nullable=False)
-    surname = db.Column(db.String(), nullable=False)
+    lastname = db.Column(db.String(), nullable=False)
     birth_date = db.Column(db.Date, nullable=True)
     dni = db.Column(db.String(), unique=True, nullable=False)
     phone_number = db.Column(db.String(), unique=True)
@@ -144,7 +146,7 @@ class Landlords(db.Model):
         return {'id': self.id,
                 'id_user': self.id_user,
                 'name': self.name,
-                'surname': self.surname,
+                'lastname': self.lastname,
                 'birth_date': self.birth_date,
                 'dni': self.dni,
                 'phone_number': self.phone_number,
