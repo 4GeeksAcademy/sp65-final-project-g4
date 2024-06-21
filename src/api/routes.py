@@ -217,7 +217,6 @@ def handle_flats():
     return response_body, 200
 
 
-
 @api.route('/flats', methods=['POST'])
 @jwt_required()
 def handle_flats_post():
@@ -348,7 +347,6 @@ def handle_rooms_post():
     response_body['results'] = row.serialize()
     response_body['message'] = 'Room posted'
     return response_body, 200
-
 
 
 @api.route('/rooms/<int:room_id>', methods=['GET'])
@@ -532,6 +530,7 @@ def handle_favorite_id(favorite_id):
         response_body['results'] = {}
         return response_body, 404
 
+
 @api.route('/universities' , methods=['GET'])
 def handle_universities():
     response_body = {}
@@ -552,32 +551,49 @@ def handle_students():
     return response_body, 200
 
 
-@api.route('/students/<int:id>' , methods=['GET', 'PUT'])
+@api.route('/students/<int:id>' , methods=['GET'])
 def handle_single_student(id):
     response_body = {}
-    student = db.session.execute(db.select(Students).where(Students.id == id)).scalars()
-    results = [row.serialize() for row in student]  # No es necesario, preguntar en clase
-    response_body['results'] = results
-    return response_body, 200
+    student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+    if student:
+        results = student.serialize()
+        response_body['results'] = results
+        return response_body, 200
+    response_body['message'] = 'ID estudiante inexistente'
+    response_body['results'] = {}
+    return response_body, 404
 
 
-""" @api.route('/students' , methods=['PUT'])
-# Falta el JWT AUTH
-def handle_students_register():
+@api.route('/students/<int:id>' , methods=['PUT', 'DELETE'])
+@jwt_required()
+def modify_single_student(id):
     response_body = {}
-    data = request.json
-    row = Students()
-    row.id_university = data['id_university']
-    row.id_user = data['id_user']
-    row.name = data['name']
-    row.lastname = data['lastname']
-    row.birth_date = data['birth_date']
-    row.dni = data['dni']
-    row.phone_number = data['phone_number']
-    row.profile_picture = data['profile_picture']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Student posted'
-    return response_body, 200 """
-
+    if request.method == 'PUT':
+        data = request.json
+        student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+        if student:
+            student.id_university = data['id_university']
+            student.name = data['name']
+            student.lastname = data['lastname']
+            student.birth_date = data['birth_date']
+            student.dni = data['dni']
+            student.phone_number = data['phone_number']
+            student.profile_picture = data['profile_picture']
+            db.session.commit()
+            response_body['message'] = 'Datos del estudiante actualizados'
+            response_body['results'] = student.serialize()
+            return response_body, 200
+        response_body['message'] = 'ID estudiante inexistente'
+        response_body['results'] = {}
+        return response_body, 404
+    if request.method == 'DELETE':
+        student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+        if student:
+            db.session.delete(student)
+            db.session.commit()
+            response_body['message'] = 'Student deleted'
+            response_body['results'] = {}
+            return response_body, 200
+        response_body['message'] = 'Student not found'
+        response_body['results'] = {}
+        return response_body, 404

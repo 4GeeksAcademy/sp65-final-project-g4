@@ -59,7 +59,6 @@ class Students(db.Model):
 
     def __repr__(self):
             return f'<Student {self.dni , self.name}>'
-
     def serialize(self):
             return {'id': self.id,
                     'id_university': self.id_university,
@@ -70,7 +69,6 @@ class Students(db.Model):
                     'dni': self.dni,
                     'phone_number': self.phone_number,
                     'profile_picture': self.profile_picture}
-
     def public_serialize(self):
         return {'student_name': self.name,
                 'student_lastname': self.lastname,
