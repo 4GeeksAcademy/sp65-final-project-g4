@@ -8,7 +8,9 @@ const getState = ({getStore, getActions, setStore}) => {
 			isLogedIn: false,
 			userEmail: "",
 			isAdmin: false,
-			userName: ""
+			userName: "",	
+			flats:[]
+
 		},
 		actions: {
 			exampleFunction: () => {getActions().changeColor(0, "green");},  // Use getActions to call a function within a fuction
@@ -52,7 +54,6 @@ const getState = ({getStore, getActions, setStore}) => {
 			logedIn: (userData) => {
 				console.log(userData)
 				setStore({isLogedIn: true, userEmail: userData.email})
-				console.log()
 
 			},
 			oldLogin: () => {
@@ -61,9 +62,28 @@ const getState = ({getStore, getActions, setStore}) => {
 					getActions().logedIn(localStorage.getItem('user'))
 					setStore({accessToken: localStorage.getItem('token')})
 				} else {console.log('No hay usuario logeado')}
-			}
-		}
-	};
+			},
+	
+			getFlats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/flats`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+        }
+	
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				console.log(data);
+				setStore({ flats: data.results });
+			},
+
+};
 };
 
 

@@ -1,0 +1,32 @@
+.map-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    .filter-menu {
+        position: absolute;
+        z-index: 401;
+        left: 0;
+        top: 20vh;
+        width: 200px;
+        height: 60vh;
+        background-color: rgba(0,0,0, 0.8);
+        padding-left: 10px;
+        .filter-item {
+            margin: 24px 0;
+            width: 80%;
+            .legend {
+                display: block;
+                color: #fff;
+                font-size: 13px;
+                margin-bottom: 5px;
+            }
+            select {
+                width: 90%;
+                font-size: 12px;
+            }
+        }
+    }
+}

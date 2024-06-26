@@ -1,3 +1,13 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+body{
+    font-family: "Roboto Mono", monospace;
+    font-size: 14px;
+    color: #828282;
+}
+.red-color {
+    color: #BF0000;
+}
+.red-background {
+    background-color: #BF0000;
+}
