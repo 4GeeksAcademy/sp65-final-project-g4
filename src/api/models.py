@@ -53,7 +53,7 @@ class Students(db.Model):
     name = db.Column(db.String(60), unique=False, nullable=False)
     lastname = db.Column(db.String(120), unique=False, nullable=False)
     birth_date = db.Column(db.Date, unique=False, nullable=True)
-    dni = db.Column(db.String(9), unique=True, nullable=False)
+    dni = db.Column(db.String(9), unique=False, nullable=False)
     phone_number = db.Column(db.String(13), unique=True, nullable=True) # Formato 034-XXXXXXXXX 13 caracteres
     profile_picture = db.Column(db.String(), unique=True, nullable=True)
 
@@ -144,10 +144,10 @@ class Landlords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
-    name = db.Column(db.String(), nullable=False)
-    lastname = db.Column(db.String(), nullable=False)
+    name = db.Column(db.String(), nullable=True)
+    lastname = db.Column(db.String(), nullable=True)
     birth_date = db.Column(db.Date, nullable=True)
-    dni = db.Column(db.String(), unique=True, nullable=False)
+    dni = db.Column(db.String(), unique=True)
     phone_number = db.Column(db.String(), unique=True)
     profile_picture = db.Column(db.String())
     
