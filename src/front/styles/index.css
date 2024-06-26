@@ -5,9 +5,23 @@ body{
     font-size: 14px;
     color: #828282;
 }
+h1{
+    font-size: 64px;
+}
+h2{
+    font-size: 32px;
+}
+h3 {
+    font-size: 22px;
+}
 .red-color {
     color: #BF0000;
 }
 .red-background {
     background-color: #BF0000;
+}
+.btn-custom{
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: none;
 }
