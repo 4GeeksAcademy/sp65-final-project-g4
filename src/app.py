@@ -14,11 +14,12 @@ from api.models import db
 # from models import Person
 
 
+
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-app.config["JWT_SECRET_KEY"] = "access_token" 
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
 jwt = JWTManager(app)
 
 # Database condiguration
