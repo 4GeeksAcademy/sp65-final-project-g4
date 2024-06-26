@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
-from api.models import db, Users , Rooms , Albums , Favorites , Students , Landlords, Universities
+from api.models import db, Users , Rooms , Albums , Favorites , Students , Landlords, Universities, Flats
 
 
 from flask_jwt_extended import create_access_token

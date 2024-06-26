@@ -2,7 +2,8 @@ const getState = ({getStore, getActions, setStore}) => {
 	return {
 		store: {
 			message: null,
-			demo: [{title: "FIRST", background: "white", initial: "white"}]
+			demo: [{title: "FIRST", background: "white", initial: "white"}],
+			flats:[]
 		},
 		actions: {
 			exampleFunction: () => {getActions().changeColor(0, "green");},  // Use getActions to call a function within a fuction
@@ -24,6 +25,23 @@ const getState = ({getStore, getActions, setStore}) => {
 					const data = await response.json()
 					setStore({ message: data.message })
 					return data;  // Don't forget to return something, that is how the async resolves
+			},
+			getFlats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/flats`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				console.log(data);
+				setStore({ flats: data.results });
 			}
 		}
 	};
