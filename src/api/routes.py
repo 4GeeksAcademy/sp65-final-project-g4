@@ -112,24 +112,32 @@ def signup_landlords():
     body = request.get_json()
     user = Users.query.filter_by(email=body["email"].lower()).first()
     if user is None:
-        user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False, is_student=False, is_landlord=True)
+        user = Users(email=body["email"], 
+                     password=body["password"], 
+                     is_active=True, 
+                     is_admin=False, 
+                     is_student=False, 
+                     is_landlord=True)
         db.session.add(user)
         db.session.commit()
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
-        dni = body.get("dni" , " ")
-        landlord = Landlords(name=name, lastname=lastname, dni=dni, id_user=user.id)
+        dni = body.get("dni" , None)
+        landlord = Landlords(name=name, 
+                             lastname=lastname, 
+                             dni=dni, 
+                             id_user=user.id)
         db.session.add(landlord)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': False,
                                                      'user_is_landlord': True,
                                                      'email': user.email})
+        response_body['data'] = {**user.serialize() , **landlord.public_serialize()}
         response_body['access_token'] = access_token
         response_body['message'] = 'Landlord created and logged in'
         return response_body , 200
-    else:
-        return jsonify({"msg": "Landlord already exists"}) , 401
+    return jsonify({"msg": "Landlord already exists"}) , 401
 
 
 @api.route('/users', methods=['GET'])

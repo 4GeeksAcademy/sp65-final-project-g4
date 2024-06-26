@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext.js";
+
 
 export const SignupLandlords = () => {
+  const {store, actions} = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const is_student = false
-  const is_landlord = true
-  const is_admin = false
-  const is_active = true
+  const navigate = useNavigate();
+
+ 
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -18,7 +21,7 @@ export const SignupLandlords = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const dataToSend = { email, password, is_admin, is_student, is_landlord, is_active };
+    const dataToSend = {email, password};
     const url = `${process.env.BACKEND_URL}/api/signuplandlords`;
     const options = {
       method: 'POST',
@@ -34,11 +37,11 @@ export const SignupLandlords = () => {
       return
     }
     const data = await response.json()
-    
-    localStorage.setItem('token', data.access_token)
-    actions.setIsLogin(true)
+    console.log(data)
+    localStorage.setItem('token', data.access_token, data)
+    actions.logedIn(data.data)
     console.log(data.access_token);
-    navigate('/dashboard')
+    navigate('/')
     
   };
 

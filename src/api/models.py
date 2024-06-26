@@ -146,10 +146,10 @@ class Landlords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
-    name = db.Column(db.String(), nullable=False)
-    lastname = db.Column(db.String(), nullable=False)
+    name = db.Column(db.String(), nullable=True)
+    lastname = db.Column(db.String(), nullable=True)
     birth_date = db.Column(db.Date, nullable=True)
-    dni = db.Column(db.String(), unique=False, nullable=False)
+    dni = db.Column(db.String(), unique=True)
     phone_number = db.Column(db.String(), unique=True)
     profile_picture = db.Column(db.String())
     
