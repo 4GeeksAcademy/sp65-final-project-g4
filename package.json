@@ -74,10 +74,10 @@
 	"dependencies": {
 		"leaflet": "^1.9.4",
 		"prop-types": "^15.6.1",
-		"react": "^16.8.4",
-		"react-dom": "^16.8.4",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
 		"react-leaflet": "^4.2.1",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "^6.3.0"
+		"react-router-dom": "6.24"
 	}
 }
