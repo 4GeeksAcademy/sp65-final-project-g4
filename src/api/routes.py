@@ -349,6 +349,8 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
+    print(user)
+    print(user.serialize())
     if user is None:
         return jsonify({"msg": "Wrong email"}) , 401
     if password != user.password:
@@ -359,6 +361,7 @@ def login():
                                                      'user_is_landlord': False,
                                                      'email': user.email})
         student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+        serialized_data = {**user.serialize(), **student.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
         return response_body, 200
@@ -368,7 +371,7 @@ def login():
                                                      'user_is_landlord': True,
                                                      'email': user.email})
         landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
-        serialized_data = {**user.serialize(), **landlord.serialize()}
+        serialized_data = {**user.serialize(), **landlord.public_serialize()}
         response_body['message'] = 'Landlord logged in'
         response_body['access_token'] = access_token
         response_body['data'] = serialized_data
