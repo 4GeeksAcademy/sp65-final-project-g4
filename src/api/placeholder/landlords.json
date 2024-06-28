@@ -1,0 +1,92 @@
+[
+    {
+        "id": 11,
+        "email": "miguel@ejemplo.com",
+        "password": "contrasenaSegura1123",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 12,
+        "email": "valentina@ejemplo.com",
+        "password": "contrasenaSegura1223",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 13,
+        "email": "andres@ejemplo.com",
+        "password": "contrasenaSegura1323",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 14,
+        "email": "sofia@ejemplo.com",
+        "password": "contrasenaSegura1423",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 15,
+        "email": "diego@ejemplo.com",
+        "password": "contrasenaSegura1523",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 16,
+        "email": "camila@ejemplo.com",
+        "password": "contrasenaSegura1623",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 17,
+        "email": "alejandro@ejemplo.com",
+        "password": "contrasenaSegura1723",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 18,
+        "email": "lucia@ejemplo.com",
+        "password": "contrasenaSegura1823",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 19,
+        "email": "sebastian@ejemplo.com",
+        "password": "contrasenaSegura1923",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    },
+    {
+        "id": 20,
+        "email": "martina@ejemplo.com",
+        "password": "contrasenaSegura2023",
+        "is_active": true,
+        "is_admin": false,
+        "is_students": false,
+        "is_landlords": true
+    }
+]
