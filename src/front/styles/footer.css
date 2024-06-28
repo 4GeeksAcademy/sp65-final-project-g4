@@ -1,0 +1,32 @@
+.footer-custom {
+    height: 250px;
+    padding: 50px 80px;
+    margin-top: 80px;
+    background-color: rgba(0,0,0,0.8);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    z-index: 100;
+    a {
+        color: #fff;
+        transition: all .3s;
+        &:hover {
+            color: #BF0000;
+        }
+        .red-color{
+            transition: all .3s;
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+    .footer-custom-menu-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .footer-custom-menu-right {
+        display: flex;
+        justify-content: space-around;
+    }
+}
