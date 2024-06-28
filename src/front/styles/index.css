@@ -5,6 +5,12 @@ body{
     font-size: 14px;
     color: #828282;
 }
+a {
+    text-decoration: none;
+}
+img {
+    width: 100%;
+}
 h1{
     font-size: 64px;
 }
@@ -23,5 +29,13 @@ h3 {
 .btn-custom{
     padding: 5px 10px;
     border-radius: 10px;
-    border: none;
+    border: 1px solid transparent;
+    background-color: #BF0000;
+    color: #fff;
+    transition: all .3s;
+    &:hover {
+        color: #BF0000;
+        background-color: #fff;
+        border: 1px solid #BF0000;
+    }
 }

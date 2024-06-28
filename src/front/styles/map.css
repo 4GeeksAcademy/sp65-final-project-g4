@@ -29,4 +29,10 @@
             }
         }
     }
+    .leaflet-control-container {
+        .leaflet-top{
+            top: 80px;
+        }
+        
+    }
 }

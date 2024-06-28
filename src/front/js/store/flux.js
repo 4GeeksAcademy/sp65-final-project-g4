@@ -1,4 +1,4 @@
-const getState = ({getStore, getActions, setStore}) => {
+const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
@@ -10,10 +10,9 @@ const getState = ({getStore, getActions, setStore}) => {
 			isAdmin: false,
 			userName: "",	
 			flats:[]
-
 		},
 		actions: {
-			exampleFunction: () => {getActions().changeColor(0, "green");},  // Use getActions to call a function within a fuction
+			exampleFunction: () => { getActions().changeColor(0, "green"); },  // Use getActions to call a function within a fuction
 			changeColor: (index, color) => {
 				const store = getStore();  // Get the store
 				// We have to loop the entire demo array to look for the respective index and change its color
@@ -24,14 +23,14 @@ const getState = ({getStore, getActions, setStore}) => {
 				setStore({ demo: demo });  // Reset the global store
 			},
 			getMessage: async () => {
-					const response = await fetch(process.env.BACKEND_URL + "/api/hello")
-					if (!response.ok) {
-						console.log("Error loading message from backend", response.status, response.statusText)
-						return
-					}
-					const data = await response.json()
-					setStore({ message: data.message })
-					return data;  // Don't forget to return something, that is how the async resolves
+				const response = await fetch(process.env.BACKEND_URL + "/api/hello")
+				if (!response.ok) {
+					console.log("Error loading message from backend", response.status, response.statusText)
+					return
+				}
+				const data = await response.json()
+				setStore({ message: data.message })
+				return data;  // Don't forget to return something, that is how the async resolves
 			},
 			loginUser: async (userData) => {
 				const uri = getStore().apiContact + '/api/login'
@@ -63,7 +62,6 @@ const getState = ({getStore, getActions, setStore}) => {
 					setStore({accessToken: localStorage.getItem('token')})
 				} else {console.log('No hay usuario logeado')}
 			},
-	
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -71,8 +69,8 @@ const getState = ({getStore, getActions, setStore}) => {
 					headers: {
 						'Content-Type': 'application/json'
 					}
-        }
-	
+				}
+
 				const response = await fetch(url, options)
 				if (!response.ok) {
 					console.log('Error: ', response.status, response.statusText);
@@ -82,8 +80,8 @@ const getState = ({getStore, getActions, setStore}) => {
 				console.log(data);
 				setStore({ flats: data.results });
 			},
-
-};
+		}
+	};
 };
 
 
