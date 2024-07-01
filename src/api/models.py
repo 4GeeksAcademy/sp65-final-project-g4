@@ -127,19 +127,19 @@ class Favorites(db.Model):
             "id_room": self.id_room}
 
 
-
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     url_photo = db.Column(db.String() , nullable = False , unique = True)
 
+
     def __repr__(self):
-        return f'<Albums {self.id , self.id_flat}>'
+        return f'<Albums {self.id }>'
 
     def serialize(self):
         return {"id": self.id,
                 "url_photo": self.url_photo}
       
-      
+
 class Landlords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -196,3 +196,48 @@ class Flats(db.Model):
                 'longitude': self.longitude,
                 'latitude': self.latitude,
                 'id_album': self.id_album}
+
+
+class Chatstudent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    id_student = db.Column(db.Integer, db.ForeignKey('students.id'))
+    to_student_id = db.relationship('Students' , foreign_keys=[id_student])
+    id_landlord = db.Column(db.Integer, db.ForeignKey('landlords.id'))
+    id_landlord_to = db.relationship('Landlords', foreign_keys=[id_landlord])
+    time_stamp = db.Column(db.Date(), nullable=False)
+    msg_read = db.Column(db.Boolean(), nullable=True)
+    message = db.Column(db.String(), nullable=False)
+    id_room = db.Column(db.Integer(), db.ForeignKey('rooms.id'), unique=True)
+    to_room_id = db.relationship('Rooms' , foreign_keys=[id_room])
+
+    def __repr__(self):
+        return f'<Chat_Student {self.time_stamp, self.id, self.id_student}>'
+
+    def serialize(self):
+        return {'id': self.id,
+                'id_student' : self.id_student,
+                'id_landlord': self.id_landlord,
+                'time_stamp': self.time_stamp,
+                'msg_read': self.msg_read,
+                'message': self.message,
+                'id_room': self.id_room}
+
+
+class Chatlandlord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    id_landlord = db.Column(db.Integer, db.ForeignKey('landlords.id'))
+    id_landlord_to = db.relationship('Landlords', foreign_keys=[id_landlord])
+    time_stamp = db.Column(db.Date(), nullable=False)
+    msg_read = db.Column(db.Boolean(), nullable=False)
+    message = db.Column(db.String(), nullable=False)
+    
+    def __repr__(self):
+        return f'<Chat_Landlord {self.time_stamp, self.id, self.id_landlord}>'
+
+    def serialize(self):
+        return {'id': self.id,
+                'id_landlord': self.id_landlord,
+                'time_stamp': self.time_stamp_sen,
+                'msg_read': self.msg_read,
+                'message': self.message}
+    

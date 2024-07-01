@@ -5,8 +5,10 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from datetime import datetime
-from api.models import db, Users , Rooms , Albums , Favorites , Students , Landlords, Universities, Flats
-
+from api.models import db, Users , Rooms , Albums , Favorites , Students , Landlords, Universities, Flats, Chatstudent, Chatlandlord
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -24,7 +26,6 @@ def handle_hello():
     response_body = {}
     response_body['message'] = "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
     return jsonify(response_body), 200
-
 
 
 @api.route("/signupstudents", methods=["POST"])
@@ -52,58 +53,6 @@ def signup_students():
         return response_body , 200
     else:
         return jsonify({"msg": "Student already exists"}) , 401
-
-
-@api.route("/signupgeneral", methods=["POST"])
-def signup_general():
-    response_body = {}
-    body = request.get_json()
-    email = body["email"].lower()
-    user = Users.query.filter_by(email=email).first()
-    is_student = body["is_student"]
-    is_landlord = body["is_landlord"]
-    if user is None:
-        if is_student==True:
-            user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False, is_student=True, is_landlord=False)
-            db.session.add(user)
-            db.session.commit()
-            name = body.get("name" , " ")
-            lastname = body.get("lastname" , " ")
-            dni = body.get("dni" , " ")
-            birth_date = body.get("birth_date" , " ")
-            profile_picture = body.get["profile_picture"]
-            student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id, birth_date=birth_date, profile_picture=profile_picture)
-            db.session.add(student)
-            db.session.commit()
-            access_token = create_access_token(identity={'user_id': user.id,
-                                                     'user_is_student': True,
-                                                     'user_is_landlord': False,
-                                                     'email': user.email})
-            response_body['access_token'] = access_token
-            response_body['message'] = 'Student created and logged in'
-            return response_body , 200
-        if is_landlord:
-            user = Users(email=body["email"], password=body["password"], is_active=True, is_admin=False, is_student=False, is_landlord=True)
-            db.session.add(user)
-            db.session.commit()
-            name = body.get("name" , " ")
-            lastname = body.get("lastname" , " ")
-            dni = body.get("dni" , " ")
-            birth_date = body.get("birth_date" , " ")
-            profile_picture = body.get["profile_picture"]
-            landlord = Landlords(name=name, lastname=lastname, dni=dni, id_user=user.id, birth_date=birth_date,  profile_picture=profile_picture)
-            db.session.add(landlord)
-            db.session.commit()
-            access_token = create_access_token(identity={'user_id': user.id,
-                                                     'user_is_student': False,
-                                                     'user_is_landlord': True,
-                                                     'email': user.email})
-            response_body['access_token'] = access_token
-            response_body['message'] = 'Landlord created and logged in'
-            return response_body , 200
-
-    else:
-        return jsonify({"msg": "User already exists"}) , 401
 
 
 @api.route("/signuplandlords", methods=["POST"])
@@ -138,6 +87,42 @@ def signup_landlords():
         response_body['message'] = 'Landlord created and logged in'
         return response_body , 200
     return jsonify({"msg": "Landlord already exists"}) , 401
+
+
+@api.route("/login", methods=["POST"])
+def login():
+    response_body = {}
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
+    print(user)
+    print(user.serialize())
+    if user is None:
+        return jsonify({"msg": "Wrong email"}) , 401
+    if password != user.password:
+        return jsonify({"msg": "Wrong password"}) , 401
+    if user.is_student:
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': True,
+                                                     'user_is_landlord': False,
+                                                     'email': user.email})
+        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+        serialized_data = {**user.serialize(), **student.public_serialize()}
+        response_body['message'] = 'Student logged in'
+        response_body['access_token'] = access_token
+        response_body['data'] = serialized_data
+        return response_body, 200
+    if user.is_landlord:
+        access_token = create_access_token(identity={'user_id': user.id,
+                                                     'user_is_student': False,
+                                                     'user_is_landlord': True,
+                                                     'email': user.email})
+        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
+        serialized_data = {**user.serialize(), **landlord.public_serialize()}
+        response_body['message'] = 'Landlord logged in'
+        response_body['access_token'] = access_token
+        response_body['data'] = serialized_data
+        return response_body, 200
 
 
 @api.route('/users', methods=['GET'])
@@ -343,41 +328,6 @@ def handle_flat_edit(flat_id):
         return response_body, 404
 
 
-@api.route("/login", methods=["POST"])
-def login():
-    response_body = {}
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    user = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
-    print(user)
-    print(user.serialize())
-    if user is None:
-        return jsonify({"msg": "Wrong email"}) , 401
-    if password != user.password:
-        return jsonify({"msg": "Wrong password"}) , 401
-    if user.is_student:
-        access_token = create_access_token(identity={'user_id': user.id,
-                                                     'user_is_student': True,
-                                                     'user_is_landlord': False,
-                                                     'email': user.email})
-        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
-        serialized_data = {**user.serialize(), **student.public_serialize()}
-        response_body['message'] = 'Student logged in'
-        response_body['access_token'] = access_token
-        return response_body, 200
-    if user.is_landlord:
-        access_token = create_access_token(identity={'user_id': user.id,
-                                                     'user_is_student': False,
-                                                     'user_is_landlord': True,
-                                                     'email': user.email})
-        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
-        serialized_data = {**user.serialize(), **landlord.public_serialize()}
-        response_body['message'] = 'Landlord logged in'
-        response_body['access_token'] = access_token
-        response_body['data'] = serialized_data
-        return response_body, 200
-
-
 @api.route('/rooms' , methods=['GET'])
 def handle_rooms():
     response_body = {}
@@ -468,7 +418,7 @@ def handle_albums():
     response_body['results'] = results
     response_body['message'] = 'Albums list'
     return response_body, 200
- 
+
 
 @api.route('/albums' , methods=['POST'])
 @jwt_required()
@@ -476,7 +426,6 @@ def handle_albums_post():
     response_body = {}
     data = request.json
     row = Albums()
-    row.id_flat = data['id_flat']
     row.url_photo = data['url_photo']
     db.session.add(row)
     db.session.commit()
@@ -658,3 +607,35 @@ def modify_single_student(id):
         response_body['message'] = 'Student not found'
         response_body['results'] = {}
         return response_body, 404
+
+
+@api.route('/chatstudent/<int:id>' , methods=['GET'])
+@jwt_required()
+def chat_student(id):
+    response_body = {}
+    chat = db.session.execute(db.select(Chatstudent).where(Chatstudent.id == id)).scalar()
+    if chat:
+        results = chat.serialize()
+        response_body['results'] = results
+        return response_body, 200
+    response_body['message'] = 'Chat not found'
+    response_body['results'] = {}
+    return response_body, 404
+
+
+@api.route('/chatstudent' , methods=['POST'])
+@jwt_required()
+def create_chatstudent():
+    response_body = {}
+    data = request.json
+    row = Chatstudent()
+    row.id_student = data['id_student']
+    row.id_landlord = data['id_landlord']
+    row.msg_read = data['msg_read']
+    row.message = data['message']
+    row.id_room = data['id_room']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Chat created'
+    return response_body, 200

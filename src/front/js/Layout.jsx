@@ -14,6 +14,7 @@ import { Home } from "./pages/Home.jsx";
 import { Signup } from "./pages/SingupStudent2.jsx";
 import { SignupLandlords } from "./pages/SignUpLandlords.jsx";
 import { Map } from "./pages/Map.jsx";
+import { UploadImage } from "./component/Albums.jsx";
 
 
 
@@ -39,6 +40,8 @@ const Layout = () => {
                         <Route element={<h1>Not found!</h1>} />
                         <Route element= {<Signup/>} path="/signup" />
                         <Route element= {<SignupLandlords/>} path="/signuplandlords" />
+                        <Route element= {<UploadImage/>} path="/uploadimg" />
+
 
                     </Routes>
                     <Footer />

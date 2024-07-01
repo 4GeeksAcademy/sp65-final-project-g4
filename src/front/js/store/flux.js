@@ -3,7 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			demo: [{title: "FIRST", background: "white", initial: "white"}],
-			apiContact: 'https://potential-robot-r5xxqjgwrggc5px9-3001.app.github.dev',
+			apiContact: 'https://ideal-capybara-g4xqq4qjg4rqfv9qq-3001.app.github.dev',
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
