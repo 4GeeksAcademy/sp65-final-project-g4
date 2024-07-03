@@ -4,8 +4,7 @@ body{
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
     color: #828282;
-    margin-top: 53px;
-    height: 100vh;
+    padding-top: 80px;
 }
 a {
     text-decoration: none;
@@ -32,10 +31,9 @@ h3 {
     padding: 5px 10px;
     border-radius: 10px;
     border: 1px solid transparent;
-    background-color: #BF0000;
     color: #fff;
     transition: all .3s;
-    &:hover {
+    &.red-background:hover {
         color: #BF0000;
         background-color: #fff;
         border: 1px solid #BF0000;

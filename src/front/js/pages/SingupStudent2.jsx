@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import "../../styles/login.css";
 
 export const Signup = () => {
   const { store, actions } = useContext(Context);
@@ -57,17 +57,17 @@ export const Signup = () => {
   };
 
   return (
-    <div className="container" style={{ "marginTop": "100px" }}>
+    <div className="login-container">
       <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
+        <div className="col-md-12">
+          <div className="">
             <div className="card-body">
-              <h2 className="card-title text-center mb-3 display-5">
+              <h2 className="red-color">
                 Students SignUp
               </h2>
               <form onSubmit={handleSubmit}>
-                <div className="form-group mt-3 h6">
-                  <label htmlFor="email" className="mb-1">
+                <div className="form-group mt-3">
+                  <label htmlFor="email" className="form-label red-color">
                     Email:
                   </label>
                   <input
@@ -79,8 +79,8 @@ export const Signup = () => {
                     required
                   />
                 </div>
-                <div className="form-group mt-3 h6">
-                  <label htmlFor="password" className="mb-1">
+                <div className="form-group mt-3">
+                  <label htmlFor="password" className="form-label red-color">
                     Password:
                   </label>
                   <input
@@ -92,8 +92,8 @@ export const Signup = () => {
                     required
                   />
                 </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-primary mt-5">
+                <div>
+                  <button type="submit" className="btn-custom red-background my-4">
                     Sign up
                   </button>
                 </div>

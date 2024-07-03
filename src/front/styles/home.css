@@ -7,6 +7,7 @@
     .image-container {
         width: 80%;
         position: relative;
+        margin: 0 auto;
         .title-container {
             text-align: center;
             position: absolute;
