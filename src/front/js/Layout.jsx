@@ -18,6 +18,7 @@ import { Map } from "./pages/Map.jsx";
 import { UploadImage } from "./component/Albums.jsx";
 import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
+import { FlatProfile } from "./pages/flatProfile.jsx";
 
 
 
@@ -47,7 +48,7 @@ const Layout = () => {
                         <Route element= {<UploadImage/>} path="/uploadimg" />
                         <Route element= {<Chats/>} path="/chats" />
                         <Route element= {<Dashboard/>} path="/dashboard" />
-
+                        <Route element= {<FlatProfile/>} path="/FlatProfile/:theid" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

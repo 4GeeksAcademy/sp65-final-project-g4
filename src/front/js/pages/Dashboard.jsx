@@ -82,7 +82,6 @@ export const Dashboard = () => {
 					<button className="btn-custom red-background" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-edit"></i> Editar mi perfil</button>
 				</div>
 			</div>
-
 		</div>
 	);
 };
