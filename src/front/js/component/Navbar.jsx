@@ -1,8 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Context } from "../store/appContext";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/navbar.css";
 
+
 export const Navbar = () => {
+	const { store, actions } = useContext(Context);
+
 	return (
 		<nav className="navbar-custom">
 			<div className="navbar-custom-logo">
@@ -20,12 +25,19 @@ export const Navbar = () => {
 				<Link to="/demo">
 					<span>Lorem</span>
 				</Link>
-				<Link to="/login">
-					<button className="btn-custom red-background">Login</button>
-				</Link>
-				<Link to="/Signup" >
-					<span className="red-color">Sign Up</span>
-				</Link>
+				{store.isLogedIn ?
+					<>
+						<Link to="/dashboard">
+							<button className="btn-custom red-background">Loguiado</button>
+						</Link>
+					</> : <>
+						<Link to="/login">
+							<button className="btn-custom red-background">Login</button>
+						</Link>
+						<Link to="/Signup" >
+							<span className="red-color">Sign Up</span>
+						</Link>
+					</>}
 			</div>
 		</nav>
 	);

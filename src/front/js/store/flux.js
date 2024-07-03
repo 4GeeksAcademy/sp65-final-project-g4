@@ -1,15 +1,14 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+
 			message: null,
 			demo: [{title: "FIRST", background: "white", initial: "white"}],
-			apiContact: 'https://ideal-capybara-g4xqq4qjg4rqfv9qq-3001.app.github.dev',
+			apiContact: 'https://automatic-rotary-phone-4xvx5gxw67h7p4g-3001.app.github.dev',
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
 			isAdmin: false,
-			userName: "",	
-			flats:[],
 			chats: [],
 			allChats: [],
 			users: [],
@@ -17,18 +16,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			landlords: [],
 			currentChat: [],
 			currentChatUrl: []
+			userName: "",
+			userData: {},	
+			flats:[]
+
 		},
 		actions: {
-			exampleFunction: () => { getActions().changeColor(0, "green"); },  // Use getActions to call a function within a fuction
-			changeColor: (index, color) => {
-				const store = getStore();  // Get the store
-				// We have to loop the entire demo array to look for the respective index and change its color
-				const demo = store.demo.map((element, i) => {
-					if (i === index) element.background = color;
-					return element;
-				});
-				setStore({ demo: demo });  // Reset the global store
-			},
 			getMessage: async () => {
 				const response = await fetch(process.env.BACKEND_URL + "/api/hello")
 				if (!response.ok) {
@@ -54,21 +47,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({accessToken: access_token})
 				setStore({userEmail: data.data.email})
 				setStore({userName: data.data.name})
+				setStore({userData: data.data})
+				setStore({isLogedIn: true})
 				localStorage.setItem('token', JSON.stringify(data.access_token))
 				localStorage.setItem('user', JSON.stringify(data.data))
+			
 			},
 			logedIn: (userData) => {
-				console.log(userData)
 				setStore({isLogedIn: true, userEmail: userData.email})
-
+				setStore({userData: localStorage.getItem(userData)})
 			},
 
 			oldLogin: () => {
-				if (localStorage.getItem('token', 'user')) {
-					console.log('Hay usuario logeado', localStorage.getItem('user'))
+				if (localStorage.getItem('token' && 'user')) {
+					console.log('Hay usuario logeado:', localStorage.getItem('user'))
 					getActions().logedIn(localStorage.getItem('user'))
 					setStore({accessToken: localStorage.getItem('token')})
+					
 				} else {console.log('No hay usuario logeado')}
+			},
+
+			userLogout: () => {
+				localStorage.removeItem('token')		
+				localStorage.removeItem('user')
+				setStore({accessToken: null, 
+						  userData: {}, 
+						  isLogedIn: false})
 			},
 
 			getFlats: async () => {

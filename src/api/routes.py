@@ -327,7 +327,7 @@ def handle_flat_edit(flat_id):
         response_body['results'] = {}
         return response_body, 404
 
-
+      
 @api.route('/rooms' , methods=['GET'])
 def handle_rooms():
     response_body = {}
