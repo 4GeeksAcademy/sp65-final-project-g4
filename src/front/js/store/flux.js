@@ -9,7 +9,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userEmail: "",
 			isAdmin: false,
 			userName: "",	
-			flats:[]
+			flats:[],
+			chats: [],
+			allChats: [],
+			users: [],
+			students: [],
+			landlords: [],
+			currentChat: [],
+			currentChatUrl: []
 		},
 		actions: {
 			exampleFunction: () => { getActions().changeColor(0, "green"); },  // Use getActions to call a function within a fuction
@@ -55,6 +62,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({isLogedIn: true, userEmail: userData.email})
 
 			},
+
 			oldLogin: () => {
 				if (localStorage.getItem('token', 'user')) {
 					console.log('Hay usuario logeado', localStorage.getItem('user'))
@@ -62,6 +70,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({accessToken: localStorage.getItem('token')})
 				} else {console.log('No hay usuario logeado')}
 			},
+
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -80,6 +89,116 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data);
 				setStore({ flats: data.results });
 			},
+
+
+			/* getChats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/chatstudent`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ chats: data.results });
+
+			}, */
+
+			
+			getUsers: async () => {
+				const url = `${process.env.BACKEND_URL}/api/users`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ users: data.results });
+
+			},
+
+			getLandlords: async () => {
+				const url = `${process.env.BACKEND_URL}/api/landlords`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ landlords: data.results });
+			},
+
+			getStudents: async () =>{
+				const url = `${process.env.BACKEND_URL}/api/students`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ students: data.results });
+			},
+
+			getAllChats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/chats`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ allChats: data.results });
+			},
+
+			settingCurrentChatUrl: (text) => {setStore({currentChatUrl: text})},
+
+			getCurrentChat: async () =>{
+				const uri = getStore().currentChatUrl;
+				console.log(uri);
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const data = await response.json();
+				console.log(data.result);
+				setStore({ currentChat: data.result });
+
+			}
 		}
 	};
 };
