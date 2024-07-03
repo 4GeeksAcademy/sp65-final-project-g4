@@ -607,26 +607,47 @@ def modify_single_student(id):
         response_body['message'] = 'Student not found'
         response_body['results'] = {}
         return response_body, 404
-""" 
 
-@api.route('/chatstudent' , methods=['GET'])
-@jwt_required()
-def handle_students_chats():
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_student)).scalars()
-    results = [row.serialize() for row in chat]  # Utilizo List Comprehension
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200
- """
-""" @api.route('/chats' , methods=['GET'])
+
+@api.route('/chats' , methods=['GET'])
 def get_all_chats():
     response_body = {}
     chat = db.session.execute(db.select(Chats)).scalars()
     results = [row.serialize() for row in chat]
     response_body['results'] = results
     response_body['message'] = 'Chat list'
-    return response_body, 200 """
+    return response_body, 200
+
+
+@api.route('/messages' , methods=['GET'])
+@jwt_required()
+def get_all_messages():
+    response_body = {}
+    message = db.session.execute(db.select(Messages)).scalars()
+    results = [row.serialize() for row in message]
+    response_body['results'] = results
+    response_body['message'] = 'Message list'
+    return response_body, 200
+
+
+@api.route('/chat/<int:id>' , methods=['GET'])
+@jwt_required()
+def handle_chat(id):
+    response_body = {}
+    chat = db.session.execute(db.select(Chats).where(Chats.id == id)).scalars()
+    if chat:
+        results = [row.serialize() for row in chat]
+        message = db.session.execute(db.select(Messages).where(Chats.id == id)).scalars()
+        serialized_data = {**chat.serialize(), **message.serialize()}
+        results = [row.serialize() for row in message]
+        response_body['results'] = results
+        response_body['message'] = 'Conversation'
+        response_body['data'] = serialized_data
+        return response_body, 200
+    response_body['message'] = 'No Chat found'
+    return response_body, 404
+
+
 
 
 """ @api.route('/chats/<int:id>' , methods=['GET'])
@@ -715,3 +736,14 @@ def create_chatlandlord():
     response_body['message'] = 'Chat created'
     return response_body, 200
  """
+
+@api.route('/photo', methods=['POST'])
+def upload_photo():
+    response_body = {}
+    img = request.files["img"]
+    print(img)
+    img_url = cloudinary.uploader.upload(img)
+    print(img_url["url"])
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200

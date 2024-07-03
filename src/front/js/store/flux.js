@@ -15,7 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			students: [],
 			landlords: [],
 			currentChat: [],
-			currentChatUrl: []
+			currentChatUrl: [],
 			userName: "",
 			userData: {},	
 			flats:[]
