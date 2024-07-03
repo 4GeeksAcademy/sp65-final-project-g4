@@ -4,6 +4,7 @@ import { Context } from "../store/appContext.js";
 import "../../styles/sidebar.css";
 import getState from "../store/flux.js";
 import { useNavigate } from "react-router-dom";
+import { Signup } from "./SingupStudent2.jsx";
 
 
 export const Dashboard = () => {
@@ -13,11 +14,12 @@ export const Dashboard = () => {
 		actions.userLogout()
 	}
 
-	if (store.isLogedIn != true) {
-		navigate('/signup')
-	}
 
 	return (
+		<>
+		{!store.isLogedIn ? 
+			<Signup />	
+			:
 		<div className="row gx-0 overflow">
 			<div className="col-3 d-flex sidebar-custom">
 				<div className="d-flex flex-column flex-shrink-0 p-2">
@@ -84,5 +86,7 @@ export const Dashboard = () => {
 			</div>
 
 		</div>
+		}
+		</>
 	);
 };
