@@ -1,0 +1,28 @@
+.sidebar-custom {
+    background-color: rgba(0,0,0,0.8);
+    display: flex;
+    left: 0px;
+    min-height: 70vh;
+    justify-content: space-between;
+    z-index: 100;
+    button {
+        margin: 0 0 0 20px;
+    } 
+    a {
+        margin: 0 10px;
+        color: #fff;
+        transition: all .3s;
+        &:hover {
+            color: #BF0000;
+        }
+        &:focus {
+            color: #bf0000e3;
+        }
+        .red-color{
+            transition: all .3s;
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+}

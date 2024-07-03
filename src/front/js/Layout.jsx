@@ -14,6 +14,7 @@ import { Home } from "./pages/Home.jsx";
 import { Signup } from "./pages/SingupStudent2.jsx";
 import { SignupLandlords } from "./pages/SignUpLandlords.jsx";
 import { Map } from "./pages/Map.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
 
 
 
@@ -36,9 +37,10 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<Map />} path="/map" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} />
+                        <Route element={<h1 style={{"textAlign":"center"}}>Not found!</h1>} path="*"/>
                         <Route element= {<Signup/>} path="/signup" />
                         <Route element= {<SignupLandlords/>} path="/signuplandlords" />
+                        <Route element= {<Dashboard/>} path="/dashboard" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

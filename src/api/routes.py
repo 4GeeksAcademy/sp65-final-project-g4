@@ -364,6 +364,7 @@ def login():
         serialized_data = {**user.serialize(), **student.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
+        response_body['data'] = serialized_data
         return response_body, 200
     if user.is_landlord:
         access_token = create_access_token(identity={'user_id': user.id,

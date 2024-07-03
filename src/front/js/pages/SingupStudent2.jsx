@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 
 export const Signup = () => {
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const is_student = true
@@ -16,6 +22,11 @@ export const Signup = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
+  const handleReset = () => {
+    setEmail(' ');
+    setPassword(' ');
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,12 +46,14 @@ export const Signup = () => {
       return
     }
     const data = await response.json()
-    
+
     localStorage.setItem('token', data.access_token)
-    actions.setIsLogin(true)
+    actions.logedIn(dataToSend)
     console.log(data.access_token);
- 
-    
+    handleReset()
+    navigate('/')
+
+
   };
 
   return (
