@@ -4,6 +4,8 @@ body{
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
     color: #828282;
+    margin-top: 53px;
+    height: 100vh;
 }
 a {
     text-decoration: none;

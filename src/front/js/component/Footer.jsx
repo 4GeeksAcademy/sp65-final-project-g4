@@ -11,9 +11,9 @@ export const Footer = () => (
 				</Link>
 			</div>
 			<div className="social-menu">
-				<i class="bi bi-instagram"></i>
-				<i class="bi bi-facebook"></i>
-				<i class="bi bi-twitter-x"></i>
+				<i className="bi bi-instagram"></i>
+				<i className="bi bi-facebook"></i>
+				<i className="bi bi-twitter-x"></i>
 			</div>
 			<div className="language-selector">
 				<Link to="/">

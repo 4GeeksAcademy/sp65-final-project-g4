@@ -48,7 +48,7 @@ export const Login = () => {
   // 4 última instrucción JS, que retorna un solo elemento HTML
   return (
     <>  {/* fragment */}
-      <div className="container text-start">
+      <div className="container text-start" style={{"marginTop": "100px"}}>
         <h1>Login</h1>
         <form onSubmit={handleSumbit}>
           <div className="mb-3">

@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 export const Signup = () => {
+  const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const is_student = true
@@ -15,6 +22,11 @@ export const Signup = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
+  const handleReset = () => {
+    setEmail(' ');
+    setPassword(' ');
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,16 +46,18 @@ export const Signup = () => {
       return
     }
     const data = await response.json()
-    
+
     localStorage.setItem('token', data.access_token)
-    actions.setIsLogin(true)
+    actions.logedIn(dataToSend)
     console.log(data.access_token);
- 
-    
+    handleReset()
+    navigate('/')
+
+
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container" style={{ "marginTop": "100px" }}>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
