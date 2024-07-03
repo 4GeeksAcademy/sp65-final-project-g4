@@ -1,8 +1,7 @@
 .footer-custom {
-    height: auto;
+    height: 250px;
     padding: 50px 80px;
-    bottom: 0;
-    position: fixed;
+    margin-top: 0;
     background-color: rgba(0,0,0,0.8);
     display: flex;
     width: 100%;

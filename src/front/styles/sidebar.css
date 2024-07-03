@@ -2,7 +2,7 @@
     background-color: rgba(0,0,0,0.8);
     display: flex;
     left: 0px;
-    min-height: 70vh;
+    min-height: calc(100vh - 303px);
     justify-content: space-between;
     z-index: 100;
     button {

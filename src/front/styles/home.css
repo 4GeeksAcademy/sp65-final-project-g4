@@ -7,7 +7,7 @@
     .image-container {
         width: 80%;
         position: relative;
-        margin: 0 auto;
+        margin: 30px auto 0;
         .title-container {
             text-align: center;
             position: absolute;
@@ -37,6 +37,7 @@
     }
     .contacto-container {
         width: 90%;
+        margin-bottom: 80px;
         .form-container {
             display: flex;
             p {
