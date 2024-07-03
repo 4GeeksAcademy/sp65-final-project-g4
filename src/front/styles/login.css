@@ -1,0 +1,8 @@
+.login-container {
+    width: 60%;
+    margin: 0 auto;
+    height: calc(100vh - 410px);
+    form {
+        margin-top: 50px;
+    }
+}
