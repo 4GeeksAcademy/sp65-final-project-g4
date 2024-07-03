@@ -25,6 +25,23 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        .social-menu {
+            i {
+                margin: 0 5px;
+                font-size: 20px;
+                &:hover {
+                    color: #fff;
+                    cursor: pointer;
+                }
+            }
+        }
+        .language-selector {
+            img {
+                margin: 0 10px;
+                width: 30px;
+                cursor: pointer;
+            }
+        }
     }
     .footer-custom-menu-right {
         display: flex;
