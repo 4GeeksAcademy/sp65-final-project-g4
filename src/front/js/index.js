@@ -6,3 +6,4 @@ import './component/i18n.ts'; // Importa la configuración de i18n
 
 //render your react application
 ReactDOM.render(<Layout />, document.querySelector("#app"));
+

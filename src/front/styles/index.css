@@ -38,4 +38,17 @@ h3 {
         background-color: #fff;
         border: 1px solid #BF0000;
     }
+    
+}
+
+#sent-message {
+    background-color: #828282;
+    float: inline-end;
+    text-align: right;
+    
+}
+
+#chat-header {
+    background-color: lightgray;
+    height: 30px;
 }

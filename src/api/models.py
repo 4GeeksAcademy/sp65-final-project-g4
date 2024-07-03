@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 
 db = SQLAlchemy()
@@ -127,19 +129,19 @@ class Favorites(db.Model):
             "id_room": self.id_room}
 
 
-
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     url_photo = db.Column(db.String() , nullable = False , unique = True)
 
+
     def __repr__(self):
-        return f'<Albums {self.id , self.id_flat}>'
+        return f'<Albums {self.id }>'
 
     def serialize(self):
         return {"id": self.id,
                 "url_photo": self.url_photo}
       
-      
+
 class Landlords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -196,3 +198,86 @@ class Flats(db.Model):
                 'longitude': self.longitude,
                 'latitude': self.latitude,
                 'id_album': self.id_album}
+
+
+""" class Chat_student(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    message = db.Column(db.String(), nullable=False)
+    read = db.Column(db.Boolean(), nullable=False)
+    student_id = db.Column(db.Integer(), db.ForeignKey('students.id'))
+    to_student_id = db.relationship('Students' , foreign_keys=[student_id])
+    room_id = db.Column(db.Integer(), db.ForeignKey('rooms.id'))
+    to_room_id = db.relationship('Rooms' , foreign_keys=[room_id])
+
+    def __repr__(self):
+        return f'<Chat Student {self.student_id , self.room_id}>'
+    
+    def serialize(self):
+        return {'id': self.id,
+                'message': self.message,
+                'read': self.read,
+                'student_id': self.student_id,
+                'room_id': self.room_id}
+
+
+class Chat_landlord(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    message = db.Column(db.String(), nullable=False)
+    read = db.Column(db.Boolean(), nullable=False)
+    landlord_id = db.Column(db.Integer(), db.ForeignKey('landlords.id'))
+    to_sender_id = db.relationship('Landlords' , foreign_keys=[landlord_id])
+    chat_id = db.Column(db.Integer(), db.ForeignKey('chat_student.id'))
+    to_chat_id = db.relationship('Chat_student' , foreign_keys=[chat_id])
+
+    def __repr__(self):
+        return f'<Chat Landlord {self.landlord_id , self.chat_id}>'
+    
+    def serialize(self):
+        return {'id': self.id,
+                'message': self.message,
+                'read': self.read,
+                'landlord_id': self.landlord_id,
+                'chat_id': self.chat_id}
+ """
+
+class Chats(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    student_id = db.Column(db.Integer(), db.ForeignKey('students.id'))
+    to_student_id = db.relationship('Students' , foreign_keys=[student_id])
+    landlord_id = db.Column(db.Integer(), db.ForeignKey('landlords.id'))
+    to_landlord_id = db.relationship('Landlords' , foreign_keys=[landlord_id])
+    room_id = db.Column(db.Integer(), db.ForeignKey('rooms.id'))
+    to_room_id = db.relationship('Rooms' , foreign_keys=[room_id])
+   
+
+    def __repr__(self):
+        return f'<Chats {self.student_id , self.landlord_id}>'
+
+    def serialize(self):
+        return {'id': self.id,
+                'student_id': self.student_id,
+                'landlord_id': self.landlord_id,
+                'room_id': self.room_id}
+
+
+class Messages(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    message = db.Column(db.String(), nullable=False)
+    chat_id = db.Column(db.Integer(), db.ForeignKey('chats.id'))
+    to_chat_id = db.relationship('Chats' , foreign_keys=[chat_id])
+    timestamp = db.Column(db.DateTime() , default=datetime.utcnow)
+    sender_id = db.Column(db.Integer(), db.ForeignKey('users.id'))
+    to_sender_id = db.relationship('Users' , foreign_keys=[sender_id])
+    is_read = db.Column(db.Boolean())
+
+
+    def __repr__(self):
+        return f'<Messages {self.sender_id , self.timestamp}>'
+    
+    def serialize(self):
+        return {'id': self.id,
+                'message': self.message,
+                'chat_id': self.chat_id,
+                'timestamp': self.timestamp,
+                'sender_id': self.sender_id,
+                'is_read': self.is_read}

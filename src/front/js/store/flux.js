@@ -1,14 +1,25 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+
+			message: null,
+			demo: [{title: "FIRST", background: "white", initial: "white"}],
 			apiContact: 'https://automatic-rotary-phone-4xvx5gxw67h7p4g-3001.app.github.dev',
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
 			isAdmin: false,
+			chats: [],
+			allChats: [],
+			users: [],
+			students: [],
+			landlords: [],
+			currentChat: [],
+			currentChatUrl: []
 			userName: "",
 			userData: {},	
 			flats:[]
+
 		},
 		actions: {
 			getMessage: async () => {
@@ -46,6 +57,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({isLogedIn: true, userEmail: userData.email})
 				setStore({userData: localStorage.getItem(userData)})
 			},
+
 			oldLogin: () => {
 				if (localStorage.getItem('token' && 'user')) {
 					console.log('Hay usuario logeado:', localStorage.getItem('user'))
@@ -54,6 +66,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					
 				} else {console.log('No hay usuario logeado')}
 			},
+
 			userLogout: () => {
 				localStorage.removeItem('token')		
 				localStorage.removeItem('user')
@@ -61,6 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						  userData: {}, 
 						  isLogedIn: false})
 			},
+
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -79,6 +93,116 @@ const getState = ({ getStore, getActions, setStore }) => {
 				console.log(data);
 				setStore({ flats: data.results });
 			},
+
+
+			/* getChats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/chatstudent`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ chats: data.results });
+
+			}, */
+
+			
+			getUsers: async () => {
+				const url = `${process.env.BACKEND_URL}/api/users`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ users: data.results });
+
+			},
+
+			getLandlords: async () => {
+				const url = `${process.env.BACKEND_URL}/api/landlords`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ landlords: data.results });
+			},
+
+			getStudents: async () =>{
+				const url = `${process.env.BACKEND_URL}/api/students`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ students: data.results });
+			},
+
+			getAllChats: async () => {
+				const url = `${process.env.BACKEND_URL}/api/chats`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ allChats: data.results });
+			},
+
+			settingCurrentChatUrl: (text) => {setStore({currentChatUrl: text})},
+
+			getCurrentChat: async () =>{
+				const uri = getStore().currentChatUrl;
+				console.log(uri);
+				const response = await fetch(uri);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const data = await response.json();
+				console.log(data.result);
+				setStore({ currentChat: data.result });
+
+			}
 		}
 	};
 };
