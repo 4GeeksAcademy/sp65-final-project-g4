@@ -5,7 +5,7 @@ import "../../styles/sidebar.css";
 import getState from "../store/flux.js";
 import { useNavigate } from "react-router-dom";
 import { Login } from "./Login.jsx";
-
+import { Signup } from "./SingupStudent2.jsx";
 
 
 export const Dashboard = () => {

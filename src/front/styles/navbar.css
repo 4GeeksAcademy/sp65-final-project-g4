@@ -1,13 +1,18 @@
 .navbar-custom {
-    padding: 10px 50px;
+    padding: 12px 50px;
     background-color: rgba(0,0,0,0.8);
     display: flex;
     position: fixed;
+    height: 53px;
     top: 0;
     left: 0px;
     width: 100%;
     justify-content: space-between;
     z-index: 100;
+    .profile-picutre img {
+        margin: 0 5px;
+        width: 25px;
+    }
     button {
         margin: 0 0 0 20px;
     }

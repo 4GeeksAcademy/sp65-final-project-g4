@@ -11,15 +11,15 @@ export const UploadImage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile) {
-      
         const formData = new FormData();
         formData.append("img" , selectedFile);
-
-        const response = await fetch ("https://ideal-capybara-g4xqq4qjg4rqfv9qq-3001.app.github.dev/photo" , {
+        const url = "https://ideal-capybara-g4xqq4qjg4rqfv9qq-3001.app.github.dev/api/photo"
+        const options = {
             method: "POST",
-            body: formData,
-        });
-        
+            body: formData
+        }
+        const response = await fetch(url , options);
+        console.log(response);
         if (response.ok) {
             const data = await response.json();
             setImageUrl(data.img_url);
@@ -34,7 +34,6 @@ export const UploadImage = () => {
     }
   };
 
-  console.log(imageUrl)
 
   const storePicture = async () => {
 
