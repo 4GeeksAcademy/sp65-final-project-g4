@@ -3,8 +3,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 
 			message: null,
-			demo: [{title: "FIRST", background: "white", initial: "white"}],
-			apiContact: 'https://automatic-rotary-phone-4xvx5gxw67h7p4g-3001.app.github.dev',
+			demo: [{ title: "FIRST", background: "white", initial: "white" }],
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
@@ -15,10 +14,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			students: [],
 			landlords: [],
 			currentChat: [],
-			currentChatUrl: []
+			currentChatUrl: [],
 			userName: "",
-			userData: {},	
-			flats:[]
+			userData: {},
+			flats: []
 
 		},
 		actions: {
@@ -33,7 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;  // Don't forget to return something, that is how the async resolves
 			},
 			loginUser: async (userData) => {
-				const uri = getStore().apiContact + '/api/login'
+				const uri = `${process.env.BACKEND_URL}/api/login`
 				const options = {
 					method: 'POST',
 					headers: {
@@ -44,35 +43,65 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(uri, options);
 				const data = await response.json();
 				const access_token = data.access_token;
-				setStore({accessToken: access_token})
-				setStore({userEmail: data.data.email})
-				setStore({userName: data.data.name})
-				setStore({userData: data.data})
-				setStore({isLogedIn: true})
+				setStore({ accessToken: access_token })
+				setStore({ userEmail: data.data.email })
+				setStore({ userName: data.data.name })
+				setStore({ userData: data.data })
+				setStore({ isLogedIn: true })
 				localStorage.setItem('token', JSON.stringify(data.access_token))
 				localStorage.setItem('user', JSON.stringify(data.data))
-			
 			},
+
+			getStudent: async (studentId) => {
+				const uri = `${process.env.BACKEND_URL}/api/students/${studentId}`
+				const options = {
+					method: 'GET'
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+
+
+			},
+
 			logedIn: (userData) => {
-				setStore({isLogedIn: true, userEmail: userData.email})
-				setStore({userData: localStorage.getItem(userData)})
+				setStore({ isLogedIn: true, userEmail: userData.email })
+				setStore({ userData: localStorage.getItem(userData) })
 			},
 
 			oldLogin: () => {
 				if (localStorage.getItem('token' && 'user')) {
 					console.log('Hay usuario logeado:', localStorage.getItem('user'))
-					getActions().logedIn(localStorage.getItem('user'))
-					setStore({accessToken: localStorage.getItem('token')})
-					
-				} else {console.log('No hay usuario logeado')}
+					setStore({
+						accessToken: JSON.parse(localStorage.getItem('token')),
+						userData: JSON.parse(localStorage.getItem('user')),
+						isLogedIn: true
+					})
+				} else { console.log('No hay usuario logeado') }
+			},
+
+			putStudent: async (studentData, token, id) => {
+				const uri = `${process.env.BACKEND_URL}/api/students/${id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						/* 'Authorization': 'Bearer ' + token */
+					},
+					body: JSON.stringify(studentData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				setStore({ userData: data.results })
 			},
 
 			userLogout: () => {
-				localStorage.removeItem('token')		
+				localStorage.removeItem('token')
 				localStorage.removeItem('user')
-				setStore({accessToken: null, 
-						  userData: {}, 
-						  isLogedIn: false})
+				setStore({
+					accessToken: null,
+					userData: {},
+					isLogedIn: false
+				})
 			},
 
 			getFlats: async () => {
@@ -114,7 +143,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			}, */
 
-			
+
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
@@ -152,7 +181,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ landlords: data.results });
 			},
 
-			getStudents: async () =>{
+			getStudents: async () => {
 				const url = `${process.env.BACKEND_URL}/api/students`;
 				const options = {
 					method: 'GET',
@@ -188,9 +217,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ allChats: data.results });
 			},
 
-			settingCurrentChatUrl: (text) => {setStore({currentChatUrl: text})},
+			settingCurrentChatUrl: (text) => { setStore({ currentChatUrl: text }) },
 
-			getCurrentChat: async () =>{
+			getCurrentChat: async () => {
 				const uri = getStore().currentChatUrl;
 				console.log(uri);
 				const response = await fetch(uri);

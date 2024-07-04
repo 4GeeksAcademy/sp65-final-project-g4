@@ -209,8 +209,10 @@ def handle_landlords_post():
 def handle_landlord(landlord_id):
     response_body = {}
     landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
+
     if landlord:
-        response_body['results'] = landlord.serialize()
+        response_body['results'] = {**user.serialize(), **landlord.serialize()}
         response_body['message'] = 'Landlord found'
         return response_body, 200
     response_body['message'] = 'Landlord not found'
@@ -223,6 +225,8 @@ def handle_landlord(landlord_id):
 def handle_landlord_edit(landlord_id):
     response_body = {}
     landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
+
     if request.method == 'PUT':
         data = request.json
         if landlord:
@@ -235,7 +239,7 @@ def handle_landlord_edit(landlord_id):
             landlord.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Landlord updated'
-            response_body['results'] = landlord.serialize()
+            response_body['results'] = {**user.serialize(), **landlord.serialize()}
             return response_body, 200
         response_body['message'] = 'Landlord not found'
         response_body['results'] = {}
@@ -565,9 +569,10 @@ def handle_students():
 def handle_single_student(id):
     response_body = {}
     student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
     if student:
-        results = student.serialize()
-        response_body['results'] = results
+        serialized_data = {**user.serialize(), **student.public_serialize()}
+        response_body['results'] = serialized_data
         return response_body, 200
     response_body['message'] = 'ID estudiante inexistente'
     response_body['results'] = {}
@@ -575,12 +580,13 @@ def handle_single_student(id):
 
 
 @api.route('/students/<int:id>' , methods=['PUT', 'DELETE'])
-@jwt_required()
+
 def modify_single_student(id):
     response_body = {}
     if request.method == 'PUT':
         data = request.json
         student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+        user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
         if student:
             student.id_university = data['id_university']
             student.name = data['name']
@@ -591,7 +597,7 @@ def modify_single_student(id):
             student.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Datos del estudiante actualizados'
-            response_body['results'] = student.serialize()
+            response_body['results'] = {**user.serialize(), **student.public_serialize()}
             return response_body, 200
         response_body['message'] = 'ID estudiante inexistente'
         response_body['results'] = {}
