@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link, Navigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import profilePicture from "../../img/placeholder-profile-picture.jpg";
 import "../../styles/navbar.css";
 
 
@@ -26,11 +26,14 @@ export const Navbar = () => {
 					<span>Lorem</span>
 				</Link>
 				{store.isLogedIn ?
-					<>
+					<span>
 						<Link to="/dashboard">
-							<button className="btn-custom red-background">Loguiado</button>
+							<span className="red-color">Perfil</span>
+							<span className="profile-picutre"><img src={profilePicture} /></span>
 						</Link>
-					</> : <>
+					</span> 
+					: 
+					<>
 						<Link to="/login">
 							<button className="btn-custom red-background">Login</button>
 						</Link>

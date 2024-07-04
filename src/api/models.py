@@ -180,9 +180,9 @@ class Flats(db.Model):
     id_landlord = db.Column(db.Integer, db.ForeignKey('landlords.id'))
     id_landlord_to = db.relationship('Landlords', foreign_keys=[id_landlord])
     address = db.Column(db.String(), nullable=False)
+    postal_code = db.Column(db.String(), nullable=False)
+    city = db.Column(db.String(), nullable=False)
     description = db.Column(db.String())
-    longitude = db.Column(db.Float(), nullable=False)
-    latitude = db.Column(db.Float(), nullable=False)
     id_album = db.Column(db.Integer(), db.ForeignKey('albums.id'), unique=True)
     to_album_id = db.relationship('Albums' , foreign_keys=[id_album])
     
@@ -195,8 +195,8 @@ class Flats(db.Model):
                 'id_landlord': self.id_landlord,
                 'address': self.address,
                 'description': self.description,
-                'longitude': self.longitude,
-                'latitude': self.latitude,
+                'postal_code': self.postal_code,
+                'city': self.city,
                 'id_album': self.id_album}
 
 

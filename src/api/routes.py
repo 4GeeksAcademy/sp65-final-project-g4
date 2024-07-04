@@ -270,8 +270,8 @@ def handle_flats_post():
     flat = Flats()
     flat.address = data['address']
     flat.description = data['description']
-    flat.longitude = data['longitude']
-    flat.latitude = data['latitude']
+    flat.postal_code = data['postal_code']
+    flat.city = data['city']
     flat.id_landlord = data['id_landlord']
     db.session.add(flat)
     db.session.commit()
@@ -283,6 +283,7 @@ def handle_flats_post():
 @api.route('/flats/<int:flat_id>', methods=['GET'])
 def handle_flat(flat_id):
     response_body = {}
+    flat = db.session.execute(db.select(Flats).where(Flats.id == flat_id)).scalar()
     if flat:
         response_body['results'] = flat.serialize()
         response_body['message'] = 'Flat found'

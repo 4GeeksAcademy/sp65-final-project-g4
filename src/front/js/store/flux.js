@@ -1,10 +1,8 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-
 			message: null,
 			demo: [{title: "FIRST", background: "white", initial: "white"}],
-			apiContact: 'https://automatic-rotary-phone-4xvx5gxw67h7p4g-3001.app.github.dev',
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
@@ -18,8 +16,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentChatUrl: [],
 			userName: "",
 			userData: {},	
-			flats:[]
-
+			flats:[],
+			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
+			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
 		},
 		actions: {
 			getMessage: async () => {
@@ -33,7 +32,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return data;  // Don't forget to return something, that is how the async resolves
 			},
 			loginUser: async (userData) => {
-				const uri = getStore().apiContact + '/api/login'
+				console.log(userData)
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				console.log(uri)
 				const options = {
 					method: 'POST',
 					headers: {
@@ -41,7 +42,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify(userData)
 				}
-				const response = await fetch(uri, options);
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
 				const data = await response.json();
 				const access_token = data.access_token;
 				setStore({accessToken: access_token})
@@ -90,10 +95,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json()
-				console.log(data);
 				setStore({ flats: data.results });
 			},
-
+			setFlatId: (id) => {
+				setStore({ flatId: id })
+				sessionStorage.setItem('flatId', id)
+			},
+			getFlatsId: async () => {
+				const url = `${process.env.BACKEND_URL}/api/flats/${getStore().flatId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log("Error");
+					return
+				}
+				const data = await response.json();
+				setStore({ currentFlat: data.results });
+				sessionStorage.setItem('currentFlat', JSON.stringify(data.results))
+			},
 
 			/* getChats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/chatstudent`;

@@ -1,4 +1,4 @@
-import React, { useState, useContext, startTransition } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
 import mapImageUrl from "../../img/mapa-bcn.jpg";
@@ -24,6 +24,10 @@ export const Home = () => {
 		}
 	}
 
+	const handleFlat = (id) => {
+        actions.setFlatId(id)
+    }
+
 	return (
 		<div className="container-custom">
 			<div className="image-container">
@@ -47,8 +51,8 @@ export const Home = () => {
 							<div className="piso">
 								<img src={mapImageUrl} />
 								<h3 className="red-color">{item.address}</h3>
-								<p>{item.description}</p>
-								<Link to="/map">
+								<p>{item.description.substring(0, 50)}...</p>
+								<Link to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>
 									<button className="btn-custom red-background">Ver Piso</button>
 								</Link>
 							</div>
