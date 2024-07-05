@@ -22,8 +22,8 @@ export const Navbar = () => {
 				<Link to="/demo">
 					<span>Lorem</span>
 				</Link>
-				<Link to="/demo">
-					<span>Lorem</span>
+				<Link to="/chats/1">
+					<span>Chats</span>
 				</Link>
 				{store.isLogedIn ?
 					<span>
