@@ -46,7 +46,6 @@ h3 {
 
 
 #chat-header {
-    background-color: lightgray;
     height: 30px;
 }
 
@@ -58,4 +57,12 @@ h3 {
 #sendername {
     color: #3e3e3e;
     font-size: small;
+}
+
+.chat-cont {
+    height: 300px;
+}
+
+.send-button {
+    float: inline-end;
 }

@@ -182,7 +182,7 @@ class Flats(db.Model):
     address = db.Column(db.String(), nullable=False)
     postal_code = db.Column(db.String(), nullable=False)
     city = db.Column(db.String(), nullable=False)
-    description = db.Column(db.String())
+    description = db.Column(db.String(), nullable=False)
     id_album = db.Column(db.Integer(), db.ForeignKey('albums.id'), unique=True)
     to_album_id = db.relationship('Albums' , foreign_keys=[id_album])
     
@@ -215,11 +215,11 @@ class Chats(db.Model):
 
     def get_all_messages(self):
         messages = Messages.query.filter_by(chat_id=self.id).order_by(Messages.timestamp).all()
-        return [{'message': message.message,
-                 'sender_name': message.get_sender_name(),
-                 'sender_lastname': message.get_sender_lastname(),
-                 'timestamp': message.timestamp,
-                 'is_read': message.is_read} for message in messages]
+        return [{'message': messages.message,
+                 'sender_name': messages.get_sender_name(),
+                 'sender_lastname': messages.get_sender_lastname(),
+                 'timestamp': messages.timestamp,
+                 'is_read': messages.is_read} for message in messages]
 
     def get_all_chats_with_last_message(user_id):
         chats = Chats.query.all()

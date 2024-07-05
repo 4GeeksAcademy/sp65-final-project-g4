@@ -15,8 +15,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: [],
 			students: [],
 			landlords: [],
-			currentChat: [],
-			currentChatUrl: [],
 			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
@@ -266,12 +264,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 				const data = await response.json();
-    			console.log(data);
     			setStore({ currentChat: data.results });
     			sessionStorage.setItem('currentChat', JSON.stringify(data.results));
 			},
 
+			postNewMessage: async (dataToSend) => {
+				const url = `${process.env.BACKEND_URL}/api/messages`;
+    			const options = {
+        					method: 'POST',
+        					headers: {
+            					'Content-Type': 'application/json',
+            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        					},
+							body: JSON.stringify(dataToSend)
+			}
+
+			const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const newMessage = await response.json();
+    			setStore({ allMessages: [...store.allMessages, newMessage] });;
+				getActions().getMessagesWithChatId();
 		}
+	}
 	};
 	};
 
