@@ -50,11 +50,11 @@ export const Dashboard = () => {
 
 	const initializeModal = () => {
 		setName(store.userData.student_name);
-		setLastname('');
-		setBirthDate('');
-		setDni('');
-		setPhoneNumber('');
-		setUrlImage('')
+		setLastname(store.userData.student_lastname);
+		setBirthDate(store.userData.birth_Date);
+		setDni(store.userData.dni);
+		setPhoneNumber(store.userData.phone_number);
+		setUrlImage(store.userData.profile_picture)
 	}
 
 	const handleModalSubmit = (event) => {
@@ -63,7 +63,7 @@ export const Dashboard = () => {
 			id_university: 1,
 			name: name,
 			lastname: lastname,
-			birth_date: birthDate,
+			birth_date: birthDate, // Falta darle la vuelta a la fecha
 			dni: dni,
 			phone_number: phoneNumber,
 			profile_picture: urlImage
@@ -122,23 +122,23 @@ export const Dashboard = () => {
 									<div className="mb-3">
 										<div className="mb-2">
 											<label htmlFor="FormControlName" className="form-label">Nombre:</label>
-											<input type="string" className="form-control" id="FormControlName" onChange={handleName} />
+											<input type="string" className="form-control" id="FormControlName" onChange={handleName} placeholder={store.userData.student_name}/>
 										</div>
 										<div className="mb-2">
 											<label htmlFor="FormControlLastName" className="form-label">Apellidos:</label>
-											<input type="string" className="form-control" id="FormControlLastName" onChange={handleLastname} />
+											<input type="string" className="form-control" id="FormControlLastName" onChange={handleLastname} placeholder={store.userData.student_lastname}/>
 										</div>
 										<div className="mb-2">
 											<label htmlFor="FormControlBirthDate" className="form-label">Fecha de nacimiento:</label>
-											<input type="date" className="form-control" id="FormControlBirthDate" onChange={handleBirthDate} />
+											<input type="date" className="form-control" id="FormControlBirthDate" onChange={handleBirthDate} placeholder={store.userData.birth_date}/>
 										</div>
 										<div className="mb-2">
 											<label htmlFor="FormControlDni" className="form-label">DNI:</label>
-											<input type="string" className="form-control" id="FormControlDni" onChange={handleDni} />
+											<input type="string" className="form-control" id="FormControlDni" onChange={handleDni} placeholder={store.userData.dni}/>
 										</div>
 										<div className="mb-2">
 											<label htmlFor="FormControlPhoneNumber" className="form-label">Teléfono:</label>
-											<input type="int" className="form-control" id="FormControlPhoneNumber" onChange={handlePhoneNumber} />
+											<input type="int" className="form-control" id="FormControlPhoneNumber" onChange={handlePhoneNumber} placeholder={store.userData.phone_number}/>
 										</div>
 										{/* input imagen preguntar Victoria */}
 									</div>
