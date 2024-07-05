@@ -73,14 +73,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			logedIn: (userData) => {
 				setStore({ isLogedIn: true, userEmail: userData.email })
-				setStore({ userData: localStorage.getItem(userData) })
+				setStore({ userData: userData.data })
 			},
 
 			oldLogin: () => {
 				if (localStorage.getItem('token' && 'user')) {
 					console.log('Hay usuario logeado:', localStorage.getItem('user'))
 					setStore({
-						accessToken: JSON.parse(localStorage.getItem('token')),
+						accessToken: localStorage.getItem('token'),
 						userData: JSON.parse(localStorage.getItem('user')),
 						isLogedIn: true
 					})
@@ -100,6 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const response = await fetch(uri, options);
 				const data = await response.json();
 				setStore({ userData: data.results })
+				localStorage.setItem('user', JSON.stringify(data.results))
 			},
 
 			userLogout: () => {

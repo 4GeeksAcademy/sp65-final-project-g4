@@ -10,10 +10,6 @@ export const Signup = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const is_student = true
-  const is_landlord = false
-  const is_admin = false
-  const is_active = true
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -30,7 +26,10 @@ export const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const dataToSend = { email, password, is_admin, is_student, is_landlord, is_active };
+    const dataToSend = {
+      email: email,
+      password: password
+    };
     const url = `${process.env.BACKEND_URL}/api/signupstudents`;
     const options = {
       method: 'POST',
@@ -47,9 +46,9 @@ export const Signup = () => {
     }
     const data = await response.json()
 
-    localStorage.setItem('token', data.access_token)
-    actions.logedIn(dataToSend)
-    console.log(data.access_token);
+    localStorage.setItem('token', JSON.stringify(data.access_token))
+    localStorage.setItem('user', JSON.stringify(data.data))
+    actions.logedIn(data)
     handleReset()
     navigate('/')
 

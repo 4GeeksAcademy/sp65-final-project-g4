@@ -49,6 +49,7 @@ def signup_students():
                                                      'user_is_landlord': False,
                                                      'email': user.email})
         response_body['access_token'] = access_token
+        response_body['data'] = {**user.serialize() , **student.public_serialize()}
         response_body['message'] = 'Student created and logged in'
         return response_body , 200
     else:
@@ -638,7 +639,7 @@ def get_images(user_id):
     return jsonify({"urls": image_urls}), 200
 
 @api.route('/photoflats', methods=['POST'])
-def upload_photo():
+def upload_photo_flats():
     response_body = {}
     img = request.files["img"]
     folder_path = f"flats/1"
@@ -648,7 +649,7 @@ def upload_photo():
     return response_body , 200
 
 @api.route('/imagesflats/<flat_id>', methods=['GET'])
-def get_images(flat_id):
+def get_images_flats(flat_id):
     folder_path = f"flats/1"
     resources = cloudinary.api.resources(
         type='upload',
