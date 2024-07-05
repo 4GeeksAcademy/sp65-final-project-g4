@@ -36,7 +36,6 @@ export const UploadImage = () => {
     }
   };
 
-  console.log(imageUrl)
 
   const storePicture = async () => {
 

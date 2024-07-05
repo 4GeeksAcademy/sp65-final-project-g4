@@ -44,14 +44,18 @@ h3 {
     
 }
 
-#sent-message {
-    background-color: #828282;
-    float: inline-end;
-    text-align: right;
-    
-}
 
 #chat-header {
     background-color: lightgray;
     height: 30px;
+}
+
+#timestamp {
+    color: #828282;
+    font-size: x-small;
+}
+
+#sendername {
+    color: #3e3e3e;
+    font-size: small;
 }

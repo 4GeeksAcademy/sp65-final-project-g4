@@ -209,8 +209,10 @@ def handle_landlords_post():
 def handle_landlord(landlord_id):
     response_body = {}
     landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
+
     if landlord:
-        response_body['results'] = landlord.serialize()
+        response_body['results'] = {**user.serialize(), **landlord.serialize()}
         response_body['message'] = 'Landlord found'
         return response_body, 200
     response_body['message'] = 'Landlord not found'
@@ -223,6 +225,8 @@ def handle_landlord(landlord_id):
 def handle_landlord_edit(landlord_id):
     response_body = {}
     landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
+
     if request.method == 'PUT':
         data = request.json
         if landlord:
@@ -235,7 +239,7 @@ def handle_landlord_edit(landlord_id):
             landlord.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Landlord updated'
-            response_body['results'] = landlord.serialize()
+            response_body['results'] = {**user.serialize(), **landlord.serialize()}
             return response_body, 200
         response_body['message'] = 'Landlord not found'
         response_body['results'] = {}
@@ -566,9 +570,10 @@ def handle_students():
 def handle_single_student(id):
     response_body = {}
     student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+    user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
     if student:
-        results = student.serialize()
-        response_body['results'] = results
+        serialized_data = {**user.serialize(), **student.public_serialize()}
+        response_body['results'] = serialized_data
         return response_body, 200
     response_body['message'] = 'ID estudiante inexistente'
     response_body['results'] = {}
@@ -576,12 +581,13 @@ def handle_single_student(id):
 
 
 @api.route('/students/<int:id>' , methods=['PUT', 'DELETE'])
-@jwt_required()
+
 def modify_single_student(id):
     response_body = {}
     if request.method == 'PUT':
         data = request.json
         student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
+        user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
         if student:
             student.id_university = data['id_university']
             student.name = data['name']
@@ -592,7 +598,7 @@ def modify_single_student(id):
             student.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Datos del estudiante actualizados'
-            response_body['results'] = student.serialize()
+            response_body['results'] = {**user.serialize(), **student.public_serialize()}
             return response_body, 200
         response_body['message'] = 'ID estudiante inexistente'
         response_body['results'] = {}
@@ -608,6 +614,7 @@ def modify_single_student(id):
         response_body['message'] = 'Student not found'
         response_body['results'] = {}
         return response_body, 404
+
 
 @api.route('/photo', methods=['POST'])
 def upload_photo():
@@ -650,3 +657,67 @@ def get_images(flat_id):
     )
     image_urls = [resource['secure_url'] for resource in resources['resources']]
     return jsonify({"urls": image_urls}), 200
+
+@api.route('/chats' , methods=['GET'])
+@jwt_required()
+def get_all_chats_with_last_message():
+    user_info = get_jwt_identity()
+    response_body = {}
+    chats = []
+    if user_info['user_is_student']:
+        chats = db.session.execute(db.select(Chats).where(Chats.student_id == user_info['user_id'])).scalars()
+    else:
+        chats = db.session.execute(db.select(Chats).where(Chats.landlord_id == user_info['user_id'])).scalars()
+    s_chats = []
+    for chat in chats:
+        last_message = Messages.query.filter_by(chat_id=chat.id).order_by(Messages.timestamp.desc()).first()
+        chat_serialize = chat.serialize() 
+        chat_serialize['last_message'] = last_message.message
+        s_chats.append(chat_serialize)
+    response_body['results'] = s_chats
+    response_body['message'] = 'Chats with id' 
+    return response_body, 200
+
+
+@api.route('/chats' , methods=['POST'])
+@jwt_required()
+def create_chat():
+    response_body = {}
+    data = request.json
+    row = Chats()
+    row.student_id = data['student_id']
+    row.landlord_id = data['landlord_id']
+    row.room_id = data['room_id']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Chat created' 
+    return response_body, 200
+
+  
+@api.route('/messages' , methods=['GET'])
+def get_all_messages():
+    response_body = {}
+    message = db.session.execute(db.select(Messages)).scalars()
+    results = [row.serialize() for row in message]
+    response_body['results'] = results
+    response_body['message'] = 'Message list'
+    return response_body, 200
+
+
+@api.route('/messages/<int:id>', methods=['GET'])
+@jwt_required()
+def handle_chats_messages(id):
+    user_info = get_jwt_identity()
+    response_body = {}
+    results = []
+    if user_info['user_is_student']:
+        confirm_chat = db.session.execute(db.select(Chats).where(Chats.student_id == user_info['user_id'], Chats.id == id)).scalar_one_or_none()
+    else:
+        confirm_chat = db.session.execute(db.select(Chats).where(Chats.landlord_id == user_info['user_id'], Chats.id == id)).scalar_one_or_none()
+    if confirm_chat:
+        messages = db.session.execute(db.select(Messages).where(Messages.chat_id == id)).scalars()
+        results = [row.serialize() for row in messages]
+    response_body['results'] = results
+    response_body['message'] = 'Messages in chat'
+    return response_body, 200
