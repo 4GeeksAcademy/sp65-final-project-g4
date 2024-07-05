@@ -616,134 +616,6 @@ def modify_single_student(id):
         return response_body, 404
 
 
-@api.route('/chats' , methods=['GET'])
-def get_all_chats():
-    response_body = {}
-    chat = db.session.execute(db.select(Chats)).scalars()
-    results = [row.serialize() for row in chat]
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200
-
-
-@api.route('/messages' , methods=['GET'])
-@jwt_required()
-def get_all_messages():
-    response_body = {}
-    message = db.session.execute(db.select(Messages)).scalars()
-    results = [row.serialize() for row in message]
-    response_body['results'] = results
-    response_body['message'] = 'Message list'
-    return response_body, 200
-
-
-@api.route('/chat/<int:id>' , methods=['GET'])
-@jwt_required()
-def handle_chat(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chats).where(Chats.id == id)).scalars()
-    if chat:
-        results = [row.serialize() for row in chat]
-        message = db.session.execute(db.select(Messages).where(Chats.id == id)).scalars()
-        serialized_data = {**chat.serialize(), **message.serialize()}
-        results = [row.serialize() for row in message]
-        response_body['results'] = results
-        response_body['message'] = 'Conversation'
-        response_body['data'] = serialized_data
-        return response_body, 200
-    response_body['message'] = 'No Chat found'
-    return response_body, 404
-
-
-
-
-""" @api.route('/chats/<int:id>' , methods=['GET'])
-@jwt_required()
-def get_senders_chats(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chats).where(Chats.sender_id == id)).scalars()
-    if chat: 
-        results = [row.serialize() for row in chat]
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'No chats found'
-    response_body['results'] = {}
-    return response_body, 404 """
-   
-
-""" @api.route('/chatstudent/<int:id>' , methods=['GET'])
-@jwt_required()
-def chat_student(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_student).where(Chat_student.id == id)).scalar()
-    if chat:
-        results = chat.serialize()
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'Chat not found'
-    response_body['results'] = {}
-    return response_body, 404
-
-
-@api.route('/chatstudent' , methods=['POST'])
-@jwt_required()
-def create_chatstudent():
-    response_body = {}
-    data = request.json
-    row = Chat_student()
-    row.message = data['message']
-    row.read = False
-    row.student_id = data['student_id']
-    row.room_id = data['room_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created'
-    return response_body, 200
-
-
-@api.route('/chatslandlord' , methods=['GET'])
-@jwt_required()
-def get_chats():
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_landlord)).scalars()
-    results = [row.serialize() for row in chat]  # Utilizo List Comprehension
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200
-
-
-@api.route('/chatslandlord/<int:id>' , methods=['GET'])
-@jwt_required()
-def chat_landlord(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_landlord).where(Chat_landlord.id == id)).scalar()
-    if chat:
-        results = chat.serialize()
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'Chat not found'
-    response_body['results'] = {}
-    return response_body, 404
-
-
-@api.route('/chatslandlord' , methods=['POST'])
-@jwt_required()
-def create_chatlandlord():
-    response_body = {}
-    data = request.json
-    row = Chat_landlord()
-    row.message = data['message']
-    row.read = False
-    row.landlord_id = data['landlord_id']
-    row.chat_id = data['chat_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created'
-    return response_body, 200
- """
-
 @api.route('/photo', methods=['POST'])
 def upload_photo():
     response_body = {}
@@ -754,3 +626,70 @@ def upload_photo():
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"
     return response_body , 200
+
+
+@api.route('/chats' , methods=['GET'])
+@jwt_required()
+def get_all_chats_with_last_message():
+    user_info = get_jwt_identity()
+    response_body = {}
+    chats = []
+    if user_info['user_is_student']:
+        chats = db.session.execute(db.select(Chats).where(Chats.student_id == user_info['user_id'])).scalars()
+    else:
+        chats = db.session.execute(db.select(Chats).where(Chats.landlord_id == user_info['user_id'])).scalars()
+    s_chats = []
+    for chat in chats:
+        last_message = Messages.query.filter_by(chat_id=chat.id).order_by(Messages.timestamp.desc()).first()
+        chat_serialize = chat.serialize() 
+        chat_serialize['last_message'] = last_message.message
+        s_chats.append(chat_serialize)
+    response_body['results'] = s_chats
+    response_body['message'] = 'Chats with id' 
+    return response_body, 200
+
+
+@api.route('/chats' , methods=['POST'])
+@jwt_required()
+def create_chat():
+    response_body = {}
+    data = request.json
+    row = Chats()
+    row.student_id = data['student_id']
+    row.landlord_id = data['landlord_id']
+    row.room_id = data['room_id']
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Chat created' 
+    return response_body, 200
+
+  
+@api.route('/messages' , methods=['GET'])
+def get_all_messages():
+    response_body = {}
+    message = db.session.execute(db.select(Messages)).scalars()
+    results = [row.serialize() for row in message]
+    response_body['results'] = results
+    response_body['message'] = 'Message list'
+    return response_body, 200
+
+
+@api.route('/messages/<int:id>', methods=['GET'])
+@jwt_required()
+def handle_chats_messages(id):
+    user_info = get_jwt_identity()
+    response_body = {}
+    results = []
+    if user_info['user_is_student']:
+        confirm_chat = db.session.execute(db.select(Chats).where(Chats.student_id == user_info['user_id'], Chats.id == id)).scalar_one_or_none()
+    else:
+        confirm_chat = db.session.execute(db.select(Chats).where(Chats.landlord_id == user_info['user_id'], Chats.id == id)).scalar_one_or_none()
+    if confirm_chat:
+        messages = db.session.execute(db.select(Messages).where(Messages.chat_id == id)).scalars()
+        results = [row.serialize() for row in messages]
+    response_body['results'] = results
+    response_body['message'] = 'Messages in chat'
+    return response_body, 200
+
+

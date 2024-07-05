@@ -1,35 +1,52 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-
 export const Messages = () => {
-    const {store, actions} = useContext(Context);
-    const [message, setMesssage] = useState();
-    const [sentMessage, setSentMessage] = useState();
-    const [receivedMessage, setReceivedMessage] = useState();
+    const { store, actions } = useContext(Context);
+    const [message, setMessage] = useState("");
+    const { id } = useParams();
 
-    actions.getAllChats();
+
+    useEffect(() => {
+        actions.setChatId(id);
+        actions.getMessagesWithChatId();
+    }, [id]);
+
+
+    const handleMessageChange = (e) => {
+        setMessage(e.target.value);
+    };
+
+    const handleSendMessage = () => {
+        // Handle sending message logic here
+        console.log('Send message:', message);
+    };
 
     return (
-
-        <div className="container">
-            <h3> Conversation</h3>
+        <>
             <ul className="list-group">
-                <li className="list-group-item mb-4 rounded" id="sent-message"><p>Student 1</p> 
-                    <p>Hola...</p>
-                </li>
-                <li className="list-group-item mb-4 rounded" id="received-message">Mesaje recibido </li>
-                <li className="list-group-item mb-4 rounded" id="sent-message">Mesaje enviado </li>
-                <li className="list-group-item mb-4 rounded" id="received-message">Mesaje recibido </li>
+                {store.currentChat.map((item, index) => (
+                    <li key={index} className="list-group-item mb-4 rounded" id="sent-message">
+                        <p id="timestamp">{item.timestamp}</p>
+                        <p id="sendername">{item.sender_name} {item.sender_lastname}</p>
+                        <p>{item.message}</p>
+                    </li>
+                ))}
             </ul>
-       
-        <div className="input-container rounded">
-        <div className="mb-3">
-            <label htmlForfor="exampleFormControlTextarea1" className="form-label">Type your message</label>
-        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-          <button className="send-button btn-custom">Send</button>
-          </div>
-      </div>
-    )
-}
+            <div className="input-container rounded">
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Type your message</label>
+                    <textarea 
+                        className="form-control" 
+                        id="exampleFormControlTextarea1" 
+                        rows="3" 
+                        value={message} 
+                        onChange={handleMessageChange}
+                    ></textarea>
+                </div>
+                <button className="send-button btn-custom" onClick={handleSendMessage}>Send</button>
+            </div>
+        </>
+    );
+};

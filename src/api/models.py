@@ -50,7 +50,7 @@ class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_university = db.Column(db.Integer, db.ForeignKey('universities.id'))
     id_university_to = db.relationship('Universities', foreign_keys=[id_university])
-    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(60), unique=False, nullable=False)
     lastname = db.Column(db.String(120), unique=False, nullable=False)
@@ -144,7 +144,7 @@ class Albums(db.Model):
 
 class Landlords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.Integer, db.ForeignKey('users.id'))
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
@@ -200,51 +200,11 @@ class Flats(db.Model):
                 'id_album': self.id_album}
 
 
-""" class Chat_student(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    message = db.Column(db.String(), nullable=False)
-    read = db.Column(db.Boolean(), nullable=False)
-    student_id = db.Column(db.Integer(), db.ForeignKey('students.id'))
-    to_student_id = db.relationship('Students' , foreign_keys=[student_id])
-    room_id = db.Column(db.Integer(), db.ForeignKey('rooms.id'))
-    to_room_id = db.relationship('Rooms' , foreign_keys=[room_id])
-
-    def __repr__(self):
-        return f'<Chat Student {self.student_id , self.room_id}>'
-    
-    def serialize(self):
-        return {'id': self.id,
-                'message': self.message,
-                'read': self.read,
-                'student_id': self.student_id,
-                'room_id': self.room_id}
-
-
-class Chat_landlord(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    message = db.Column(db.String(), nullable=False)
-    read = db.Column(db.Boolean(), nullable=False)
-    landlord_id = db.Column(db.Integer(), db.ForeignKey('landlords.id'))
-    to_sender_id = db.relationship('Landlords' , foreign_keys=[landlord_id])
-    chat_id = db.Column(db.Integer(), db.ForeignKey('chat_student.id'))
-    to_chat_id = db.relationship('Chat_student' , foreign_keys=[chat_id])
-
-    def __repr__(self):
-        return f'<Chat Landlord {self.landlord_id , self.chat_id}>'
-    
-    def serialize(self):
-        return {'id': self.id,
-                'message': self.message,
-                'read': self.read,
-                'landlord_id': self.landlord_id,
-                'chat_id': self.chat_id}
- """
-
 class Chats(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    student_id = db.Column(db.Integer(), db.ForeignKey('students.id'))
+    student_id = db.Column(db.Integer(), db.ForeignKey('students.id_user'))
     to_student_id = db.relationship('Students' , foreign_keys=[student_id])
-    landlord_id = db.Column(db.Integer(), db.ForeignKey('landlords.id'))
+    landlord_id = db.Column(db.Integer(), db.ForeignKey('landlords.id_user'))
     to_landlord_id = db.relationship('Landlords' , foreign_keys=[landlord_id])
     room_id = db.Column(db.Integer(), db.ForeignKey('rooms.id'))
     to_room_id = db.relationship('Rooms' , foreign_keys=[room_id])
@@ -253,11 +213,34 @@ class Chats(db.Model):
     def __repr__(self):
         return f'<Chats {self.student_id , self.landlord_id}>'
 
+    def get_all_messages(self):
+        messages = Messages.query.filter_by(chat_id=self.id).order_by(Messages.timestamp).all()
+        return [{'message': message.message,
+                 'sender_name': message.get_sender_name(),
+                 'sender_lastname': message.get_sender_lastname(),
+                 'timestamp': message.timestamp,
+                 'is_read': message.is_read} for message in messages]
+
+    def get_all_chats_with_last_message(user_id):
+        chats = Chats.query.all()
+        chat_list = []
+        for chat in chats:
+            last_message = Messages.query.filter_by(chat_id=chat.id).order_by(Messages.timestamp.desc()).first()
+            chat_list.append({
+                'chat_id': chat.id,
+                'student_name': chat.to_student_id.name,
+                'landlord_name': chat.to_landlord_id.name,
+                'last_message': last_message.message if last_message else None,
+                'last_message_timestamp': last_message.timestamp if last_message else None})
+        return chat_list
+
     def serialize(self):
         return {'id': self.id,
                 'student_id': self.student_id,
                 'landlord_id': self.landlord_id,
-                'room_id': self.room_id}
+                'room_id': self.room_id,
+                'student_name': self.to_student_id.name,
+                'landlord_name': self.to_landlord_id.name}
 
 
 class Messages(db.Model):
@@ -273,11 +256,28 @@ class Messages(db.Model):
 
     def __repr__(self):
         return f'<Messages {self.sender_id , self.timestamp}>'
+
+    def get_sender_name(self):
+        sender = None
+        if self.to_chat_id.to_student_id.id_user == self.sender_id:
+            sender = self.to_chat_id.to_student_id
+        elif self.to_chat_id.to_landlord_id.id_user == self.sender_id:
+            sender = self.to_chat_id.to_landlord_id
+        return sender.name if sender else "Unknown"
     
+    def get_sender_lastname(self):
+        sender = None
+        if self.to_chat_id.to_student_id.id_user == self.sender_id:
+            sender = self.to_chat_id.to_student_id
+        elif self.to_chat_id.to_landlord_id.id_user == self.sender_id:
+            sender = self.to_chat_id.to_landlord_id
+        return sender.lastname if sender else "Unknown"
+
     def serialize(self):
         return {'id': self.id,
                 'message': self.message,
                 'chat_id': self.chat_id,
                 'timestamp': self.timestamp,
-                'sender_id': self.sender_id,
+                'sender_name': self.get_sender_name(),
+                'sender_lastname': self.get_sender_lastname(),
                 'is_read': self.is_read}

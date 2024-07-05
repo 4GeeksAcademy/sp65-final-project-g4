@@ -8,12 +8,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userEmail: "",
 			isAdmin: false,
 			chats: [],
-			allChats: [],
+			chatsWithMessages: [],
+			chatId: [],
+			currentChat: [],
 			users: [],
 			students: [],
 			landlords: [],
-			currentChat: [],
-			currentChatUrl: [],
+			allMessages: [],
 			userName: "",
 			userData: {},	
 			flats:[],
@@ -147,26 +148,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.setItem('currentFlat', JSON.stringify(data.results))
 			},
 
-			/* getChats: async () => {
-				const url = `${process.env.BACKEND_URL}/api/chatstudent`;
-				const options = {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				}
-
-				const response = await fetch(url, options)
-				if (!response.ok) {
-					console.log('Error: ', response.status, response.statusText);
-					return
-				}
-				const data = await response.json()
-				setStore({ chats: data.results });
-
-			}, */
-
-
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
@@ -227,7 +208,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const options = {
 					method: 'GET',
 					headers: {
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
 					}
 				}
 
@@ -236,28 +218,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error: ', response.status, response.statusText);
 					return
 				}
-				const data = await response.json()
-				setStore({ allChats: data.results });
+				const data = await response.json();
+				setStore({ chats: data.results });
 			},
 
-			settingCurrentChatUrl: (text) => { setStore({ currentChatUrl: text }) },
-
-			getCurrentChat: async () => {
-				const uri = getStore().currentChatUrl;
-				console.log(uri);
-				const response = await fetch(uri);
+			getAllMessages: async () => {
+				const url = `${process.env.BACKEND_URL}/api/messages`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+					}
+				};
+			
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({ allMessages: data.results });
+			},
+			
+			setChatId: (id) => {
+				setStore({ chatId: id });
+				sessionStorage.setItem('chatId', id);
+			},
+			
+			getMessagesWithChatId: async () => {
+				const chatId = getStore().chatId;
+    			const url = `${process.env.BACKEND_URL}/api/messages/${chatId}`;
+    			const options = {
+        					method: 'GET',
+        					headers: {
+            					'Content-Type': 'application/json',
+            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        					}
+    		};
+			
+				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const data = await response.json();
-				console.log(data.result);
-				setStore({ currentChat: data.result });
+    			console.log(data);
+    			setStore({ currentChat: data.results });
+    			sessionStorage.setItem('currentChat', JSON.stringify(data.results));
+			},
 
-			}
 		}
 	};
-};
+	};
 
 
 export default getState;
