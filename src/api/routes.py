@@ -49,6 +49,7 @@ def signup_students():
                                                      'user_is_landlord': False,
                                                      'email': user.email})
         response_body['access_token'] = access_token
+        response_body['data'] = {**user.serialize() , **student.public_serialize()}
         response_body['message'] = 'Student created and logged in'
         return response_body , 200
     else:

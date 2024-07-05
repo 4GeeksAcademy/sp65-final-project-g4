@@ -47,6 +47,16 @@ export const Dashboard = () => {
 		setUrlImage('');
 	}
 
+
+	const initializeModal = () => {
+		setName(store.userData.student_name);
+		setLastname('');
+		setBirthDate('');
+		setDni('');
+		setPhoneNumber('');
+		setUrlImage('')
+	}
+
 	const handleModalSubmit = (event) => {
 		event.preventDefault();
 		const dataToSend = {
@@ -151,7 +161,7 @@ export const Dashboard = () => {
 								<li className="list-group-item">Teléfono: {store.userData.phone_number ? store.userData.phone_number : 'Pendiente de cumplimentar'}</li>
 								<li className="list-group-item">Foto de perfil: {store.userData.profile_picture ? store.userData.profile_picture : 'Pendiente de cumplimentar'}</li>
 							</ul>
-							<button className="btn-custom red-background" data-bs-toggle="modal" data-bs-target="#profileModal"> <i className="fas fa-edit"></i> Editar mi perfil</button>
+							<button className="btn-custom red-background" data-bs-toggle="modal" data-bs-target="#profileModal" onClick={initializeModal}> <i className="fas fa-edit"></i> Editar mi perfil</button>
 						</div>
 					</div>
 
