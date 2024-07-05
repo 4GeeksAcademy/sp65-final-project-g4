@@ -97,8 +97,8 @@ export const Map = () => {
                     ""
                     :
                     <>
-                        {store.flats.map((item) =>
-                            <Geocode item={item} />
+                        {store.flats.map((item, key) =>
+                            <Geocode key={key} item={item} />
                         )}
                     </>
                 }

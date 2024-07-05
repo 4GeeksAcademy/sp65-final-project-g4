@@ -47,8 +47,8 @@ export const Home = () => {
 				<div className="pisos-container section-custom">
 					<h2 className="red-color">Pisos Recientes</h2>
 					<div className="piso-container">
-						{store.flats.map((item) =>
-							<div className="piso">
+						{store.flats.map((item, key) =>
+							<div key={key} className="piso">
 								<img src={mapImageUrl} />
 								<h3 className="red-color">{item.address}</h3>
 								<p>{item.description.substring(0, 50)}...</p>

@@ -6,6 +6,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
+			userName: "",
 			isAdmin: false,
 			chats: [],
 			chatsWithMessages: [],
@@ -14,9 +15,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: [],
 			students: [],
 			landlords: [],
+			currentChat: [],
+			currentChatUrl: [],
+			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
-			userData: {},	
 			flats:[],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
@@ -108,7 +111,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					isLogedIn: false
 				})
 			},
-
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {

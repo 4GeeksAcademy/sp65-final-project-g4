@@ -620,13 +620,43 @@ def modify_single_student(id):
 def upload_photo():
     response_body = {}
     img = request.files["img"]
-    print(img)
-    img_url = cloudinary.uploader.upload(img)
-    print(img_url["url"])
+    folder_path = f"users/1"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"
     return response_body , 200
 
+@api.route('/images/<user_id>', methods=['GET'])
+def get_images(user_id):
+    folder_path = f"users/1"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
+
+@api.route('/photoflats', methods=['POST'])
+def upload_photo():
+    response_body = {}
+    img = request.files["img"]
+    folder_path = f"flats/1"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
+
+@api.route('/imagesflats/<flat_id>', methods=['GET'])
+def get_images(flat_id):
+    folder_path = f"flats/1"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
 
 @api.route('/chats' , methods=['GET'])
 @jwt_required()
@@ -691,5 +721,3 @@ def handle_chats_messages(id):
     response_body['results'] = results
     response_body['message'] = 'Messages in chat'
     return response_body, 200
-
-

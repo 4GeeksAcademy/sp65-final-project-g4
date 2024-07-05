@@ -5,8 +5,17 @@ import "../../styles/flatProfile.css";
 
 export const FlatProfile = () => {
     const { store, actions } = useContext(Context);
-
+    const fetchImages = async () => {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/images/1`);
+        if (!response.ok) {
+            console.log("Error loading message from backend", response.status, response.statusText)
+            return
+        }
+        const data = await response.json()
+        console.log(data)
+    };
     useEffect(() => {
+        fetchImages()
         actions.getFlatsId()
     }, [])
 
