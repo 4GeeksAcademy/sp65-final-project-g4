@@ -608,111 +608,45 @@ def modify_single_student(id):
         response_body['message'] = 'Student not found'
         response_body['results'] = {}
         return response_body, 404
-""" 
 
-@api.route('/chatstudent' , methods=['GET'])
-@jwt_required()
-def handle_students_chats():
+@api.route('/photo', methods=['POST'])
+def upload_photo():
     response_body = {}
-    chat = db.session.execute(db.select(Chat_student)).scalars()
-    results = [row.serialize() for row in chat]  # Utilizo List Comprehension
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200
- """
-""" @api.route('/chats' , methods=['GET'])
-def get_all_chats():
+    img = request.files["img"]
+    folder_path = f"users/1"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
+
+@api.route('/images/<user_id>', methods=['GET'])
+def get_images(user_id):
+    folder_path = f"users/1"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
+
+@api.route('/photoflats', methods=['POST'])
+def upload_photo():
     response_body = {}
-    chat = db.session.execute(db.select(Chats)).scalars()
-    results = [row.serialize() for row in chat]
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200 """
+    img = request.files["img"]
+    folder_path = f"flats/1"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
 
-
-""" @api.route('/chats/<int:id>' , methods=['GET'])
-@jwt_required()
-def get_senders_chats(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chats).where(Chats.sender_id == id)).scalars()
-    if chat: 
-        results = [row.serialize() for row in chat]
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'No chats found'
-    response_body['results'] = {}
-    return response_body, 404 """
-   
-
-""" @api.route('/chatstudent/<int:id>' , methods=['GET'])
-@jwt_required()
-def chat_student(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_student).where(Chat_student.id == id)).scalar()
-    if chat:
-        results = chat.serialize()
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'Chat not found'
-    response_body['results'] = {}
-    return response_body, 404
-
-
-@api.route('/chatstudent' , methods=['POST'])
-@jwt_required()
-def create_chatstudent():
-    response_body = {}
-    data = request.json
-    row = Chat_student()
-    row.message = data['message']
-    row.read = False
-    row.student_id = data['student_id']
-    row.room_id = data['room_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created'
-    return response_body, 200
-
-
-@api.route('/chatslandlord' , methods=['GET'])
-@jwt_required()
-def get_chats():
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_landlord)).scalars()
-    results = [row.serialize() for row in chat]  # Utilizo List Comprehension
-    response_body['results'] = results
-    response_body['message'] = 'Chat list'
-    return response_body, 200
-
-
-@api.route('/chatslandlord/<int:id>' , methods=['GET'])
-@jwt_required()
-def chat_landlord(id):
-    response_body = {}
-    chat = db.session.execute(db.select(Chat_landlord).where(Chat_landlord.id == id)).scalar()
-    if chat:
-        results = chat.serialize()
-        response_body['results'] = results
-        return response_body, 200
-    response_body['message'] = 'Chat not found'
-    response_body['results'] = {}
-    return response_body, 404
-
-
-@api.route('/chatslandlord' , methods=['POST'])
-@jwt_required()
-def create_chatlandlord():
-    response_body = {}
-    data = request.json
-    row = Chat_landlord()
-    row.message = data['message']
-    row.read = False
-    row.landlord_id = data['landlord_id']
-    row.chat_id = data['chat_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created'
-    return response_body, 200
- """
+@api.route('/imagesflats/<flat_id>', methods=['GET'])
+def get_images(flat_id):
+    folder_path = f"flats/1"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200

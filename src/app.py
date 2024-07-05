@@ -67,14 +67,6 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 
-
-@app.route('/photo', methods=['POST'])
-def upload_photo():
-    img = request.files["img"]
-    img_url = cloudinary.uploader.upload(img)
-    return jsonify({"img_url": img_url["url"]}) , 200
-
-
 # Any other endpoint will try to serve it like a static file
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
