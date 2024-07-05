@@ -616,10 +616,12 @@ def modify_single_student(id):
 
 
 @api.route('/photo', methods=['POST'])
+@jwt_required()
 def upload_photo():
+    user_info = get_jwt_identity()
     response_body = {}
     img = request.files["img"]
-    folder_path = f"users/1"
+    folder_path = f"users/{user_info['user_id']}"
     img_url = cloudinary.uploader.upload(img, folder=folder_path)
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"
@@ -627,7 +629,7 @@ def upload_photo():
 
 @api.route('/images/<user_id>', methods=['GET'])
 def get_images(user_id):
-    folder_path = f"users/1"
+    folder_path = f"users/{user_id}"
     resources = cloudinary.api.resources(
         type='upload',
         prefix=folder_path,
@@ -637,10 +639,12 @@ def get_images(user_id):
     return jsonify({"urls": image_urls}), 200
 
 @api.route('/photoflats', methods=['POST'])
+@jwt_required()
 def upload_photo_flats():
+    user_info = get_jwt_identity()
     response_body = {}
     img = request.files["img"]
-    folder_path = f"flats/1"
+    folder_path = f"flats/{user_info['user_id']}"
     img_url = cloudinary.uploader.upload(img, folder=folder_path)
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"
@@ -648,7 +652,7 @@ def upload_photo_flats():
 
 @api.route('/imagesflats/<flat_id>', methods=['GET'])
 def get_images_flats(flat_id):
-    folder_path = f"flats/1"
+    folder_path = f"flats/{flat_id}"
     resources = cloudinary.api.resources(
         type='upload',
         prefix=folder_path,
