@@ -45,7 +45,7 @@ export const Messages = () => {
                     <textarea 
                        className="form-control" 
                        id="exampleFormControlTextarea1" 
-                       rows="3" 
+                       rows="1" 
                        value={message} 
                        onChange={handleMessageChange}
                        placeholder="Escribe un mensaje nuevo"

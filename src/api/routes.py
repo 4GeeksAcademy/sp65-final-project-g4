@@ -281,7 +281,7 @@ def handle_flats_post():
     db.session.add(flat)
     db.session.commit()
     response_body['results'] = flat.serialize()
-    response_body['message'] = 'Flats posted'
+    response_body['message'] = 'Flat posted'
     return response_body, 200
 
 

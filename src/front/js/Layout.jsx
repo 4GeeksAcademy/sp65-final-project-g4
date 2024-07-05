@@ -19,6 +19,7 @@ import { UploadImage } from "./component/Albums.jsx";
 import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { FlatProfile } from "./pages/flatProfile.jsx";
+import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
 
 
 
@@ -49,6 +50,8 @@ const Layout = () => {
                         <Route element= {<Chats/>} path="/chats/:id" />
                         <Route element= {<Dashboard/>} path="/dashboard" />
                         <Route element= {<FlatProfile/>} path="/FlatProfile/:theid" />
+                        <Route element= {<UploadNewFlat/>} path="/uploadFlat" />
+
                     </Routes>
                     <Footer />
                 </ScrollToTop>

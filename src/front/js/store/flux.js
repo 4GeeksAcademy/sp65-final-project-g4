@@ -149,6 +149,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.setItem('currentFlat', JSON.stringify(data.results))
 			},
 
+			createNewFlat: async (dataToSend) => {
+				const url = `${process.env.BACKEND_URL}/api/flats`;
+    			const options = {
+        					method: 'POST',
+        					headers: {
+            					'Content-Type': 'application/json',
+            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        					},
+							body: JSON.stringify(dataToSend)
+			}
+
+			const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const newFlat = await response.json();
+				await getActions().getFlats(); 
+    			setStore({ flats: [...store.flats, newFlat] });;
+			},
+
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
