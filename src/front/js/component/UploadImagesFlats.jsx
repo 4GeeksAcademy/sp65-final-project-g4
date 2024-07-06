@@ -15,7 +15,7 @@ export const UploadImagesFlats = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("img", selectedFile);
-      const url = `${process.env.BACKEND_URL}/api/photoflats/${store.flatId}`
+      const url = `${process.env.BACKEND_URL}/api/photoflats/2`
       const options = {
         method: "POST",
         headers: {
@@ -55,18 +55,17 @@ export const UploadImagesFlats = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className='col-5'>
-        <h2 className="mb-4 display-6 text-center">Upload Flats pictures</h2>
+      <div className='col-12'>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
             <input
               type="file"
-              className="form-control"
+              className="form-control form-control-sm"
               onChange={handleFileChange}
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn btn-primary">Upload picture</button>
+          <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
         </form>
       </div>
     </div>

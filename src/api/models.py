@@ -174,7 +174,8 @@ class Landlords(db.Model):
                 'birth_date': self.birth_date,
                 'dni': self.dni,
                 'phone_number': self.phone_number,
-                'profile_picture': self.profile_picture}
+                'profile_picture': self.profile_picture,
+                'id': self.id}
 
 
 class Flats(db.Model):

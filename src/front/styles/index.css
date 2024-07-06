@@ -91,3 +91,11 @@ h3 {
     .action-btn-left {
         float: inline-start;
     }
+
+    .action-btn-center {
+        color: #BF0000;
+        border: none;
+        background-color: white;
+        display: block;
+        margin: 0 auto;
+    }
