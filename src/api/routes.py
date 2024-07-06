@@ -72,7 +72,7 @@ def signup_landlords():
         db.session.commit()
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
-        dni = body.get("dni" , None)
+        dni = body.get("dni" , " ")
         landlord = Landlords(name=name, 
                              lastname=lastname, 
                              dni=dni, 
@@ -206,10 +206,10 @@ def handle_landlords_post():
     return response_body, 200
 
 
-@api.route('/landlords/<int:landlord_id>', methods=['GET'])
-def handle_landlord(landlord_id):
+@api.route('/landlords/<int:id>', methods=['GET'])
+def handle_landlord(id):
     response_body = {}
-    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
 
     if landlord:
@@ -221,11 +221,10 @@ def handle_landlord(landlord_id):
     return response_body, 404
 
 
-@api.route('/landlords/<int:landlord_id>', methods=['PUT', 'DELETE'])
-@jwt_required()
-def handle_landlord_edit(landlord_id):
+@api.route('/landlords/<int:id>', methods=['PUT', 'DELETE'])
+def handle_landlord_edit(id):
     response_body = {}
-    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
 
     if request.method == 'PUT':
@@ -234,13 +233,12 @@ def handle_landlord_edit(landlord_id):
             landlord.name = data['name']
             landlord.lastname = data['lastname']
             landlord.birth_date = data['birth_date']
-            landlord.id_user = data['id_user']
             landlord.dni = data['dni']
             landlord.phone_number = data['phone_number']
             landlord.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Landlord updated'
-            response_body['results'] = {**user.serialize(), **landlord.serialize()}
+            response_body['results'] = {**user.serialize(), **landlord.public_serialize()}
             return response_body, 200
         response_body['message'] = 'Landlord not found'
         response_body['results'] = {}

@@ -72,7 +72,8 @@ class Students(db.Model):
                     'phone_number': self.phone_number,
                     'profile_picture': self.profile_picture}
     def public_serialize(self):
-        return {'student_name': self.name,
+        return {'id_student': self.id,
+                'student_name': self.name,
                 'student_lastname': self.lastname,
                 'birth_date': self.birth_date,
                 'dni': self.dni,
@@ -167,7 +168,8 @@ class Landlords(db.Model):
                 'profile_picture': self.profile_picture}
     
     def public_serialize(self):
-        return {'landlord_name': self.name,
+        return {'id_landlord': self.id,
+                'landlord_name': self.name,
                 'landlord_lastname': self.lastname,
                 'birth_date': self.birth_date,
                 'dni': self.dni,
