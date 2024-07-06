@@ -5,7 +5,7 @@ import "../../styles/sidebar.css";
 import getState from "../store/flux.js";
 import { useNavigate } from "react-router-dom";
 import { Login } from "./Login.jsx";
-import { Signup } from "./SingupStudent2.jsx";
+import { Signup } from "./Signup.jsx";
 
 
 export const Dashboard = () => {
@@ -87,7 +87,7 @@ export const Dashboard = () => {
 			id_university: 1,
 			name: name,
 			lastname: lastname,
-			birth_date: birthDate, // Falta darle la vuelta a la fecha
+			birth_date: birthDate,
 			dni: dni,
 			phone_number: phoneNumber,
 			profile_picture: urlImage
@@ -111,31 +111,7 @@ export const Dashboard = () => {
 				<Login />
 				:
 				store.userData.is_student ?
-				<div className="row gx-0 overflow">
-					<div className="col-3 d-flex sidebar-custom">
-						<div className="d-flex flex-column flex-shrink-0 p-2">
-							<ul className="nav nav-pills flex-column mb-auto">
-								<li className="nav-item">
-									<Link href="#" className="nav-link" aria-current="page">
-										Perfil
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="nav-link">
-										Favoritos
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="nav-link">
-										Mensajes
-									</Link>
-								</li>
-							</ul>
-							<Link to="/">
-								<button className="btn-custom red-background" onClick={handleLogout}> <i className="fas fa-sign-out-alt"></i> Desconectar</button>
-							</Link>
-						</div>
-					</div>
+				<div className="row gx-0 overflow">					
 					<div className="modal fade" id="profileStudentModal" tabIndex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
 						<div className="modal-dialog">
 							<div className="modal-content">
