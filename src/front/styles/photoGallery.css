@@ -1,0 +1,15 @@
+.photo-gallery {
+    height: 100%;
+    .swiper {
+        height: 100%;
+        .photo-item{
+            height: 100%;
+            background-color: #eee;
+            img {
+                display: block;
+                height: 100%;
+                margin: 0 auto;
+            }
+        }
+    }
+}

@@ -81,8 +81,10 @@
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-i18next": "^14.1.2",
+		"react-id-swiper": "^4.0.0",
 		"react-leaflet": "^4.2.1",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "6.24"
+		"react-router-dom": "6.24",
+		"swiper": "^11.1.4"
 	}
 }

@@ -20,9 +20,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
-			flats: null,
+			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
-			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
+			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : null,
 		},
 		actions: {
 			getMessage: async () => {
@@ -56,7 +56,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ userName: data.data.name })
 				setStore({ userData: data.data })
 				setStore({ isLogedIn: true })
-				localStorage.setItem('token', JSON.stringify(data.access_token))
+				console.log(data.access_token)
+				localStorage.setItem('token', data.access_token)
 				localStorage.setItem('user', JSON.stringify(data.data))
 			},
 
