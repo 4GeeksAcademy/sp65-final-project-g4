@@ -5,6 +5,7 @@ import mapImageUrl from "../../img/mapa-bcn.jpg";
 import contactoImageUrl from "../../img/foto-contacto.png";
 import "../../styles/home.css";
 import { useTranslation } from 'react-i18next';
+import { PhotoGallery } from "../component/PhotoGallery.jsx";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
@@ -41,7 +42,7 @@ export const Home = () => {
 				</div>
 			</div>
 
-			{!store.flats ?
+			{!store.flats.length>0 ?
 				""
 				:
 				<div className="pisos-container section-custom">
@@ -49,7 +50,9 @@ export const Home = () => {
 					<div className="piso-container">
 						{store.flats.map((item, key) =>
 							<div key={key} className="piso">
-								<img src={mapImageUrl} />
+								<div className="photo-container">
+									<PhotoGallery userId={item.id}/>
+								</div>
 								<h3 className="red-color">{item.address}</h3>
 								<p>{item.description.substring(0, 50)}...</p>
 								<Link to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>

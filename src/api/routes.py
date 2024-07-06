@@ -639,13 +639,13 @@ def get_images(user_id):
     image_urls = [resource['secure_url'] for resource in resources['resources']]
     return jsonify({"urls": image_urls}), 200
 
-@api.route('/photoflats', methods=['POST'])
+@api.route('/photoflats/<flat_id>', methods=['POST'])
 @jwt_required()
-def upload_photo_flats():
+def upload_photo_flats(flat_id):
     user_info = get_jwt_identity()
     response_body = {}
     img = request.files["img"]
-    folder_path = f"flats/{user_info['user_id']}"
+    folder_path = f"flats/{flat_id}"
     img_url = cloudinary.uploader.upload(img, folder=folder_path)
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"

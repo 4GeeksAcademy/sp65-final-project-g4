@@ -3,4 +3,10 @@
     margin: 0 auto;
     padding-top: 35px;
     min-height: calc(100vh - 303px);
+    .photo-container {
+        height: 500px;
+    }
+    h2 {
+        margin: 20px 0;
+    }
 }
