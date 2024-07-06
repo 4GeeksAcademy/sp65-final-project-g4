@@ -312,15 +312,12 @@ def handle_flat_edit(flat_id):
     if request.method == 'PUT':
         data = request.json
         if flat:
-            flat.title = data['title']
             flat.description = data['description']
-            flat.square_meters = data['square_meters']
-            flat.price = data['price']
-            flat.id_flat = data['id_flat']
-            flat.publication_date = datetime.today()
-            flat.image_url_1 = data['image_url_1']
-            flat.image_url_2 = data['image_url_2']
-            flat.flat_img = data['flat_img']
+            flat.id_landlord = data['id_landlord']
+            flat.address = data['address']
+            flat.postal_code = data['postal_code']
+            flat.city = data['address']
+            flat.id_album = data.get('album_id', flat.album_id)
             db.session.commit()
             response_body['message'] = 'Flat updated'
             response_body['results'] = flat.serialize()
@@ -438,7 +435,7 @@ def handle_albums_post():
     response_body = {}
     data = request.json
     row = Albums()
-    row.url_album_cloudinary = data['url_photo']
+    row.url_album_cloudinary = data['url_album_cloudinary']
     db.session.add(row)
     db.session.commit()
     response_body['results'] = row.serialize()

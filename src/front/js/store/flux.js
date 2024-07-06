@@ -60,7 +60,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ userName: data.data.name })
 				setStore({ userData: data.data })
 				setStore({ isLogedIn: true })
-				console.log(data.access_token)
 				localStorage.setItem('token', data.access_token)
 				localStorage.setItem('user', JSON.stringify(data.data))
 			},
@@ -153,6 +152,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ universities: data.results });
 			},
+
 			getRooms: async () => {
 				const url = `${process.env.BACKEND_URL}/api/rooms`;
 				const options = {
@@ -240,7 +240,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'POST',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					},
 							body: JSON.stringify(dataToSend)
 			}

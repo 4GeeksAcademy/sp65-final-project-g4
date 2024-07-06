@@ -113,7 +113,7 @@ export const UploadNewFlat = () => {
                                             aria-label="default input example"
                                         />
                                         <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(0) }><strong>Anterior</strong></button>
-                                        <button className="send-button action-btn-custom mt-1" onClick={() => {handleNext(2); handleSave();}}><strong>Siguiente</strong></button>
+                                        <button className="send-button action-btn-custom mt-1" onClick={() => {handleNext(2); handleSave();}}><strong>Guardar y subir fotos</strong></button>
                                     </div>
                                 </div>
                             </div>
