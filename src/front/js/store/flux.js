@@ -74,6 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logedIn: (userData) => {
 				setStore({ isLogedIn: true, userEmail: userData.email })
 				setStore({ userData: userData.data })
+				userData.is_student ? setStore({ userName : userData.student_name}) : setStore({ userName : userData.landlord_name}) 
 			},
 
 			oldLogin: () => {

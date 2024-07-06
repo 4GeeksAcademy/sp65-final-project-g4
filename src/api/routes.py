@@ -86,6 +86,7 @@ def signup_landlords():
         response_body['data'] = {**user.serialize() , **landlord.public_serialize()}
         response_body['access_token'] = access_token
         response_body['message'] = 'Landlord created and logged in'
+        print(response_body)
         return response_body , 200
     return jsonify({"msg": "Landlord already exists"}) , 401
 
