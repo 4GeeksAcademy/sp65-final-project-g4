@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { UploadImage } from "../component/Albums.jsx";
+import { UploadImagesFlats } from "../component/UploadImagesFlats.jsx";
 
 export const UploadNewFlat = () => {
     const { store, actions } = useContext(Context);
@@ -10,9 +11,13 @@ export const UploadNewFlat = () => {
         address: "",
         postal_code: "",
         city: "",
-        landlord_id: store.userData.landlord_id,
+        landlord_id: store.userData.landlord_id
+        
     });
+    
     const [selectedFile, setSelectedFile] = useState(null);
+    const userData = store.userData.landlord_id
+    console.log(userData);
 
     const handleNext = (step) => {
         setActiveStep(step);
@@ -145,7 +150,7 @@ export const UploadNewFlat = () => {
                                     <div className="accordion-body">
                                         <p><strong>Comparte al menos 3 fotos del piso. </strong> Recomendamos compartir fotos del salon, la cocina y los baños. </p>
 
-                                        <UploadImage onUpload={handleImageUpload} />
+                                        <UploadImagesFlats onUpload={handleImageUpload} />
                                         <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(1)}><strong>Anterior</strong></button>
                                         <button className="send-button btn-custom red-background mt-1" onClick={handleSave}>Publicar</button>
                                     </div>
