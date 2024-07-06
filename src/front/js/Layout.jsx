@@ -15,7 +15,7 @@ import { Signup } from "./pages/SingupStudent2.jsx";
 import { SignupLandlords } from "./pages/SignUpLandlords.jsx";
 import { Map } from "./pages/Map.jsx";
 
-import { UploadImage } from "./component/Albums.jsx";
+import { UploadImagesFlats } from "./component/UploadImagesFlats.jsx";
 import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { FlatProfile } from "./pages/flatProfile.jsx";
