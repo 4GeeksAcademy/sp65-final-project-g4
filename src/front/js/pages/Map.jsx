@@ -1,14 +1,24 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import "../../styles/map.css";
-import Geocode from "../component/Geocode.jsx";
-
+import { Flats } from "../component/Flats.jsx";
+import { Universities } from "../component/Universities.jsx";
 
 export const Map = () => {
     const { store, actions } = useContext(Context);
+
+    const [radio, setRadio] = useState({
+        lat: 0,
+        lon: 0,
+        distance: 100
+    });
+    const [price, setPrice] = useState({ min: 0, max: 1000 });
+    const [rooms, setRooms] = useState(false);
+    const [surface, setSurface] = useState(false);
+    const [date, setDate] = useState(false);
 
     delete L.Icon.Default.prototype._getIconUrl;
     L.Icon.Default.mergeOptions({
@@ -17,41 +27,111 @@ export const Map = () => {
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
     });
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+    };
+
+    const handleUniversity = (coords) => {
+        console.log(coords)
+        var str_array = coords.split(',');
+
+        for (var i = 0; i < str_array.length; i++) {
+            // Trim the excess whitespace.
+            str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+        }
+        let temp = radio
+        temp.lat = str_array[0]
+        temp.lon = str_array[1]
+        setRadio(temp)
+        console.log(temp)
+    };
+
+
+    const handleRadio = (distanceValue) => {
+        let temp = radio
+        temp.distance = distanceValue
+        setRadio(temp)
+    };
+
+    const handleMinChange = (e) => {
+        const newMin = parseInt(e.target.value, 10);
+        if (newMin <= price.max) {
+            setPrice({ ...price, min: newMin });
+        }
+    };
+    const handleMaxChange = (e) => {
+        const newMax = parseInt(e.target.value, 10);
+        if (newMax >= price.min) {
+            setPrice({ ...price, max: newMax });
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Aquí puedes manejar el envío del formulario, como enviar los datos a un servidor
+        console.log('Formulario enviado:', formData);
+    };
+
+    useEffect(() => {
+        actions.getUniversities()
+    }, []);
+
+
     return (
         <div className="map-container">
             <div className="filter-menu">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="filter-item">
-                        <span className="legend">Universidades</span>
+                        <label className="legend">Universidades</label>
                         <div>
-                            <select name="" id="">
+                            <select name="" id="" onChange={(event) => handleUniversity(event.target.value)}>
                                 <option>Todas las universidades</option>
-                                <option>UB</option>
-                                <option>UPC</option>
-                                <option>Pompeu Fabra</option>
+                                {!store.universities ?
+                                    ""
+                                    :
+                                    <>
+                                        {store.universities.map((item, key) =>
+                                            <option key={key} value={[item.latitude, item.longitude]}>{item.name}</option>
+                                        )}
+                                    </>
+                                }
                             </select>
                         </div>
                     </div>
                     <div className="filter-item">
-                        <span className="legend">Radio de busqueda</span>
+                        <label className="legend">Radio de busqueda</label>
                         <div>
-                            <select name="" id="">
-                                <option>Todas las distancias</option>
-                                <option>1km</option>
-                                <option>5km</option>
-                                <option>10km</option>
+                            <select name="" id="" onChange={(event) => handleRadio(event.target.value)}>
+                                <option value={100}>Todas las distancias</option>
+                                <option value={1}>1km</option>
+                                <option value={5}>5km</option>
+                                <option value={10}>10km</option>
                             </select>
                         </div>
                     </div>
                     <div className="filter-item">
-                        <span className="legend">Precio</span>
                         <div>
-                            <select name="" id="">
-                                <option>Todos los precios</option>
-                                <option>300</option>
-                                <option>400</option>
-                                <option>500</option>
-                            </select>
+                            <label className="legend">
+                                Min Price: {price.min}
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1000"
+                                    value={price.min}
+                                    onChange={handleMinChange}
+                                />
+                            </label>
+                            <label className="legend">
+                                Max Price: {price.max}
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1000"
+                                    value={price.max}
+                                    onChange={handleMaxChange}
+                                />
+                            </label>
                         </div>
                     </div>
                     <div className="filter-item">
@@ -66,7 +146,7 @@ export const Map = () => {
                         </div>
                     </div>
                     <div className="filter-item">
-                        <span className="legend">Superfície</span>
+                        <label className="legend">Superfície</label>
                         <div>
                             <select name="" id="">
                                 <option>Todas</option>
@@ -77,7 +157,7 @@ export const Map = () => {
                         </div>
                     </div>
                     <div className="filter-item">
-                        <span className="legend">Fecha de publicación</span>
+                        <label className="legend">Fecha de publicación</label>
                         <div>
                             <select name="" id="">
                                 <option>Todas las ofertas</option>
@@ -98,7 +178,16 @@ export const Map = () => {
                     :
                     <>
                         {store.flats.map((item, key) =>
-                            <Geocode key={key} item={item} />
+                            <Flats key={key} item={item} filters={{ radio, price, rooms, surface, date }} />
+                        )}
+                    </>
+                }
+                {!store.universities ?
+                    ""
+                    :
+                    <>
+                        {store.universities.map((item, key) =>
+                            <Universities key={key} item={item} />
                         )}
                     </>
                 }
