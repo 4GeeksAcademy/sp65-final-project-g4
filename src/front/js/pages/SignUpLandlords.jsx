@@ -38,7 +38,8 @@ export const SignupLandlords = () => {
     }
     const data = await response.json()
     console.log(data)
-    localStorage.setItem('token', data.access_token, data)
+    localStorage.setItem('token', JSON.stringify(data.access_token))
+    localStorage.setItem('user',  JSON.stringify(data.data))
     actions.logedIn(data.data)
     console.log(data.access_token);
     navigate('/')

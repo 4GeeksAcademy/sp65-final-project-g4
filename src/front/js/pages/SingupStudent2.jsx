@@ -56,6 +56,10 @@ export const Signup = () => {
   };
 
   return (
+    <>
+    Faltan los botones de LANDLORD o STUDENT y duplicar el bloque SignUp, se eliminará la página SignUp landlords
+
+
     <div className="login-container">
       <div className="row justify-content-center">
         <div className="col-md-12">
@@ -102,6 +106,7 @@ export const Signup = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

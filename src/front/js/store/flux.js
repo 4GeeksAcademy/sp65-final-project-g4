@@ -101,6 +101,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('user', JSON.stringify(data.results))
 			},
 
+			putLandlord: async (landlordData, token, id) => {
+				const uri = `${process.env.BACKEND_URL}/api/landlords/${id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						/* 'Authorization': 'Bearer ' + token */
+					},
+					body: JSON.stringify(landlordData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				console.log(data);
+				setStore({ userData: data.results })
+				localStorage.setItem('user', JSON.stringify(data.results))
+			},
+
 			userLogout: () => {
 				localStorage.removeItem('token')
 				localStorage.removeItem('user')
