@@ -3,24 +3,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			demo: [{ title: "FIRST", background: "white", initial: "white" }],
+			/* Login and Users */
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
 			userName: "",
 			isAdmin: false,
+			users: [],
+			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
+			students: [],
+			landlords: [],
+			/* Chats */
 			chats: [],
 			chatsWithMessages: [],
 			chatId: [],
 			currentChat: [],
-			users: [],
-			students: [],
-			landlords: [],
-			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
+			/* Flats */
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : null,
+			albums: [],
 		},
 		actions: {
 			getMessage: async () => {
@@ -129,6 +133,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					isLogedIn: false
 				})
 			},
+
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -146,10 +151,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ flats: data.results });
 			},
+
 			setFlatId: (id) => {
 				setStore({ flatId: id })
 				sessionStorage.setItem('flatId', id)
 			},
+
 			getFlatsId: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats/${getStore().flatId}`;
 				const options = {
@@ -174,7 +181,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'POST',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					},
 							body: JSON.stringify(dataToSend)
 			}
@@ -186,9 +193,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const newFlat = await response.json();
 				await getActions().getFlats(); 
-    			setStore({ flats: [...store.flats, newFlat] });;
+    			setStore({ flats: [...getStore().flats, newFlat] });;
+
 			},
 
+			createAlbum: async (dataToSend) => {
+				const url = `${process.env.BACKEND_URL}/api/albums`;
+    			const options = {
+        					method: 'POST',
+        					headers: {
+            					'Content-Type': 'application/json',
+            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        					},
+							body: JSON.stringify(dataToSend)
+			}
+
+			const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const newAlbum = await response.json();
+				await getActions().getFlats(); 
+    			setStore({ albums: [...store.albums, newAlbum] });;
+			},
+			
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
@@ -250,7 +279,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+						'Authorization': `Bearer ${getStore().accessToken}`
 					}
 				}
 
@@ -269,7 +298,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+						'Authorization': `Bearer ${getStore().accessToken}`
 					}
 				};
 			
@@ -294,7 +323,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'GET',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					}
     		};
 			
@@ -314,7 +343,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'POST',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					},
 							body: JSON.stringify(dataToSend)
 			}

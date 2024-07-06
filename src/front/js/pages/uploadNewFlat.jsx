@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { UploadImage } from "../component/Albums.jsx";
 import { UploadImagesFlats } from "../component/UploadImagesFlats.jsx";
 
 export const UploadNewFlat = () => {
@@ -11,14 +10,9 @@ export const UploadNewFlat = () => {
         address: "",
         postal_code: "",
         city: "",
-        landlord_id: store.userData.landlord_id
-        
     });
-    
+    const [img, setImg] = useState({id_album: ""})
     const [selectedFile, setSelectedFile] = useState(null);
-    const userData = store.userData.landlord_id
-    console.log(userData);
-
     const handleNext = (step) => {
         setActiveStep(step);
     };
@@ -28,26 +22,17 @@ export const UploadNewFlat = () => {
     };
 
     const handleSave = () => {
-        const dataToSend = new FormData();
-        Object.keys(formData).forEach(key => {
-            dataToSend.append(key, formData[key]);
-        });
-        if (selectedFile) {
-            dataToSend.append("img", selectedFile);
-        }
-
         console.log("Saving data...", formData);
-        actions.createNewFlat(dataToSend);
+        actions.createNewFlat(formData);
     };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleImageUpload = (file) => {
-        setSelectedFile(file);
-    };
+
 
     return (
         <>
@@ -127,8 +112,8 @@ export const UploadNewFlat = () => {
                                             onChange={handleChange}
                                             aria-label="default input example"
                                         />
-                                        <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(0)}><strong>Anterior</strong></button>
-                                        <button className="send-button action-btn-custom mt-1" onClick={() => handleNext(2)}><strong>Siguiente</strong></button>
+                                        <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(0) }><strong>Anterior</strong></button>
+                                        <button className="send-button action-btn-custom mt-1" onClick={() => {handleNext(2); handleSave();}}><strong>Siguiente</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -150,9 +135,9 @@ export const UploadNewFlat = () => {
                                     <div className="accordion-body">
                                         <p><strong>Comparte al menos 3 fotos del piso. </strong> Recomendamos compartir fotos del salon, la cocina y los baños. </p>
 
-                                        <UploadImagesFlats onUpload={handleImageUpload} />
+                                        <UploadImagesFlats />
                                         <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(1)}><strong>Anterior</strong></button>
-                                        <button className="send-button btn-custom red-background mt-1" onClick={handleSave}>Publicar</button>
+                                        
                                     </div>
                                 </div>
                             </div>
