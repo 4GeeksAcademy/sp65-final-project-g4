@@ -281,7 +281,7 @@ def handle_flats_post():
     db.session.add(flat)
     db.session.commit()
     response_body['results'] = flat.serialize()
-    response_body['message'] = 'Flats posted'
+    response_body['message'] = 'Flat posted'
     return response_body, 200
 
 
@@ -667,7 +667,6 @@ def get_images_flats(flat_id):
 def get_all_chats_with_last_message():
     user_info = get_jwt_identity()
     response_body = {}
-    chats = []
     if user_info['user_is_student']:
         chats = db.session.execute(db.select(Chats).where(Chats.student_id == user_info['user_id'])).scalars()
     else:
@@ -675,6 +674,7 @@ def get_all_chats_with_last_message():
     s_chats = []
     for chat in chats:
         last_message = Messages.query.filter_by(chat_id=chat.id).order_by(Messages.timestamp.desc()).first()
+        print(last_message)
         chat_serialize = chat.serialize() 
         chat_serialize['last_message'] = last_message.message
         s_chats.append(chat_serialize)
@@ -725,3 +725,31 @@ def handle_chats_messages(id):
     response_body['results'] = results
     response_body['message'] = 'Messages in chat'
     return response_body, 200
+
+
+@api.route('/messages', methods=['POST'])
+@jwt_required()
+def create_new_message():
+    response_body = {}
+    user_info = get_jwt_identity()
+    user_id = user_info['user_id']
+    data = request.json
+    chat_id = data['chat_id']
+    chat = db.session.execute(db.select(Chats).where(Chats.id == chat_id)).scalar()
+    if not chat:
+        response_body['message'] = "Chat not found"
+        return response_body, 404    
+    if chat.student_id != user_id and chat.landlord_id != user_id:
+        response_body['message'] = "Chat 'User not authorized to post in this chat found"
+        return response_body, 403 
+    row = Messages()
+    row.message = data['message']
+    row.chat_id = chat_id
+    row.sender_id = user_id
+    row.is_read = False
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize(),
+    response_body['message'] = 'Message sent'
+    return response_body, 200
+

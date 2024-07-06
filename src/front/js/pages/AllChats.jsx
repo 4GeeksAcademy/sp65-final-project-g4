@@ -25,11 +25,10 @@ export const AllChats = () => {
                             key={index} 
                             onClick={() => actions.setChatId(item.id)} 
                             className="text-decoration-none"> 
-            <div className="card mt-2">
-                
+            <div className="card mt-2 ">                
                 <div className="card-header" id="chat-header">
                     <p>
-                    {store.is_student ?
+                    {store.userData.is_student ?
                         item.landlord_name
                         :
                         item.student_name}

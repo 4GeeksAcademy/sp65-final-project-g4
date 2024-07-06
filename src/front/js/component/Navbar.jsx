@@ -12,18 +12,22 @@ export const Navbar = () => {
 		<nav className="navbar-custom">
 			<div className="navbar-custom-logo">
 				<Link to="/">
-					<span className="navbar-brand mb-0 h1 red-color">React Boilerplate</span>
+					<span className="navbar-brand mb-0 h1 red-color">RentUni</span>
 				</Link>
 			</div>
 			<div>
 				<Link to="/demo">
 					<span>Lorem</span>
 				</Link>
+
 				<Link to="/uploadimg">
 					<span>Upload</span>
+        </Link>
+				<Link to="/uploadflat">
+					<span>Upload Flat</span>
 				</Link>
-				<Link to="/demo">
-					<span>Lorem</span>
+				<Link to="/chats/1">
+					<span>Chats</span>
 				</Link>
 				{store.isLogedIn ?
 					<span>

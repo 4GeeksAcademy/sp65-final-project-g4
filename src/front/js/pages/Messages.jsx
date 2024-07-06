@@ -18,14 +18,20 @@ export const Messages = () => {
         setMessage(e.target.value);
     };
 
-    const handleSendMessage = () => {
-        // Handle sending message logic here
-        console.log('Send message:', message);
+    const handleSendMessage = async () => {
+        if (message.trim()) {
+            const dataToSend = {
+                chat_id: id,
+                message: message
+            };
+            await actions.postNewMessage(dataToSend);
+            setMessage("");
+        }
     };
 
     return (
         <>
-            <ul className="list-group">
+            <ul className="list-group chat-cont overflow-auto">
                 {store.currentChat.map((item, index) => (
                     <li key={index} className="list-group-item mb-4 rounded" id="sent-message">
                         <p id="timestamp">{item.timestamp}</p>
@@ -36,16 +42,16 @@ export const Messages = () => {
             </ul>
             <div className="input-container rounded">
                 <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Type your message</label>
                     <textarea 
-                        className="form-control" 
-                        id="exampleFormControlTextarea1" 
-                        rows="3" 
-                        value={message} 
-                        onChange={handleMessageChange}
+                       className="form-control" 
+                       id="exampleFormControlTextarea1" 
+                       rows="1" 
+                       value={message} 
+                       onChange={handleMessageChange}
+                       placeholder="Escribe un mensaje nuevo"
                     ></textarea>
                 </div>
-                <button className="send-button btn-custom" onClick={handleSendMessage}>Send</button>
+                <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>Send</button>
             </div>
         </>
     );

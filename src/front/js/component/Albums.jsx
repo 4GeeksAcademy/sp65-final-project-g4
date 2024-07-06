@@ -88,8 +88,7 @@ export const UploadImage = () => {
 
   return (
     <div className="container mt-5 d-flex justify-content-center">
-      <div className='col-5'>
-        <h2 className="mb-4 display-6 text-center">Upload user pictures</h2>
+      <div className='col-12'>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
             <input
@@ -99,7 +98,7 @@ export const UploadImage = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn btn-primary">Upload picture</button>
+          <button type="submit" className="btn btn-primary">Subir tus fotos</button>
         </form>
         <img src={imageUrl}></img>
       </div>
