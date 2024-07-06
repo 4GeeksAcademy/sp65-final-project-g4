@@ -66,3 +66,15 @@ h3 {
 .send-button {
     float: inline-end;
 }
+
+
+.custom-accordion-button {
+    background-color: grey;
+    color: black;
+    outline: none;
+  }
+  
+  .custom-accordion-button:not(.collapsed) {
+    background-color: grey;
+    color: black;
+  }
