@@ -41,13 +41,14 @@ def signup_students():
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
         dni = body.get("dni" , " ")
-        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id)
+        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id, id=id)
         db.session.add(student)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
-                                                     'email': user.email})
+                                                     'email': user.email,
+                                                     'student_id': student.id})
         response_body['access_token'] = access_token
         response_body['data'] = {**user.serialize() , **student.public_serialize()}
         response_body['message'] = 'Student created and logged in'
@@ -76,13 +77,15 @@ def signup_landlords():
         landlord = Landlords(name=name, 
                              lastname=lastname, 
                              dni=dni, 
-                             id_user=user.id)
+                             id_user=user.id,
+                             id=id)
         db.session.add(landlord)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': False,
                                                      'user_is_landlord': True,
-                                                     'email': user.email})
+                                                     'email': user.email,
+                                                     'landlord_id': landlord.id})
         response_body['data'] = {**user.serialize() , **landlord.public_serialize()}
         response_body['access_token'] = access_token
         response_body['message'] = 'Landlord created and logged in'
@@ -103,22 +106,24 @@ def login():
     if password != user.password:
         return jsonify({"msg": "Wrong password"}) , 401
     if user.is_student:
+        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
-                                                     'email': user.email})
-        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+                                                     'email': user.email,
+                                                     'student_id': student.id})
         serialized_data = {**user.serialize(), **student.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
         response_body['data'] = serialized_data
         return response_body, 200
     if user.is_landlord:
+        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': False,
                                                      'user_is_landlord': True,
-                                                     'email': user.email})
-        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
+                                                     'email': user.email,
+                                                     'landlord_id': landlord.id})
         serialized_data = {**user.serialize(), **landlord.public_serialize()}
         response_body['message'] = 'Landlord logged in'
         response_body['access_token'] = access_token
@@ -269,13 +274,15 @@ def handle_flats():
 @jwt_required()
 def handle_flats_post():
     response_body = {}
+    user_info = get_jwt_identity()
+    current_landlord = user_info['landlord_id']
     data = request.json
     flat = Flats()
     flat.address = data['address']
     flat.description = data['description']
     flat.postal_code = data['postal_code']
     flat.city = data['city']
-    flat.id_landlord = data['id_landlord']
+    flat.id_landlord = current_landlord
     db.session.add(flat)
     db.session.commit()
     response_body['results'] = flat.serialize()

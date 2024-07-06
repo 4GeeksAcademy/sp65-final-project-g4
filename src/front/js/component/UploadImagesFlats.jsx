@@ -6,16 +6,19 @@ export const UploadImagesFlats = () => {
   const [imageUrl, setImageUrl] = useState("");
   const { store, actions } = useContext(Context);
 
+  
   const handleFileChange = (event) => {
     setselectedFile(event.target.files[0]);
   };
 
+  actions.getFlatsId();
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile) {
       const formData = new FormData();
       formData.append("img", selectedFile);
-      const url = `${process.env.BACKEND_URL}/api/photoflats/2`
+      const url = `${process.env.BACKEND_URL}/api/photoflats/${store.flatId}`
       const options = {
         method: "POST",
         headers: {
@@ -51,6 +54,15 @@ export const UploadImagesFlats = () => {
       },
 
     });
+
+    
+    const handleImageUpload = (imageUrl) => {
+      setFormData({ ...formData, images: [...formData.images, imageUrl] });
+    };
+
+    const handleAddImg = () => {
+      actions.createAlbum()
+    };
   }
 
   return (
@@ -67,6 +79,7 @@ export const UploadImagesFlats = () => {
           </div>
           <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
         </form>
+        <button className="send-button btn-custom red-background mt-1" >Publicar</button>
       </div>
     </div>
   );
