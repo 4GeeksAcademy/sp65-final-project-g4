@@ -19,6 +19,10 @@ export const Navbar = () => {
 				<Link to="/demo">
 					<span>Lorem</span>
 				</Link>
+
+				<Link to="/uploadimg">
+					<span>Upload</span>
+        </Link>
 				<Link to="/uploadflat">
 					<span>Upload Flat</span>
 				</Link>
