@@ -131,7 +131,7 @@ class Favorites(db.Model):
 
 class Albums(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    url_photo = db.Column(db.String() , nullable = False , unique = True)
+    url_album_cloudinary = db.Column(db.String() , nullable = False , unique = True)
 
 
     def __repr__(self):
@@ -139,7 +139,7 @@ class Albums(db.Model):
 
     def serialize(self):
         return {"id": self.id,
-                "url_photo": self.url_photo}
+                "url_album_cloudinary": self.url_album_cloudinary}
       
 
 class Landlords(db.Model):

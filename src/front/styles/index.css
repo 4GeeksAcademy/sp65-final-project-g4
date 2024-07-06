@@ -78,3 +78,16 @@ h3 {
     background-color: grey;
     color: black;
   }
+
+
+  .action-btn-custom {
+    color: #BF0000;
+    border: none;
+    background-color: white;
+    a:hover {
+        text-decoration: underline }
+    }
+
+    .action-btn-left {
+        float: inline-start;
+    }
