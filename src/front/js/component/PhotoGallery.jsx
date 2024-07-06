@@ -15,7 +15,6 @@ export const PhotoGallery = ({ userId }) => {
 
   const fetchImages = async () => {
     const response = await fetch(`${process.env.BACKEND_URL}/api/imagesflats/${userId}`);
-    console.log(response)
     if (!response.ok) {
       console.log("Error loading message from backend", response.status, response.statusText)
       return

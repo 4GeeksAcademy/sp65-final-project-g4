@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
+			rooms: [],
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : null,
@@ -110,6 +111,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					userData: {},
 					isLogedIn: false
 				})
+			},
+			getUniversities: async () => {
+				const url = `${process.env.BACKEND_URL}/api/universities`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ universities: data.results });
+			},
+			getRooms: async () => {
+				const url = `${process.env.BACKEND_URL}/api/rooms`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ rooms: data.results });
 			},
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;

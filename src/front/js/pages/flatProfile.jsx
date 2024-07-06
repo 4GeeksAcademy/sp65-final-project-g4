@@ -20,6 +20,26 @@ export const FlatProfile = () => {
                     </div>
                     <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
+                    <div>
+                        {!store.rooms.length > 0 ?
+                            ""
+                            :
+                            <>
+                                {store.rooms.map((item, key) =>
+                                    <>
+                                        {item.id_flat ?
+                                            <div>
+                                                <h3>{item.title}</h3>
+                                                <p>{item.description}</p>
+                                            </div>
+                                            :
+                                            ""
+                                        }
+                                    </>
+                                )}
+                            </>
+                        }
+                    </div>
                 </div>
             }
         </>

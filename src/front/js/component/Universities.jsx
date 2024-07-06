@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import mapImageUrl from "../../img/mapa-bcn.jpg";
+import uniMapPointer from "../../img/uni-map-pointer.png";
 
-const Geocode = (props) => {
+export const Universities = (props) => {
     const [address, setAddress] = useState(`${props.item.address}, ${props.item.postal_code}, ${props.item.city}`);
     const [coordinates, setCoordinates] = useState({ lat: 0, lon: 0 });
     const [error, setError] = useState(null);
@@ -34,18 +34,18 @@ const Geocode = (props) => {
         };
         getCoordinates(address);
     }, [])
+    const customIcon = new L.Icon({
+        iconUrl: uniMapPointer,
+        iconSize: [32, 32], // Tamaño del icono
+        iconAnchor: [16, 32], // Punto del icono que estará anclado a la coordenada (centrado inferior)
+        popupAnchor: [0, -32] // Punto desde donde se abrirá el popup
+      });
 
     return (
-        <Marker position={[coordinates.lat, coordinates.lon]}>
+        <Marker position={[props.item.latitude, props.item.longitude]} icon={customIcon}>
             <Popup>
-                <Link to={`/FlatProfile/${props.item.id}`} onClick={() => handleFlat(props.item.id)}>
-                    <img src={mapImageUrl} style={{ marginBottom: "20px"}}/>
-                    <h3 className='red-color'>{props.item.address}</h3>
-                    <p>{props.item.description.substring(0, 50)}...</p>
-                </Link>
+                 <h3 className='red-color'>{props.item.name}</h3>
             </Popup>
         </Marker>
     );
 };
-
-export default Geocode;
