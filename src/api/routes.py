@@ -432,7 +432,7 @@ def handle_albums_post():
     response_body = {}
     data = request.json
     row = Albums()
-    row.url_photo = data['url_photo']
+    row.url_album_cloudinary = data['url_photo']
     db.session.add(row)
     db.session.commit()
     response_body['results'] = row.serialize()
@@ -627,6 +627,7 @@ def upload_photo():
     response_body["img_url"] = img_url["url"]
     response_body['message'] = "Sucessful upload"
     return response_body , 200
+    
 
 @api.route('/images/<user_id>', methods=['GET'])
 def get_images(user_id):
