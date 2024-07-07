@@ -11,8 +11,7 @@ import {Login} from "./pages/Login.jsx";
 import { Single } from "./pages/Single.jsx";
 import { Demo } from "./pages/Demo.jsx";
 import { Home } from "./pages/Home.jsx";
-import { Signup } from "./pages/SingupStudent2.jsx";
-import { SignupLandlords } from "./pages/SignUpLandlords.jsx";
+import { Signup } from "./pages/Signup.jsx";
 import { Map } from "./pages/Map.jsx";
 
 import { UploadImagesFlats } from "./component/UploadImagesFlats.jsx";
@@ -45,13 +44,11 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1 style={{"textAlign":"center"}}>Not found!</h1>} path="*"/>
                         <Route element= {<Signup/>} path="/signup" />
-                        <Route element= {<SignupLandlords/>} path="/signuplandlords" />
                         <Route element= {<UploadImagesFlats/>} path="/uploadimg" />
                         <Route element= {<Chats/>} path="/chats/:id" />
                         <Route element= {<Dashboard/>} path="/dashboard" />
                         <Route element= {<FlatProfile/>} path="/FlatProfile/:theid" />
                         <Route element= {<UploadNewFlat/>} path="/uploadFlat" />
-
                     </Routes>
                     <Footer />
                 </ScrollToTop>

@@ -3,25 +3,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			demo: [{ title: "FIRST", background: "white", initial: "white" }],
+			/* Login and Users */
 			accessToken: null,
 			isLogedIn: false,
 			userEmail: "",
 			userName: "",
 			isAdmin: false,
+			users: [],
+			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
+			students: [],
+			landlords: [],
+			/* Chats */
 			chats: [],
 			chatsWithMessages: [],
 			chatId: [],
 			currentChat: [],
-			users: [],
-			students: [],
-			landlords: [],
-			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			allMessages: [],
 			userName: "",
+			/* Flats */
 			rooms: [],
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : null,
+			albums: [],
 		},
 		actions: {
 			getMessage: async () => {
@@ -34,6 +38,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ message: data.message })
 				return data;  // Don't forget to return something, that is how the async resolves
 			},
+			
 			loginUser: async (userData) => {
 				const uri = `${process.env.BACKEND_URL}/api/login`
 				const options = {
@@ -55,7 +60,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ userName: data.data.name })
 				setStore({ userData: data.data })
 				setStore({ isLogedIn: true })
-				console.log(data.access_token)
 				localStorage.setItem('token', data.access_token)
 				localStorage.setItem('user', JSON.stringify(data.data))
 			},
@@ -74,6 +78,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logedIn: (userData) => {
 				setStore({ isLogedIn: true, userEmail: userData.email })
 				setStore({ userData: userData.data })
+				userData.is_student ? setStore({ userName : userData.student_name}) : setStore({ userName : userData.landlord_name}) 
 			},
 
 			oldLogin: () => {
@@ -103,6 +108,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('user', JSON.stringify(data.results))
 			},
 
+			putLandlord: async (landlordData, token, id) => {
+				const uri = `${process.env.BACKEND_URL}/api/landlords/${id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						/* 'Authorization': 'Bearer ' + token */
+					},
+					body: JSON.stringify(landlordData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				console.log(data);
+				setStore({ userData: data.results })
+				localStorage.setItem('user', JSON.stringify(data.results))
+			},
+
 			userLogout: () => {
 				localStorage.removeItem('token')
 				localStorage.removeItem('user')
@@ -112,6 +134,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					isLogedIn: false
 				})
 			},
+
 			getUniversities: async () => {
 				const url = `${process.env.BACKEND_URL}/api/universities`;
 				const options = {
@@ -129,6 +152,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ universities: data.results });
 			},
+
 			getRooms: async () => {
 				const url = `${process.env.BACKEND_URL}/api/rooms`;
 				const options = {
@@ -146,6 +170,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ rooms: data.results });
 			},
+
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -163,10 +188,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({ flats: data.results });
 			},
+
 			setFlatId: (id) => {
 				setStore({ flatId: id })
 				sessionStorage.setItem('flatId', id)
 			},
+
 			getFlatsId: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats/${getStore().flatId}`;
 				const options = {
@@ -191,7 +218,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'POST',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					},
 							body: JSON.stringify(dataToSend)
 			}
@@ -203,9 +230,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const newFlat = await response.json();
 				await getActions().getFlats(); 
-    			setStore({ flats: [...store.flats, newFlat] });;
+    			setStore({ flats: [...getStore().flats, newFlat] });;
+
 			},
 
+			createAlbum: async (dataToSend) => {
+				const url = `${process.env.BACKEND_URL}/api/albums`;
+    			const options = {
+        					method: 'POST',
+        					headers: {
+            					'Content-Type': 'application/json',
+            					'Authorization': `Bearer ${getStore().accessToken}`
+        					},
+							body: JSON.stringify(dataToSend)
+			}
+
+			const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error");
+					return;
+				}
+				const newAlbum = await response.json();
+				await getActions().getFlats(); 
+    			setStore({ albums: [...store.albums, newAlbum] });;
+			},
+			
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
@@ -267,7 +316,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+						'Authorization': `Bearer ${getStore().accessToken}`
 					}
 				}
 
@@ -286,7 +335,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+						'Authorization': `Bearer ${getStore().accessToken}`
 					}
 				};
 			
@@ -311,7 +360,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'GET',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					}
     		};
 			
@@ -331,7 +380,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         					method: 'POST',
         					headers: {
             					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            					'Authorization': `Bearer ${getStore().accessToken}`
         					},
 							body: JSON.stringify(dataToSend)
 			}

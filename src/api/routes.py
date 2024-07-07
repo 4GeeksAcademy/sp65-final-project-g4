@@ -41,13 +41,14 @@ def signup_students():
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
         dni = body.get("dni" , " ")
-        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id)
+        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id, id=id)
         db.session.add(student)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
-                                                     'email': user.email})
+                                                     'email': user.email,
+                                                     'student_id': student.id})
         response_body['access_token'] = access_token
         response_body['data'] = {**user.serialize() , **student.public_serialize()}
         response_body['message'] = 'Student created and logged in'
@@ -72,20 +73,23 @@ def signup_landlords():
         db.session.commit()
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
-        dni = body.get("dni" , None)
+        dni = body.get("dni" , " ")
         landlord = Landlords(name=name, 
                              lastname=lastname, 
                              dni=dni, 
-                             id_user=user.id)
+                             id_user=user.id,
+                             id=id)
         db.session.add(landlord)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': False,
                                                      'user_is_landlord': True,
-                                                     'email': user.email})
+                                                     'email': user.email,
+                                                     'landlord_id': landlord.id})
         response_body['data'] = {**user.serialize() , **landlord.public_serialize()}
         response_body['access_token'] = access_token
         response_body['message'] = 'Landlord created and logged in'
+        print(response_body)
         return response_body , 200
     return jsonify({"msg": "Landlord already exists"}) , 401
 
@@ -103,22 +107,24 @@ def login():
     if password != user.password:
         return jsonify({"msg": "Wrong password"}) , 401
     if user.is_student:
+        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
-                                                     'email': user.email})
-        student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+                                                     'email': user.email,
+                                                     'student_id': student.id})
         serialized_data = {**user.serialize(), **student.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
         response_body['data'] = serialized_data
         return response_body, 200
     if user.is_landlord:
+        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': False,
                                                      'user_is_landlord': True,
-                                                     'email': user.email})
-        landlord = db.session.execute(db.select(Landlords).where(Landlords.id_user == user.id)).scalar()
+                                                     'email': user.email,
+                                                     'landlord_id': landlord.id})
         serialized_data = {**user.serialize(), **landlord.public_serialize()}
         response_body['message'] = 'Landlord logged in'
         response_body['access_token'] = access_token
@@ -206,10 +212,10 @@ def handle_landlords_post():
     return response_body, 200
 
 
-@api.route('/landlords/<int:landlord_id>', methods=['GET'])
-def handle_landlord(landlord_id):
+@api.route('/landlords/<int:id>', methods=['GET'])
+def handle_landlord(id):
     response_body = {}
-    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
 
     if landlord:
@@ -221,11 +227,10 @@ def handle_landlord(landlord_id):
     return response_body, 404
 
 
-@api.route('/landlords/<int:landlord_id>', methods=['PUT', 'DELETE'])
-@jwt_required()
-def handle_landlord_edit(landlord_id):
+@api.route('/landlords/<int:id>', methods=['PUT', 'DELETE'])
+def handle_landlord_edit(id):
     response_body = {}
-    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == landlord_id)).scalar()
+    landlord = db.session.execute(db.select(Landlords).where(Landlords.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Landlords.id_user)).scalar()
 
     if request.method == 'PUT':
@@ -234,13 +239,12 @@ def handle_landlord_edit(landlord_id):
             landlord.name = data['name']
             landlord.lastname = data['lastname']
             landlord.birth_date = data['birth_date']
-            landlord.id_user = data['id_user']
             landlord.dni = data['dni']
             landlord.phone_number = data['phone_number']
             landlord.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Landlord updated'
-            response_body['results'] = {**user.serialize(), **landlord.serialize()}
+            response_body['results'] = {**user.serialize(), **landlord.public_serialize()}
             return response_body, 200
         response_body['message'] = 'Landlord not found'
         response_body['results'] = {}
@@ -271,6 +275,8 @@ def handle_flats():
 @jwt_required()
 def handle_flats_post():
     response_body = {}
+    user_info = get_jwt_identity()
+    current_landlord = user_info['landlord_id']
     data = request.json
     flat = Flats()
     flat.address = data['address']
@@ -278,7 +284,7 @@ def handle_flats_post():
     flat.postal_code = data['postal_code']
     flat.city = data['city']
     flat.square_meters = data['square_meters']
-    flat.id_landlord = data['id_landlord']
+    flat.id_landlord = current_landlord
     db.session.add(flat)
     db.session.commit()
     response_body['results'] = flat.serialize()
@@ -307,15 +313,12 @@ def handle_flat_edit(flat_id):
     if request.method == 'PUT':
         data = request.json
         if flat:
-            flat.title = data['title']
             flat.description = data['description']
-            flat.square_meters = data['square_meters']
-            flat.price = data['price']
-            flat.id_flat = data['id_flat']
-            flat.publication_date = datetime.today()
-            flat.image_url_1 = data['image_url_1']
-            flat.image_url_2 = data['image_url_2']
-            flat.flat_img = data['flat_img']
+            flat.id_landlord = data['id_landlord']
+            flat.address = data['address']
+            flat.postal_code = data['postal_code']
+            flat.city = data['address']
+            flat.id_album = data.get('album_id', flat.album_id)
             db.session.commit()
             response_body['message'] = 'Flat updated'
             response_body['results'] = flat.serialize()
@@ -431,7 +434,7 @@ def handle_albums_post():
     response_body = {}
     data = request.json
     row = Albums()
-    row.url_album_cloudinary = data['url_photo']
+    row.url_album_cloudinary = data['url_album_cloudinary']
     db.session.add(row)
     db.session.commit()
     response_body['results'] = row.serialize()
