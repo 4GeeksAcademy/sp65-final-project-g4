@@ -35,7 +35,7 @@ export const Navbar = () => {
 					<div class="dropdown">
 						<button class="btn btn-custom red-background dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Menú
-							<span className="profile-picutre"><img src={store.userData.profile_picture} /></span>
+							<span className="profile-picutre"><img src={store.userData.profile_picture != null ? store.userData.profile_picture : profilePicture} /></span>
 						</button>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="#">
