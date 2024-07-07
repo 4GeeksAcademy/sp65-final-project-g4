@@ -1,6 +1,6 @@
 .footer-custom {
-    height: 250px;
-    padding: 50px 80px;
+    height: 100px;
+    padding: 10px 8px;
     margin-top: 0;
     background-color: rgba(0,0,0,0.8);
     display: flex;
@@ -23,10 +23,10 @@
     .footer-custom-menu-left {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-evenly;
         .social-menu {
             i {
-                margin: 0 5px;
+                margin: 0 2px;
                 font-size: 20px;
                 &:hover {
                     color: #fff;
@@ -44,6 +44,6 @@
     }
     .footer-custom-menu-right {
         display: flex;
-        justify-content: space-around;
+        float: inline-start;
     }
 }

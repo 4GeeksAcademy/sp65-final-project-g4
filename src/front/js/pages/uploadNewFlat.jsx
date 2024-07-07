@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { UploadImagesFlats } from "../component/UploadImagesFlats.jsx";
+import { NoAccess } from "./NoAccess.jsx";
 
 export const UploadNewFlat = () => {
     const { store, actions } = useContext(Context);
@@ -11,8 +12,7 @@ export const UploadNewFlat = () => {
         postal_code: "",
         city: "",
     });
-    const [img, setImg] = useState({id_album: ""})
-    const [selectedFile, setSelectedFile] = useState(null);
+   
     const handleNext = (step) => {
         setActiveStep(step);
     };
@@ -36,6 +36,8 @@ export const UploadNewFlat = () => {
 
     return (
         <>
+        {store.userData.is_student ? <NoAccess/>
+        :
             <div className="container mt-3 mb-2">
                 <div className="row d-flex justify-content-center ">
                     <div className="col-xsm-12 col-sm-10 col-md-8 col-lg-8 ">
@@ -145,6 +147,7 @@ export const UploadNewFlat = () => {
                     </div>
                 </div>
             </div>
+        }
         </>
     );
 };

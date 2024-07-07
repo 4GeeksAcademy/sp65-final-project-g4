@@ -8,10 +8,11 @@ export const UploadImagesFlats = () => {
 
   const getLastFlatID = () => {
     if (store.flats.length > 0) {
-      return store.flats[store.flats.length - 1].id;
+      return store.flats[store.flats.length - 1].results.id;
     }
     return null; // or any fallback value if there are no flats
   }
+
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -69,8 +70,16 @@ export const UploadImagesFlats = () => {
     }
   };
 
+  const getCurrentFlatID = () => {
+    if (store.flats.length > 0) {
+      return store.flats[store.flats.length - 1].id;
+    }
+    return null; 
+  }
+
   const updateFlatAlbumID = async (flatID, albumID) => {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/flats/${flatID}`, {
+    const currentFlatID = getCurrentFlatID();
+    const response = await fetch(`${process.env.BACKEND_URL}/api/flats/${currentFlatID}`, {
       method: "PUT",
       body: JSON.stringify({ album_id: albumID }), 
       headers: {
@@ -109,7 +118,7 @@ export const UploadImagesFlats = () => {
           </div>
           <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
         </form>
-        {imageUrl && ( // Conditionally render the "Publicar" button
+        {imageUrl && ( 
           <button className="send-button btn-custom red-background mt-1" onClick={() => handleAddImg()}><strong>Publicar</strong></button>
         )}
       </div>
