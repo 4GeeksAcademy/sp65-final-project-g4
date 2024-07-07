@@ -392,8 +392,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const newMessage = await response.json();
     			setStore({ allMessages: [...store.allMessages, newMessage] });;
+				console.log(newMessage);
 				getActions().getMessagesWithChatId();
-		}
+		},
 	}
 	};
 	};

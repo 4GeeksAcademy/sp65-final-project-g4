@@ -19,6 +19,8 @@ import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { FlatProfile } from "./pages/flatProfile.jsx";
 import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
+import { LOPDPG } from "./pages/LOPDPG.jsx";
+import { Contacto } from "./pages/Contacto.jsx";
 
 
 
@@ -49,6 +51,9 @@ const Layout = () => {
                         <Route element= {<Dashboard/>} path="/dashboard" />
                         <Route element= {<FlatProfile/>} path="/FlatProfile/:theid" />
                         <Route element= {<UploadNewFlat/>} path="/uploadFlat" />
+                        <Route element= {<LOPDPG/>} path="/LPD" />
+                        <Route element= {<Contacto/>} path="/contact" />
+
                     </Routes>
                     <Footer />
                 </ScrollToTop>
