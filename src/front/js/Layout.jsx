@@ -19,7 +19,6 @@ import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { FlatProfile } from "./pages/flatProfile.jsx";
 import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
-import { UploadImagesFlats } from "./component/UploadImagesFlats.jsx";
 
 
 
