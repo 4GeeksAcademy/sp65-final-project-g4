@@ -58,8 +58,8 @@ export const Signup = () => {
         return
       }
       const data = await response.json()
-
-      localStorage.setItem('token', JSON.stringify(data.access_token))
+      console.log(data);
+      localStorage.setItem('token', data.access_token)
       localStorage.setItem('user', JSON.stringify(data.data))
       actions.logedIn(data)
       handleReset()
@@ -98,11 +98,11 @@ export const Signup = () => {
     }
     const data = await response.json()
     console.log(data)
-    localStorage.setItem('token', JSON.stringify(data.access_token))
+    localStorage.setItem('token', data.access_token)
     localStorage.setItem('user', JSON.stringify(data.data))
     actions.logedIn(data)
     console.log(data.access_token);
-    navigate('/')
+    navigate('/dashboard')
   } else {
     setPassword1('');
     setPassword2('');
@@ -127,6 +127,7 @@ export const Signup = () => {
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="">
+                <div className="header"></div>
                 <div className="card-body">
                   <h2 className="red-color mt-2">
                     Darme de alta como estudiante
