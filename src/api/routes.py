@@ -277,6 +277,7 @@ def handle_flats_post():
     flat.description = data['description']
     flat.postal_code = data['postal_code']
     flat.city = data['city']
+    flat.square_meters = data['square_meters']
     flat.id_landlord = data['id_landlord']
     db.session.add(flat)
     db.session.commit()
@@ -352,7 +353,6 @@ def handle_rooms_post():
     row = Rooms()
     row.title = data['title']
     row.description = data['description']
-    row.square_meters = data['square_meters']
     row.price = data['price']
     row.id_flat = data['id_flat']
     row.publication_date = datetime.today()
@@ -390,7 +390,6 @@ def handle_room_id(room_id):
         if room:
             room.title = data['title']
             room.description = data['description']
-            room.square_meters = data['square_meters']
             room.price = data['price']
             room.id_flat = data['id_flat']
             room.publication_date = datetime.today()

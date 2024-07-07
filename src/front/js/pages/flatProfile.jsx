@@ -27,7 +27,7 @@ export const FlatProfile = () => {
                             <>
                                 {store.rooms.map((item, key) =>
                                     <>
-                                        {item.id_flat ?
+                                        {item.id_flat === store.currentFlat.id ?
                                             <div>
                                                 <h3>{item.title}</h3>
                                                 <p>{item.description}</p>
