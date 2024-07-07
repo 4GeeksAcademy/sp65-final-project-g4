@@ -86,6 +86,7 @@ class Rooms(db.Model):
     title = db.Column(db.String() , nullable = False)
     description = db.Column(db.String() , nullable=False, unique=False)
     price = db.Column(db.Float() , nullable = False)
+    square_meters = db.Column(db.Float(), nullable = False)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     id_assigned_student = db.Column(db.Integer() , db.ForeignKey('students.id'))
@@ -104,6 +105,7 @@ class Rooms(db.Model):
             "title": self.title,
             "description": self.description,
             "price" : self.price,
+            "square_meters": self.square_meters,
             "id_flat" : self.id_flat,
             "id_assigned_student" : self.id_assigned_student, 
             "publication_date" : self.publication_date,
@@ -183,7 +185,6 @@ class Flats(db.Model):
     postal_code = db.Column(db.String(), nullable=False)
     city = db.Column(db.String(), nullable=False)
     description = db.Column(db.String(), nullable=False)
-    square_meters = db.Column(db.Float() )
     id_album = db.Column(db.Integer(), db.ForeignKey('albums.id'), unique=True)
     to_album_id = db.relationship('Albums' , foreign_keys=[id_album])
     
@@ -198,7 +199,6 @@ class Flats(db.Model):
                 'description': self.description,
                 'postal_code': self.postal_code,
                 'city': self.city,
-                 "square_meters": self.square_meters,
                 'id_album': self.id_album}
 
 

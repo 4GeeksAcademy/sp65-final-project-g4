@@ -55,12 +55,7 @@ export const Flats = (props) => {
             return
         }
         if (filterOptions.price) {
-            const price = '.price'+props.item.id;
-            console.log(price.toString())
-            const divs = document.querySelectorAll();
-            const divContents = Array.from(divs).map(div => div.textContent);
-            console.log(divContents)
-            setContents(divContents);
+
         }
         if (filterOptions.surface) {
             if(filterOptions.surface > props.item.square_meters) setIsVisible(false)
