@@ -24,7 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			rooms: [],
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
-			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : null,
+			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
 			albums: [],
 		},
 		actions: {

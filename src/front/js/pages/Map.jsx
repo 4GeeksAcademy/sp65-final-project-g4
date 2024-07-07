@@ -31,7 +31,6 @@ export const Map = () => {
     };
 
     const handleUniversity = (coords) => {
-        console.log(coords)
         var str_array = coords.split(',');
 
         for (var i = 0; i < str_array.length; i++) {
@@ -42,7 +41,6 @@ export const Map = () => {
         temp.lat = str_array[0]
         temp.lon = str_array[1]
         setRadio(temp)
-        console.log(temp)
     };
 
     const handleRadio = (distanceValue) => {
