@@ -41,7 +41,7 @@ def signup_students():
         name = body.get("name" , " ")
         lastname = body.get("lastname" , " ")
         dni = body.get("dni" , " ")
-        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id, id=id)
+        student = Students(name=name, lastname=lastname, dni=dni, id_user=user.id)
         db.session.add(student)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
@@ -77,8 +77,7 @@ def signup_landlords():
         landlord = Landlords(name=name, 
                              lastname=lastname, 
                              dni=dni, 
-                             id_user=user.id,
-                             id=id)
+                             id_user=user.id)
         db.session.add(landlord)
         db.session.commit()
         access_token = create_access_token(identity={'user_id': user.id,
