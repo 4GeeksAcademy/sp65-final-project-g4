@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import mapImageUrl from "../../img/mapa-bcn.jpg";
+import { PhotoGallery } from "../component/PhotoGallery.jsx";
 
 export const Flats = (props) => {
+    const { store, actions } = useContext(Context);
     const [address, setAddress] = useState(`${props.item.address}, ${props.item.postal_code}, ${props.item.city}`);
     const [isVisible, setIsVisible] = useState(true);
     const [coordinates, setCoordinates] = useState({ lat: 0, lon: 0 });
     const [error, setError] = useState(null);
-
+    const [contents, setContents] = useState([]);
+    
     const getCoordinates = async (address) => {
         try {
             const response = await axios.get('https://nominatim.openstreetmap.org/search', {
@@ -31,11 +34,11 @@ export const Flats = (props) => {
         } catch (error) {
             setError('Error retrieving data.');
         }
-       
+
     };
 
     const filterHandle = (filterOptions) => {
-        if(filterOptions.radio.lat !== 0 && filterOptions.radio.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
+        if (filterOptions.radio.lat !== 0 && filterOptions.radio.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
             const toRadians = (degrees) => degrees * (Math.PI / 180);
             let lat1 = toRadians(coordinates.lat);
             let lon1 = toRadians(coordinates.lon);
@@ -45,23 +48,17 @@ export const Flats = (props) => {
             const dLon = lon2 - lon1;
             const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    
+
             const R = 6371; // Radio de la Tierra en kilómetros
             const calcDistance = R * c;
-            if(calcDistance > filterOptions.radio.distance) setIsVisible(false)
+            if (calcDistance > filterOptions.radio.distance) setIsVisible(false)
             return
         }
-        if(filterOptions.price){
-            console.log("price")
+        if (filterOptions.price) {
+
         }
-        if(filterOptions.rooms){
-            console.log("rooms")
-        }
-        if(filterOptions.surface){
-            console.log("surface")
-        }
-        if(filterOptions.date){
-            console.log("date")
+        if (filterOptions.surface) {
+            if(filterOptions.surface > props.item.square_meters) setIsVisible(false)
         }
     }
 
@@ -76,21 +73,41 @@ export const Flats = (props) => {
 
     return (
         <>
-        { !isVisible ?
-                    ""
-                    :
-                    <Marker position={[coordinates.lat, coordinates.lon]}>
+            {!isVisible ?
+                ""
+                :
+                <Marker position={[coordinates.lat, coordinates.lon]}>
                     <Popup>
+                        <div className="photo-container">
+                            <PhotoGallery userId={props.item.id} />
+                        </div>
                         <Link to={`/FlatProfile/${props.item.id}`} onClick={() => handleFlat(props.item.id)}>
-                            <img src={mapImageUrl} style={{ marginBottom: "20px" }} />
+
                             <h3 className='red-color'>{props.item.address}</h3>
                             <p>{props.item.description.substring(0, 50)}...</p>
+                            {!store.rooms.length > 0 ?
+                                ""
+                                :
+                                <>
+                                    {store.rooms.map((item, key) =>
+                                        <>
+                                            {item.id_flat === props.item.id ?
+                                                <div>
+                                                    <p className={'price'+props.item.id}>{item.price}€</p>
+                                                </div>
+                                                :
+                                                ""
+                                            }
+                                        </>
+                                    )}
+                                </>
+                            }
                         </Link>
                     </Popup>
                 </Marker>
-                }
-        
+            }
+
         </>
-        
+
     );
 };

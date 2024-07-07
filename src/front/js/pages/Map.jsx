@@ -16,9 +16,7 @@ export const Map = () => {
         distance: 100
     });
     const [price, setPrice] = useState({ min: 0, max: 1000 });
-    const [rooms, setRooms] = useState(false);
     const [surface, setSurface] = useState(false);
-    const [date, setDate] = useState(false);
 
     delete L.Icon.Default.prototype._getIconUrl;
     L.Icon.Default.mergeOptions({
@@ -33,7 +31,6 @@ export const Map = () => {
     };
 
     const handleUniversity = (coords) => {
-        console.log(coords)
         var str_array = coords.split(',');
 
         for (var i = 0; i < str_array.length; i++) {
@@ -44,9 +41,7 @@ export const Map = () => {
         temp.lat = str_array[0]
         temp.lon = str_array[1]
         setRadio(temp)
-        console.log(temp)
     };
-
 
     const handleRadio = (distanceValue) => {
         let temp = radio
@@ -65,6 +60,10 @@ export const Map = () => {
         if (newMax >= price.min) {
             setPrice({ ...price, max: newMax });
         }
+    };
+
+    const handleSurface = (surfaceValue) => {
+        setSurface(surfaceValue)
     };
 
     const handleSubmit = (e) => {
@@ -135,34 +134,13 @@ export const Map = () => {
                         </div>
                     </div>
                     <div className="filter-item">
-                        <span className="legend">Habitaciones</span>
+                        <label className="legend">Superfície Minima</label>
                         <div>
-                            <select name="" id="">
-                                <option>Todas las habitaciones</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3+</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="filter-item">
-                        <label className="legend">Superfície</label>
-                        <div>
-                            <select name="" id="">
-                                <option>Todas</option>
-                                <option>40m2</option>
-                                <option>60m2</option>
-                                <option>80m2</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="filter-item">
-                        <label className="legend">Fecha de publicación</label>
-                        <div>
-                            <select name="" id="">
-                                <option>Todas las ofertas</option>
-                                <option>1semana</option>
-                                <option>1mes</option>
+                            <select name="" id="" onChange={(event) => handleSurface(event.target.value)}>
+                                <option value={0}>Todas</option>
+                                <option value={30}>30m2</option>
+                                <option value={60}>60m2</option>
+                                <option value={90}>90m2</option>
                             </select>
                         </div>
                     </div>
@@ -178,7 +156,7 @@ export const Map = () => {
                     :
                     <>
                         {store.flats.map((item, key) =>
-                            <Flats key={key} item={item} filters={{ radio, price, rooms, surface, date }} />
+                            <Flats key={key} item={item} filters={{ radio, price, surface }} />
                         )}
                     </>
                 }

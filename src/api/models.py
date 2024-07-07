@@ -85,8 +85,8 @@ class Rooms(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     title = db.Column(db.String() , nullable = False)
     description = db.Column(db.String() , nullable=False, unique=False)
-    square_meters = db.Column(db.Float() , nullable = False)
     price = db.Column(db.Float() , nullable = False)
+    square_meters = db.Column(db.Float(), nullable = False)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
     id_assigned_student = db.Column(db.Integer() , db.ForeignKey('students.id'))
@@ -104,8 +104,8 @@ class Rooms(db.Model):
         return {"id": self.id,
             "title": self.title,
             "description": self.description,
-            "square_meters": self.square_meters,
             "price" : self.price,
+            "square_meters": self.square_meters,
             "id_flat" : self.id_flat,
             "id_assigned_student" : self.id_assigned_student, 
             "publication_date" : self.publication_date,
