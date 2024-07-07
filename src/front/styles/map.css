@@ -34,4 +34,7 @@
             top: 80px;
         }
     }
+    .photo-container {
+        height: 200px;
+    }
 }
