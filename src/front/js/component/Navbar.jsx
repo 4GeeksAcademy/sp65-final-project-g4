@@ -32,38 +32,38 @@ export const Navbar = () => {
 					<span>Chats</span>
 				</Link>
 				{store.isLogedIn ?
-					<div class="dropdown">
-						<button class="btn btn-custom red-background dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<div className="dropdown">
+						<button className="btn btn-custom red-background dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Menú
 							<span className="profile-picutre"><img src={store.userData.profile_picture != null ? store.userData.profile_picture : profilePicture} /></span>
 						</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">
-								<Link to="/dashboard">
+						<ul className="dropdown-menu">
+							<li>
+								<Link className="dropdown-item" to="/dashboard">
 									<span className="red-color">Perfil</span>
 								</Link>
-							</a></li>
-							<li><a class="dropdown-item" href="#">
+							</li>
+							<li>
 								{store.userData.is_student ?
-									<Link to="/favorites">
+									<Link className="dropdown-item" to="/favorites">
 										<span className="red-color">Favoritos</span>
 									</Link>
 									:
-									<Link to="/myflats">
+									<Link className="dropdown-item" to="/myflats">
 										<span className="red-color">Mis pisos</span>
 									</Link>
 								}
-							</a></li>
-							<li><a class="dropdown-item" href="#">
-								<Link to="/chats/1">
+							</li>
+							<li>
+								<Link className="dropdown-item" to="/chats/1">
 									<span className="red-color">Mensajes</span>
 								</Link>
-							</a></li>
-							<li><a class="dropdown-item" href="#">
-								<Link to="/">
+							</li>
+							<li>
+								<Link className="dropdown-item" to="/">
 									<button className="btn-custom red-background" onClick={handleLogout}> <i className="fas fa-sign-out-alt"></i> Desconectar</button>
 								</Link>
-							</a></li>
+							</li>
 						</ul>
 					</div>
 
