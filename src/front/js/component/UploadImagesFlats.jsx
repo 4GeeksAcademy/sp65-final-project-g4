@@ -5,12 +5,17 @@ export const UploadImagesFlats = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const { store, actions } = useContext(Context);
+  const [description, setDescription] = useState('');
+	const [address, setAddress] = useState('');
+	const [postal_code, setPostal_code] = useState('');
+	const [city, setCity] = useState('');
+	const [albumId, setAlbumId] = useState('');
 
   const getLastFlatID = () => {
     if (store.flats.length > 0) {
       return store.flats[store.flats.length - 1].results.id;
     }
-    return null; // or any fallback value if there are no flats
+    return null; 
   }
 
 
@@ -20,11 +25,11 @@ export const UploadImagesFlats = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const flatID = getLastFlatID(); // Get the last flat ID
+    const flatID = getLastFlatID(); 
     if (selectedFile && flatID) {
       const formData = new FormData();
       formData.append("img", selectedFile);
-      const url = `${process.env.BACKEND_URL}/api/photoflats/${flatID}`; // Use the flat ID in the URL
+      const url = `${process.env.BACKEND_URL}/api/photoflats/${flatID}`; 
       const options = {
         method: "POST",
         headers: {
@@ -53,10 +58,10 @@ export const UploadImagesFlats = () => {
   const storePicture = async (url) => {
     const response = await fetch(`${process.env.BACKEND_URL}/api/albums`, {
       method: "POST",
-      body: JSON.stringify({ "url_album_cloudinary": url }), // Correct key
+      body: JSON.stringify({ "url_album_cloudinary": url }),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${store.accessToken}` // Add authorization if required
+        'Authorization': `Bearer ${store.accessToken}`
       },
     });
 
@@ -72,7 +77,7 @@ export const UploadImagesFlats = () => {
 
   const getCurrentFlatID = () => {
     if (store.flats.length > 0) {
-      return store.flats[store.flats.length - 1].id;
+      return store.flats[store.flats.length - 1].results.id;
     }
     return null; 
   }
@@ -91,6 +96,7 @@ export const UploadImagesFlats = () => {
     if (response.ok) {
       const data = await response.json();
       console.log("Flat updated successfully", data);
+      actions.setAlbumId(data.albumID)
     } else {
       console.log("Error updating flat", response.status, response.statusText);
     }
@@ -103,6 +109,15 @@ export const UploadImagesFlats = () => {
   const handleAddImg = () => {
     actions.createAlbum();
   };
+
+  const initializeFlatData = () => {
+		setName(store.userData.landlord_name);
+		setLastname(store.userData.landlord_lastname);
+		setBirthDate(store.userData.birth_Date);
+		setDni(store.userData.dni);
+		setPhoneNumber(store.userData.phone_number);
+		setUrlImage(store.userData.profile_picture)
+	}
 
   return (
     <div className="container mt-5 d-flex justify-content-center">

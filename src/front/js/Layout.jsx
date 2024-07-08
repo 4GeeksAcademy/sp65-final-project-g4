@@ -21,7 +21,10 @@ import { FlatProfile } from "./pages/flatProfile.jsx";
 import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
 import { LOPDPG } from "./pages/LOPDPG.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
+import { UploadFlatsModified } from "./pages/UploadFlatsModified.jsx";
+import { UploadRooms } from "./pages/UploadRooms.jsx";
 import { RoomProfile } from "./pages/roomProfile.jsx";
+
 
 
 
@@ -39,6 +42,9 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+
+                    </Routes>
+
                     <div className="container-custom">
                         <Routes>
                             <Route element={<Home />} path="/" />
@@ -56,8 +62,11 @@ const Layout = () => {
                             <Route element={<UploadNewFlat />} path="/uploadFlat" />
                             <Route element={<LOPDPG />} path="/LPD" />
                             <Route element={<Contacto />} path="/contact" />
+                            <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
+                            <Route element= {<UploadRooms/>} path="/uploadroom" />
                         </Routes>
                     </div>
+
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>

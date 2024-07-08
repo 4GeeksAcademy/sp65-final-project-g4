@@ -33,7 +33,7 @@ export const UploadImagesUsers = () => {
         alert("Your picture has been sucessfully uploaded")
       } else {
         console.log("Error uploading picture", response.status, response.statusText)
-        alert("Error! Your picture has not been uploaded")
+        alert("Error! Tu no imagen no se ha subido")
       }
     } else {
       alert('Please, select a file to upload');

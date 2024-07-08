@@ -11,6 +11,7 @@ export const UploadNewFlat = () => {
         address: "",
         postal_code: "",
         city: "",
+        
     });
    
     const handleNext = (step) => {
@@ -24,6 +25,8 @@ export const UploadNewFlat = () => {
     const handleSave = () => {
         console.log("Saving data...", formData);
         actions.createNewFlat(formData);
+        actions.setEditingFlat(formData);
+        console.log(store.editingFlat);
     };
     
 
