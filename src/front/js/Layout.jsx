@@ -42,9 +42,6 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
-
-                    </Routes>
-
                     <div className="container-custom">
                         <Routes>
                             <Route element={<Home />} path="/" />
@@ -66,7 +63,6 @@ const Layout = () => {
                             <Route element= {<UploadRooms/>} path="/uploadroom" />
                         </Routes>
                     </div>
-
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>
