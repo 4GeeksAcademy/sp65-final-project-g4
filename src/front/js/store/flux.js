@@ -29,10 +29,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			albumId: "",
 			// Rooms
 			rooms: [],
-			editingRoom: [],
 			roomId: [],
 			roomId: sessionStorage.getItem('roomId') ? sessionStorage.getItem('roomId') : '',
 			currentRoom: sessionStorage.getItem('currentRoom') ? sessionStorage.getItem('currentRoom') : '',
+			editingRoom: [],
+
 		},
 		actions: {
 			getMessage: async () => {
@@ -228,8 +229,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-
-
 			setEditingRoom: (editRoom) => {
 				setStore({ editingRoom: editRoom })
 			},
@@ -301,10 +300,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setEditingFlat: (editFlat) => {
 				setStore({ editingFlat: editFlat })
 			},
-
-
-
-
 
 			createAlbum: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/albums`;

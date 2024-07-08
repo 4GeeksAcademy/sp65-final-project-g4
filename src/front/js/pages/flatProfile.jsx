@@ -24,10 +24,17 @@ export const FlatProfile = () => {
                     <div className="photo-container">
                         <PhotoGallery userId={store.currentFlat.id} />
                     </div>
-                    <div className="row">
-                        <h2 className="red-color">{store.currentFlat.address}</h2>
-                        <p>{store.currentFlat.description}</p>
+                    <h2 className="red-color">{store.currentFlat.address}</h2>
+                    <p>{store.currentFlat.description}</p>
+                    <div>
+                       {/* {store.currentFlat.id_landlord === store.userData.id_landlord ?
+                        ""
+                        : 
+                        "otra cosa"
+                    } */}
                     </div>
+                    <div>
+
                     <div className="row justify-content-evenly">
                         {!store.rooms.length > 0 ?
                             ""
@@ -50,6 +57,7 @@ export const FlatProfile = () => {
                                                     </div>
                                                 </div>
                                             </div>
+                                            
                                             :
                                             ""
                                         }

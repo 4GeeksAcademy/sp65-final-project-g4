@@ -24,6 +24,9 @@ import { Contacto } from "./pages/Contacto.jsx";
 import { UploadFlatsModified } from "./pages/UploadFlatsModified.jsx";
 import { UploadRooms } from "./pages/UploadRooms.jsx";
 import { RoomProfile } from "./pages/roomProfile.jsx";
+import { MyFlats } from "./pages/myFlats.jsx";
+import { NoAccess } from "./pages/NoAccess.jsx";
+import { AllRooms } from "./pages/Rooms.jsx";
 
 
 
@@ -61,8 +64,13 @@ const Layout = () => {
                             <Route element={<Contacto />} path="/contact" />
                             <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
                             <Route element= {<UploadRooms/>} path="/uploadroom" />
+                            <Route element= {<RoomProfile/>} path="/roomprofile/:theid"/>
+                            <Route element= {<MyFlats/>} path="/myflats"/>
+                            <Route element= {<AllRooms/>} path="/rooms"/>
+                            <Route element= {<UploadImagesFlats/>} path="/imgflats"/>
                         </Routes>
                     </div>
+
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>
