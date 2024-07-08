@@ -7,8 +7,13 @@ body{
     padding-top: 53px;
     min-height: 100vh;
     width: 100%;
+    background-color: #fdfdfd;
   
-}
+    .container-custom {
+        margin: 0 auto;
+        min-height: calc(100vh - 100px);
+    }
+
 p {
     color: #828282;
 }

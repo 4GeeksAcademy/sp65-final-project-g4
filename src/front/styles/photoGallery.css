@@ -4,12 +4,17 @@
         height: 100%;
         .photo-item{
             height: 100%;
-            background-color: #eee;
+            background-color: #f0f0f0;
             img {
                 display: block;
                 height: 100%;
                 margin: 0 auto;
             }
+        }
+        .swiper-button-prev:after, .swiper-button-next:after {
+            color: red;
+            font-size: 20px;
+            text-shadow: 0px 0px 2px #fff
         }
     }
 }
