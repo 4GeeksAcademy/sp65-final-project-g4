@@ -14,6 +14,7 @@ export const RoomProfile = () => {
     return (
         <>
             {store.currentRoom.id == undefined ?
+
                 "Vacio"
                 :
                 <div className="flat-profile-container">
@@ -26,6 +27,7 @@ export const RoomProfile = () => {
                         <PhotoGallery userId={store.currentRoom.id} />}
                     </div>
                     // logica para saber si es el Landlord de este Room para abrir modal de edit
+
                     <h2 className="red-color">{store.currentRoom.title}</h2>
                     <p>{store.currentRoom.description}</p>
                     <p>{store.currentRoom.price}</p>
@@ -35,4 +37,6 @@ export const RoomProfile = () => {
             }
         </>
     );
+
 };
+

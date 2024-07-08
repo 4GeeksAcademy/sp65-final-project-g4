@@ -38,12 +38,13 @@ export const Flats = (props) => {
     };
 
     const filterHandle = (filterOptions) => {
-        if (filterOptions.radio.lat !== 0 && filterOptions.radio.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
+        console.log("hi")
+        if (filterOptions.lat !== 0 && filterOptions.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
             const toRadians = (degrees) => degrees * (Math.PI / 180);
             let lat1 = toRadians(coordinates.lat);
             let lon1 = toRadians(coordinates.lon);
-            let lat2 = toRadians(filterOptions.radio.lat);
-            let lon2 = toRadians(filterOptions.radio.lon);
+            let lat2 = toRadians(filterOptions.lat);
+            let lon2 = toRadians(filterOptions.lon);
             const dLat = lat2 - lat1;
             const dLon = lon2 - lon1;
             const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
@@ -51,15 +52,29 @@ export const Flats = (props) => {
 
             const R = 6371; // Radio de la Tierra en kilómetros
             const calcDistance = R * c;
-            if (calcDistance > filterOptions.radio.distance) setIsVisible(false)
-            return
+            if (calcDistance > filterOptions.distance) setIsVisible(false)
         }
         if (filterOptions.price) {
+            const rooms = store.rooms.filter(room => room.id_flat === props.item.id);
+            let i = 0
 
+            rooms.map(item => {
+                if((filterOptions.price.max < item.price) || (filterOptions.price.min > item.price)) i++
+            })
+            if(i == rooms.length) setIsVisible(false)
         }
         if (filterOptions.surface) {
-            if(filterOptions.surface > props.item.square_meters) setIsVisible(false)
+            const rooms = store.rooms.filter(room => room.id_flat === props.item.id);
+            let i = 0
+            rooms.map(item => {
+                if(filterOptions.surface > item.square_meters) i++
+            })
+            if(i == rooms.length) setIsVisible(false)
         }
+    }
+    
+    const handleFlat = (id) => {
+        actions.setFlatId(id)
     }
 
     useEffect(() => {
@@ -81,7 +96,7 @@ export const Flats = (props) => {
                         <div className="photo-container">
                             <PhotoGallery userId={props.item.id} />
                         </div>
-                        <Link to={`/FlatProfile/${props.item.id}`} onClick={() => handleFlat(props.item.id)}>
+                        <Link id={props.item.id} to={`/FlatProfile/${props.item.id}`} onClick={() => handleFlat(props.item.id)}>
 
                             <h3 className='red-color'>{props.item.address}</h3>
                             <p>{props.item.description.substring(0, 50)}...</p>
@@ -93,7 +108,7 @@ export const Flats = (props) => {
                                         <>
                                             {item.id_flat === props.item.id ?
                                                 <div>
-                                                    <p className={'price'+props.item.id}>{item.price}€</p>
+                                                    <p className='price'>{item.price}€</p>
                                                 </div>
                                                 :
                                                 ""

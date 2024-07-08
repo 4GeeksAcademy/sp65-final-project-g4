@@ -1,7 +1,5 @@
 .flat-profile-container {
     width: 80%;
-    margin: 0 auto;
-    padding-top: 35px;
     margin: 0 auto 70px;
     padding: 35px 0 0;
     min-height: calc(100vh - 303px);

@@ -29,7 +29,8 @@ export const UploadImagesUsers = () => {
         const data = await response.json();
         setImageUrl(data.img_url);
         console.log("Sucessful uploading", data.img_url)
-        alert("Tu imagen se ha cargado correctamente")
+        actions.settingLastProfPicUrl(data.img_url)
+        alert("Your picture has been sucessfully uploaded")
       } else {
         console.log("Error uploading picture", response.status, response.statusText)
         alert("Error! Tu no imagen no se ha subido")
@@ -54,19 +55,19 @@ export const UploadImagesUsers = () => {
   }
 
   return (
-    <div className="container mt-5 d-flex justify-content-center">
-      <div className='col-5'>
-        <h2 className="mb-4 display-6 text-center">Upload user pictures</h2>
+    <div className="container mt-3 justify-content-center">
+      <div className='col-12 justify-content-center'>
+        <p className="mb-4 text-center red-color">¡Sube tu foto de perfil!</p>
         <form onSubmit={handleSubmit}>
-          <div className="form-group mb-3">
+          <div className="mb-3">
             <input
               type="file"
-              className="form-control"
+              className="form-control-sm"
               onChange={handleFileChange}
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn btn-primary">Upload picture</button>
+          <button type="submit" className="btn-custom red-background justify-content-center">Upload picture</button>
         </form>
         <img src={imageUrl}></img>
       </div>

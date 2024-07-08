@@ -11,53 +11,55 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 	const { t, i18n } = useTranslation();
 
-	if(store.flats.length>0){
-		store.flats[store.flats.length-1].id
+	const handleFlat = (id) => {
+		actions.setFlatId(id)
 	}
 
-
-	const handleFlat = (id) => {
-        actions.setFlatId(id)
-    }
-
 	return (
-		<div className="container-custom">
-			<div className="image-container">
-				<img src={mapImageUrl} />
-				<div className="title-container">
-					<h1 className="red-color">{t('title')}</h1>
-					<h2 className="red-color"> {t('description')}</h2>
-					<Link to="/map">
-						<button className="btn-custom red-background">Ver Mapa</button>
-					</Link>
+		<div className="home-container">
+			<div className="row justify-content-center">
+				<div className="col-9">
+					<div className="image-container">
+						<img src={mapImageUrl} />
+						<div className="title-container">
+							<h1 className="red-color">{t('title')}</h1>
+							<h2 className="red-color"> {t('description')}</h2>
+							<Link to="/map">
+								<button className="btn-custom red-background">Ver Mapa</button>
+							</Link>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			{!store.flats.length>0 ?
+
+			{!store.flats.length > 0 ?
 				""
 				:
-				<div className="pisos-container section-custom">
+				<div className="row justify-content-between section-custom">
 					<h2 className="red-color">Pisos Recientes</h2>
-					<div className="piso-container">
-						{store.flats.map((item, key) =>
-							<div key={key} className="piso">
+					{store.flats.slice(0, 3).map((item, key) =>
+						<div className="col-4">
+							<div className="piso-container">
 								<div className="photo-container">
-									<PhotoGallery userId={item.id}/>
+									<PhotoGallery userId={item.id} />
 								</div>
-								<h3 className="red-color">{item.address}</h3>
-								<p>{item.description.substring(0, 50)}...</p>
-								<Link to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>
-									<button className="btn-custom red-background">Ver Piso</button>
-								</Link>
+								<div key={key} className="piso">
+									<h3 className="red-color">{item.address}</h3>
+									<p>{item.description.substring(0, 50)}...</p>
+									<Link to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>
+										<button className="btn-custom red-background">Ver Piso</button>
+									</Link>
+								</div>
 							</div>
-						)}
-					</div>
+						</div>
+					)}
 				</div>
+
 			}
 
-
 			<div className="section-custom justify-content-center">
-				<Contacto/>
+				<Contacto />
 			</div>
 		</div>
 	);

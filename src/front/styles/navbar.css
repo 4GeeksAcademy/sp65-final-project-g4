@@ -1,14 +1,15 @@
 .navbar-custom {
     padding: 12px 50px;
-    background-color: rgba(0,0,0,0.8);
+    color: #000;
+    background-color: rgba(230,230,230,0.9);
     display: flex;
-    position: fixed;
     height: 53px;
-    top: 0;
-    left: 0px;
     width: 100%;
     justify-content: space-between;
     z-index: 100;
+    .custom-link-container {
+        display: flex;
+    }
     .profile-picutre img {
         margin: 0 5px;
         width: 25px;
@@ -16,18 +17,42 @@
     button {
         margin: 0 0 0 20px;
     }
+
     a {
         margin: 0 10px;
-        color: #fff;
+        color: #000;
         transition: all .3s;
+
         &:hover {
             color: #BF0000;
         }
-        .red-color{
+
+        .red-color {
             transition: all .3s;
+
             &:hover {
                 color: #fff;
             }
         }
+    }
+     
+    .square-container {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .square-container img {
+        position: absolute;
+        min-width: 100%;
+        min-height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 }
