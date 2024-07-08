@@ -1,4 +1,4 @@
-import React, { useState, useContext, startTransition  } from "react";
+import React, { useState, useContext, startTransition } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 import banderaIng from "../../img/bandera-ing.png";
@@ -10,15 +10,15 @@ export const Footer = () => {
 	const { t, i18n } = useTranslation();
 	const changeLanguage = (lng) => {
 		startTransition(() => {
-		  i18n.changeLanguage(lng);
+			i18n.changeLanguage(lng);
 		});
-	  };
+	};
 
 	return (
 		<footer className="footer-custom">
 			<div className="container">
 				<div className="row">
-					<div className="w-20 footer-custom-menu-left px-0 col-4">
+					<div className="footer-custom-menu-left px-0 col-4">
 						<div>
 							<Link to="/">
 								<span className="navbar-brand mb-0 h1 red-color">RentUni</span>
@@ -34,17 +34,17 @@ export const Footer = () => {
 							<a href="#"><img src={banderaIng} onClick={() => changeLanguage('en')} /></a>
 						</div>
 					</div>
-					<div className="w-20  col-4">
-						<h3 className="red-color">Información</h3>
+					<div className="col-4">
+						<h5 className="red-color">Información</h5>
 						<Link to="/LPD">
 							Protección de datos
 						</Link>
 					</div>
-					<div className="w-20  col-4">
-							<h3 className="red-color">Contacto</h3>
-							<Link to="contact">
-								Formulario de contacto
-							</Link>
+					<div className="col-4">
+						<h5 className="red-color">Contacto</h5>
+						<Link to="contact">
+							Formulario de contacto
+						</Link>
 					</div>
 				</div>
 			</div>
