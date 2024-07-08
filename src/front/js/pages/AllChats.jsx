@@ -6,19 +6,17 @@ export const AllChats = () => {
 
     const {store , actions} = useContext(Context)
 
-
-    
-    useEffect(() => {
-        actions.getAllChats();
-      }, []);
-    
+  
 
     return(
     <>
             {!store.chats ?
-            ""
+
+            "No hay chats"
             :
+            
             <>
+            
              {store.chats.map((item, index) =>   
              <Link
              to={`/chats/${item.id}`} 

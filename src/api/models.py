@@ -232,7 +232,7 @@ class Chats(db.Model):
                 'chat_id': chat.id,
                 'student_name': chat.to_student_id.name,
                 'landlord_name': chat.to_landlord_id.name,
-                'last_message': last_message.message if last_message else None,
+                'last_message': last_message.message,
                 'last_message_timestamp': last_message.timestamp if last_message else None})
         return chat_list
 

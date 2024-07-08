@@ -21,6 +21,8 @@ import { FlatProfile } from "./pages/flatProfile.jsx";
 import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
 import { LOPDPG } from "./pages/LOPDPG.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
+import { UploadFlatsModified } from "./pages/UploadFlatsModified.jsx";
+import { UploadRooms } from "./pages/UploadRooms.jsx";
 
 
 
@@ -47,12 +49,14 @@ const Layout = () => {
                         <Route element={<h1 style={{"textAlign":"center"}}>Not found!</h1>} path="*"/>
                         <Route element= {<Signup/>} path="/signup" />
                         <Route element= {<UploadImagesFlats/>} path="/uploadimg" />
-                        <Route element= {<Chats/>} path="/chats/:id" />
+                        <Route element= {<Chats/>} path="/chats/:theid" />
                         <Route element= {<Dashboard/>} path="/dashboard" />
                         <Route element= {<FlatProfile/>} path="/FlatProfile/:theid" />
-                        <Route element= {<UploadNewFlat/>} path="/uploadFlat" />
                         <Route element= {<LOPDPG/>} path="/LPD" />
                         <Route element= {<Contacto/>} path="/contact" />
+                        <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
+                        <Route element= {<UploadRooms/>} path="/uploadroom" />
+
 
                     </Routes>
                     <Footer />

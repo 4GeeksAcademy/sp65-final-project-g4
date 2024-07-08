@@ -1,11 +1,12 @@
 import React from "react";
+import "../../styles/notfound.css";
 
 export const NoAccess = () => {
 
 
     return(
-        <div style={{"textAlign":"center"}} className="container-flex px-5">
-        <h1> ¡Página no encontrada! </h1>
+        <div className="content-block d-flex justify-content-center">
+        <h1 style={{"textAlign":"center"}} className="red-color d-flex"> ¡Página no encontrada! </h1>
         </div>
 
     )

@@ -29,10 +29,10 @@ export const UploadImagesUsers = () => {
         const data = await response.json();
         setImageUrl(data.img_url);
         console.log("Sucessful uploading", data.img_url)
-        alert("Your picture has been sucessfully uploaded")
+        alert("Tu imagen se ha cargado correctamente")
       } else {
         console.log("Error uploading picture", response.status, response.statusText)
-        alert("Error! Your picture has not been uploaded")
+        alert("Error! Tu no imagen no se ha subido")
       }
     } else {
       alert('Please, select a file to upload');

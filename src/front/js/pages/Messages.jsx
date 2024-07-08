@@ -7,12 +7,15 @@ export const Messages = () => {
     const [message, setMessage] = useState("");
     const { id } = useParams();
 
-
     useEffect(() => {
-        actions.setChatId(id);
-        actions.getMessagesWithChatId();
+        if (id) {
+            console.log("Component mounted, setting chat ID:", id);
+            actions.setChatId(id);
+            actions.getMessagesWithChatId();
+        } else {
+            console.log("Chat ID is undefined");
+        }
     }, [id]);
-
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
@@ -24,6 +27,7 @@ export const Messages = () => {
                 chat_id: id,
                 message: message
             };
+            console.log("Sending message:", dataToSend);
             await actions.postNewMessage(dataToSend);
             setMessage("");
         }
@@ -51,8 +55,8 @@ export const Messages = () => {
                        placeholder="Escribe un mensaje nuevo"
                     ></textarea>
                 </div>
-                <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>Send</button>
+                <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>Enviar</button>
             </div>
-        </>
+    </>
     );
 };

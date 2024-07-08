@@ -12,7 +12,7 @@ export const Home = () => {
 	const { t, i18n } = useTranslation();
 
 	if(store.flats.length>0){
-		console.log(store.flats[store.flats.length-1].id)
+		store.flats[store.flats.length-1].id
 	}
 
 

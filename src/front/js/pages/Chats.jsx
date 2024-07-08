@@ -11,12 +11,12 @@ export const Chats = () => {
 return (
     <div className="container mt-5 pt-25"> 
     <div className="row ">
-        <div className="col-4 ps-0 overflow-auto">
-        <h3>Chats</h3>
+        <div className="col-lg-4 col-md-4 col-sm-12 ps-0 overflow-auto">
+        <h3 className="red-color">Conversaciones</h3>
             <AllChats />        
         </div>
-        <div className="col-8 pr-0 ">
-        <h3> Conversation</h3>
+        <div className="col-lg-8 col-md-8 col-sm-12 pr-0 ">
+        <h3 className="red-color"> Mensajes </h3>
             < Messages/>
         </div>
       {/*   
