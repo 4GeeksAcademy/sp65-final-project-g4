@@ -21,6 +21,13 @@ export const FlatProfile = () => {
                     <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
                     <div>
+                        {store.currentFlat.id_landlord === store.userData.id_landlord ?
+                        ""
+                        : 
+                        "otra cosa"
+                    }
+                    </div>
+                    <div>
                         {!store.rooms.length > 0 ?
                             ""
                             :
@@ -32,6 +39,7 @@ export const FlatProfile = () => {
                                                 <h3>{item.title}</h3>
                                                 <p>{item.description}</p>
                                             </div>
+                                            
                                             :
                                             ""
                                         }

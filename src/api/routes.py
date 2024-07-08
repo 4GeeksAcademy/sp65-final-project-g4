@@ -351,31 +351,37 @@ def handle_rooms():
     response_body['results'] = results
     response_body['message'] = 'Rooms list'
     return response_body, 200
- 
 
-@api.route('/rooms' , methods=['POST'])
+ 
+@api.route('/rooms', methods=['POST'])
 @jwt_required()
 def handle_rooms_post():
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
-    if Landlords.id == current_landlord:
-        data = request.json
-        row = Rooms()
-        row.title = data['title']
-        row.description = data['description']
-        row.price = data['price']
-        row.square_meters = data['square_meters']
-        row.id_flat = data['id_flat']
-        row.publication_date = datetime.today()
-        row.image_url_1 = data['image_url_1']
-        row.image_url_2 = data['image_url_2']
-        row.flat_img = data['flat_img']
-        db.session.add(row)
-        db.session.commit()
-        response_body['results'] = row.serialize()
-        response_body['message'] = 'Room posted'
-        return response_body, 200
+    data = request.json
+    id_flat = data.get('id_flat')
+    if not id_flat:
+        return {"message": "id_flat is required"}, 400
+    flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlor)).scalar()
+    if flat is None:
+        return {"message": "Flat not found or you do not have permission to post rooms to this flat"}, 403
+    row = Rooms(
+        title=data['title'],
+        description=data['description'],
+        price=data['price'],
+        square_meters=data['square_meters'],
+        id_flat=id_flat,
+        publication_date=datetime.today(),
+        image_url_1=data['image_url_1'],
+        image_url_2=data['image_url_2'],
+        flat_img=data['flat_img']
+    )
+    db.session.add(row)
+    db.session.commit()
+    response_body['results'] = row.serialize()
+    response_body['message'] = 'Room posted'
+    return response_body, 200
 
 
 @api.route('/rooms/<int:room_id>', methods=['GET'])

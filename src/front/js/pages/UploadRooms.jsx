@@ -14,10 +14,11 @@ export const UploadRooms = () => {
         image_url_1: "",
         image_url_2: "",
         flat_img: "",     
-        id_flat: store.currentFlat,   
+        id_flat: store.roomID,   
     });
 
-    
+    const roomID = store.roomID
+    console.log(roomID);
 
 
     const handleSubmit = () => {
@@ -25,11 +26,13 @@ export const UploadRooms = () => {
         actions.createNewRoom(formData);
         actions.setEditingRoom(formData);
         console.log(store.setEditingRoom);
-        const newRoom = store.rooms[store.rooms.length - 1];
+        navigate(`RoomProfiles/${roomID}`)
+        
+        /* const newRoom = store.rooms[store.rooms.length - 1];
         if (newRoom) {
-            const roomId = (newRoom.id)+1;
+            const roomId = (newRoom.id)+1; */
             /* navigate(`/RoomProfiles/${roomId}`); */
-    };
+
 };
     
 

@@ -28,8 +28,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			albumId: "",
 			// Rooms
 			rooms: [],
+			roomId: sessionStorage.getItem('roomId') ? sessionStorage.getItem('roomId') : '',
+			currentRoom: sessionStorage.getItem('currentRoom') ? sessionStorage.getItem('currentRoom') : '',
 			editingRoom: [],
-			roomId: [],
+			editingRoomId: [],
 		},
 		actions: {
 			getMessage: async () => {
@@ -241,6 +243,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json()
 				setStore({ rooms: data.results });
+			},
+
+			setRoomId: (id) => {
+				setStore({ roomId: id })
+				sessionStorage.setItem('roomId', id)
+			},
+
+			getRoomId: async () => {
+				const url = `${process.env.BACKEND_URL}/api/rooms/${getStore().roomId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log("Error");
+					return
+				}
+				const data = await response.json();
+				setStore({ currentRoom: data.results });
+				sessionStorage.setItem('currentRoom', JSON.stringify(data.results))
 			},
 
 			createNewRoom: async (dataToSend) => {

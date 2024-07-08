@@ -23,6 +23,10 @@ import { LOPDPG } from "./pages/LOPDPG.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
 import { UploadFlatsModified } from "./pages/UploadFlatsModified.jsx";
 import { UploadRooms } from "./pages/UploadRooms.jsx";
+import { RoomProfile } from "./pages/roomProfile.jsx";
+import { MyFlats } from "./pages/myFlats.jsx";
+import { NoAccess } from "./pages/NoAccess.jsx";
+import { AllRooms } from "./pages/Rooms.jsx";
 
 
 
@@ -46,7 +50,7 @@ const Layout = () => {
                         <Route element={<Login />} path="/login" />
                         <Route element={<Map />} path="/map" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1 style={{"textAlign":"center"}}>Not found!</h1>} path="*"/>
+                        <Route element={<NoAccess/>} path="*"/>
                         <Route element= {<Signup/>} path="/signup" />
                         <Route element= {<UploadImagesFlats/>} path="/uploadimg" />
                         <Route element= {<Chats/>} path="/chats/:theid" />
@@ -56,6 +60,14 @@ const Layout = () => {
                         <Route element= {<Contacto/>} path="/contact" />
                         <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
                         <Route element= {<UploadRooms/>} path="/uploadroom" />
+                        <Route element= {<RoomProfile/>} path="/roomprofile/:theid"/>
+                        <Route element= {<MyFlats/>} path="/myflats"/>
+                        <Route element= {<AllRooms/>} path="/rooms"/>
+                        <Route element= {<UploadImagesFlats/>} path="/imgflats"/>
+                        
+
+
+
 
 
                     </Routes>

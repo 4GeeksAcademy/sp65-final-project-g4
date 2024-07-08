@@ -91,6 +91,16 @@ h3 {
         text-decoration: underline }
     }
 
+    .detalles {
+    color: #BF0000;
+    border: none;
+    background-color: white;
+    float: inline-end;
+    margin: auto 0;
+    a:hover {
+        color:#3e3e3e }
+    }
+
     .action-btn-left {
         float: inline-start;
     }
