@@ -363,7 +363,7 @@ def handle_rooms_post():
     id_flat = data.get('id_flat')
     if not id_flat:
         return {"message": "id_flat is required"}, 400
-    flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlor)).scalar()
+    flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlord)).scalar()
     if flat is None:
         return {"message": "Flat not found or you do not have permission to post rooms to this flat"}, 403
     row = Rooms(

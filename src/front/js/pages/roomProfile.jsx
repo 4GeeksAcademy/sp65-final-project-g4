@@ -19,14 +19,14 @@ export const RoomProfile = () => {
                 :
                 <div className="flat-profile-container">
                     <div className="photo-container">
-                    // logica para saber si es el Landlord de este Room para abrir modal de upload
-                    {!item.image_url_1 || !item.image_url_2 ? 
+                    {/* // logica para saber si es el Landlord de este Room para abrir modal de upload */}
+                    {/* {!item.image_url_1 || !item.image_url_2 ? 
 
                           "Upload img button send to modal"
-                         : 
-                        <PhotoGallery userId={store.currentRoom.id} />}
+                         :  } */}
+                        <PhotoGallery userId={store.currentRoom.id} />
                     </div>
-                    // logica para saber si es el Landlord de este Room para abrir modal de edit
+                    {/* // logica para saber si es el Landlord de este Room para abrir modal de edit */}
 
                     <h2 className="red-color">{store.currentRoom.title}</h2>
                     <p>{store.currentRoom.description}</p>

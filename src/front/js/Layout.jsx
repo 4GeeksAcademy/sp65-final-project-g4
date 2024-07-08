@@ -52,18 +52,17 @@ const Layout = () => {
                             <Route element={<Login />} path="/login" />
                             <Route element={<Map />} path="/map" />
                             <Route element={<Single />} path="/single/:theid" />
-                            <Route element={<h1 style={{ "textAlign": "center" }}>Not found!</h1>} path="*" />
+                            <Route element={<NoAccess/>} path="*" />
                             <Route element={<Signup />} path="/signup" />
                             <Route element={<UploadImagesFlats />} path="/uploadimg" />
                             <Route element={<Chats />} path="/chats/:id" />
                             <Route element={<Dashboard />} path="/dashboard" />
                             <Route element={<RoomProfile />} path="/RoomProfile/:theid" />
                             <Route element={<FlatProfile />} path="/FlatProfile/:theid" />
-                            <Route element={<UploadNewFlat />} path="/uploadFlat" />
                             <Route element={<LOPDPG />} path="/LPD" />
                             <Route element={<Contacto />} path="/contact" />
                             <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
-                            <Route element= {<UploadRooms/>} path="/uploadroom" />
+                            <Route element= {<UploadRooms/>} path="/uploadroom/:theid" />
                             <Route element= {<RoomProfile/>} path="/roomprofile/:theid"/>
                             <Route element= {<MyFlats/>} path="/myflats"/>
                             <Route element= {<AllRooms/>} path="/rooms"/>

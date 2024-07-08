@@ -18,6 +18,10 @@ export const MyFlats = () => {
 
     const myFlats = store.flats.filter(flat => flat.id_landlord === currentUser.id_landlord);
 
+    const handleFlat = (id) => {
+		actions.setFlatId(id)
+	}
+
     useEffect(() => {
         actions.getFlats();
     }, []);
@@ -39,7 +43,7 @@ export const MyFlats = () => {
                                     <p>{item.city}</p>
                                     <p>{item.description}</p>
                                 </div>
-                                <Link to={`/FlatProfile/${item.id}`} className="detalles mt-1 mb-4"><strong>Ver detalles</strong></Link>
+                                <Link to={`/FlatProfile/${item.id}`} className="detalles mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>Ver detalles</strong></Link>
                             </div>
                         </div>
                     ))}

@@ -26,15 +26,8 @@ export const FlatProfile = () => {
                     </div>
                     <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
-                    <div>
-                       {/* {store.currentFlat.id_landlord === store.userData.id_landlord ?
-                        ""
-                        : 
-                        "otra cosa"
-                    } */}
-                    </div>
-                    <div>
-
+                    <Link to={`/uploadroom/${store.currentFlat.id}`}> Añadir habitación </Link>    
+                                   
                     <div className="row justify-content-evenly">
                         {!store.rooms.length > 0 ?
                             ""
@@ -51,6 +44,7 @@ export const FlatProfile = () => {
                                                     <div key={key} className="room">
                                                         <h3>{item.title}</h3>
                                                         <p>{item.description}</p>
+                                                        
                                                         <Link to={`/RoomProfile/${item.id}`} onClick={() => handleRoom(item.id)}>
                                                             <button className="btn-custom red-background">Ver Habitacion</button>
                                                         </Link>
