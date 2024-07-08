@@ -3,14 +3,19 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_jwt_extended import JWTManager
+from datetime import timedelta
 from api.utils import APIException, generate_sitemap
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from api.models import db
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # from models import Person
 
 
@@ -18,9 +23,24 @@ from api.models import db
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+CORS(app)
 app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 jwt = JWTManager(app)
+
+
+app.config['CLOUD_NAME'] = os.getenv("CLOUD_NAME")
+app.config['API_KEY'] = os.getenv("API_KEY")
+app.config['API_SECRET'] = os.getenv("API_SECRET")
+
+
+cloudinary.config( 
+  cloud_name = app.config['CLOUD_NAME'],  
+  api_key = app.config['API_KEY'], 
+  api_secret = app.config['API_SECRET'],
+  secure = True
+)
 
 # Database condiguration
 db_url = os.getenv("DATABASE_URL")

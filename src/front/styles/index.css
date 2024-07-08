@@ -1,27 +1,164 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
-body{
+body {
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
     color: #828282;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #fdfdfd;
+
+    .container-custom {
+        margin: 0 auto;
+        min-height: calc(100vh - 100px);
+    }
 }
-h1{
+
+p {
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
     font-size: 64px;
 }
-h2{
+
+h2 {
     font-size: 32px;
 }
+
 h3 {
     font-size: 22px;
 }
+
 .red-color {
     color: #BF0000;
 }
+
 .red-background {
     background-color: #BF0000;
 }
-.btn-custom{
+
+.btn-custom {
     padding: 5px 10px;
     border-radius: 10px;
+    border: 1px solid transparent;
+    color: #fff;
+    transition: all .3s;
+
+    &.red-background:hover {
+        color: #BF0000;
+        background-color: #fff;
+        border: 1px solid #BF0000;
+    }
+
+}
+
+
+#chat-header {
+    height: 30px;
+}
+
+#timestamp {
+    color: #828282;
+    font-size: x-small;
+}
+
+#sendername {
+    color: #3e3e3e;
+    font-size: small;
+}
+
+.chat-cont {
+    height: 300px;
+}
+
+.send-button {
+    float: inline-end;
+}
+
+
+.custom-accordion-button {
+    background-color: grey;
+    color: black;
+    outline: none;
+}
+
+.custom-accordion-button:not(.collapsed) {
+    background-color: grey;
+    color: black;
+}
+
+
+.action-btn-custom {
+    color: #BF0000;
     border: none;
+    background-color: white;
+
+    a:hover {
+        text-decoration: underline
+    }
+}
+
+
+.detalles {
+    color: #BF0000;
+    border: none;
+    margin: auto 0;
+
+    &:hover {
+        color: #3e3e3e
+    }
+}
+
+.action-btn-left {
+    float: inline-start;
+}
+
+
+.action-btn-center {
+    color: #BF0000;
+    border: none;
+    background-color: white;
+    display: block;
+    margin: 0 auto;
+}
+
+.profile-pic-container {
+    max-width: 250px;
+    max-height: 250px;
+    width: auto;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.profile-pic-container img {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.sort-btn-custom {
+    color: #25242463;
+    border: none;
+    background-color: white;
+
+    a:hover {
+       color: #BF0000;
+    }
 }

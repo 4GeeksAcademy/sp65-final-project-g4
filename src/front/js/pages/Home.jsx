@@ -1,27 +1,66 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import { Link } from "react-router-dom";
+import mapImageUrl from "../../img/mapa-bcn.jpg";
 import "../../styles/home.css";
-
+import { useTranslation } from 'react-i18next';
+import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { Contacto } from "./Contacto.jsx";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
+	const { t, i18n } = useTranslation();
+
+	const handleFlat = (id) => {
+		actions.setFlatId(id)
+	}
 
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
+		<div className="home-container">
+			<div className="row justify-content-center">
+				<div className="col-12">
+					<div className="image-container">
+						<img src={mapImageUrl} />
+						<div className="title-container">
+							<h1 className="red-color">{t('title')}</h1>
+							<h2 className="red-color"> {t('description')}</h2>
+							<Link to="/map">
+								<button className="btn-custom red-background">Ver Mapa</button>
+							</Link>
+						</div>
+					</div>
+				</div>
 			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
+
+
+			{!store.flats.length > 0 ?
+				""
+				:
+				<div className="row justify-content-between section-custom">
+					<h2 className="red-color">Pisos Recientes</h2>
+					{store.flats.slice(0, 3).map((item, key) =>
+						<div className="col-lg-4 col-md-6 col-sm-12 mt-4">
+							<div className="piso-container">
+								<div className="photo-container">
+									<PhotoGallery userId={item.id} />
+								</div>
+								<div key={key} className="piso">
+									<h3 className="red-color">{item.address}</h3>
+									<p>{item.description.substring(0, 50)}...</p>
+									<Link className="detalles mt-1 mb-4" to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>
+										<strong>Ver Piso</strong>
+									</Link>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
+
+			}
+
+			<div className="section-custom justify-content-center">
+				<Contacto />
+			</div>
 		</div>
 	);
 };

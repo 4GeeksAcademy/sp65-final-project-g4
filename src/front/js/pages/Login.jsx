@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import "../../styles/login.css";
 
 // 5 Exportar y 2 Crear el componente
 export const Login = () => {
@@ -25,14 +25,14 @@ export const Login = () => {
   const handlePassword = (event) => {
     setPassword(event.target.value)
   }
-  
+
   const handleReset = () => {
     setEmail('');
     setPassword('');
   }
-  
+
   const handleViewPassword = () => setViewPassword(!viewPassword)
-  
+
   const handleSumbit = (event) => {
     event.preventDefault();
     const dataToSend = {
@@ -47,35 +47,34 @@ export const Login = () => {
 
   // 4 última instrucción JS, que retorna un solo elemento HTML
   return (
-    <>  {/* fragment */}
-      <div className="container text-start">
-        <h1>Login</h1>
-        <form onSubmit={handleSumbit}>
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-              value={email} onChange={handleEmail} />  {/* 3.1. value 3.2. onChange */}
-            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-          </div>
+    <div className="login-container card-body">
+      <h2 className="red-color">Login</h2>
+      <form onSubmit={handleSumbit}>
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label red-color">Email: </label>
+          <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+            value={email} onChange={handleEmail} />  {/* 3.1. value 3.2. onChange */}
+          <div id="emailHelp" className="form-text">Nunca compartiremos tu email con nadie.</div>
+        </div>
 
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-            <div className="input-group">
-              <input type={viewPassword ? "text" : "password"} className="form-control" id="exampleInputPassword1"
-                value={password} onChange={handlePassword} />
-              <span className="input-group-text fs-6" onClick={handleViewPassword}>
-                {viewPassword ? <i className="far fa-eye-slash"></i> : <i className="far fa-eye"></i>}
-              </span>
-            </div>
+        <div className="mb-3">
+          <label htmlFor="exampleInputPassword1" className="form-label red-color">Contraseña</label>
+          <div className="input-group">
+            <input type={viewPassword ? "text" : "password"} className="form-control" id="exampleInputPassword1" aria-describedby="passwordHelp"
+              value={password} onChange={handlePassword} />
+            <span className="input-group-text fs-6" onClick={handleViewPassword}>
+              {viewPassword ? <i className="far fa-eye-slash"></i> : <i className="far fa-eye"></i>}
+            </span>
           </div>
+            <div id="passwordHelp" className="form-text">¿No tienes cuenta? <Link to="/signup">Regístrate aquí.</Link></div>
+        </div>
 
-          <button type="submit" className="btn btn-primary mt-3">Submit</button>
-          <button type="reset" className="btn btn-secondary ms-3 mt-3"
-            onClick={handleReset}>
-            Reset
-          </button>
-        </form>
-      </div>
-    </>
+        <button type="submit" className="btn-custom red-background">Submit</button>
+        <button type="reset" className="btn-custom btn-secondary ms-3 mt-3"
+          onClick={handleReset}>
+          Reset
+        </button>
+      </form>
+    </div>
   )
 }
