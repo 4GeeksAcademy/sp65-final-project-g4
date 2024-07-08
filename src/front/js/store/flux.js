@@ -10,7 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userName: "",
 			isAdmin: false,
 			users: [],
-			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
+			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',
 			students: [],
 			landlords: [],
 			/* Chats */
@@ -22,6 +22,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userName: "",
 			/* Flats */
 			rooms: [],
+			roomId: sessionStorage.getItem('roomId') ? sessionStorage.getItem('roomId') : '',
+			currentRoom: sessionStorage.getItem('currentRoom') ? sessionStorage.getItem('currentRoom') : '',
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
@@ -38,7 +40,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ message: data.message })
 				return data;  // Don't forget to return something, that is how the async resolves
 			},
-			
+
 			loginUser: async (userData) => {
 				const uri = `${process.env.BACKEND_URL}/api/login`
 				const options = {
@@ -78,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logedIn: (userData) => {
 				setStore({ isLogedIn: true, userEmail: userData.email })
 				setStore({ userData: userData.data })
-				userData.is_student ? setStore({ userName : userData.student_name}) : setStore({ userName : userData.landlord_name}) 
+				userData.is_student ? setStore({ userName: userData.student_name }) : setStore({ userName: userData.landlord_name })
 			},
 
 			oldLogin: () => {
@@ -171,6 +173,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ rooms: data.results });
 			},
 
+			setRoomId: (id) => {
+				setStore({ roomId: id })
+				sessionStorage.setItem('roomId', id)
+			},
+
+			getRoomId: async () => {
+				const url = `${process.env.BACKEND_URL}/api/rooms/${getStore().roomId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+				const response = await fetch(url, options)
+				if (!response.ok) {
+					console.log("Error");
+					return
+				}
+				const data = await response.json();
+				setStore({ currentRoom: data.results });
+				sessionStorage.setItem('currentRoom', JSON.stringify(data.results))
+			},
+
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -214,47 +239,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			createNewFlat: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
-    			const options = {
-        					method: 'POST',
-        					headers: {
-            					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${getStore().accessToken}`
-        					},
-							body: JSON.stringify(dataToSend)
-			}
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${getStore().accessToken}`
+					},
+					body: JSON.stringify(dataToSend)
+				}
 
-			const response = await fetch(url, options);
+				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const newFlat = await response.json();
-				await getActions().getFlats(); 
-    			setStore({ flats: [...getStore().flats, newFlat] });;
+				await getActions().getFlats();
+				setStore({ flats: [...getStore().flats, newFlat] });;
 
 			},
 
 			createAlbum: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/albums`;
-    			const options = {
-        					method: 'POST',
-        					headers: {
-            					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${getStore().accessToken}`
-        					},
-							body: JSON.stringify(dataToSend)
-			}
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${getStore().accessToken}`
+					},
+					body: JSON.stringify(dataToSend)
+				}
 
-			const response = await fetch(url, options);
+				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const newAlbum = await response.json();
-				await getActions().getFlats(); 
-    			setStore({ albums: [...store.albums, newAlbum] });;
+				await getActions().getFlats();
+				setStore({ albums: [...store.albums, newAlbum] });;
 			},
-			
+
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
 				const options = {
@@ -338,7 +363,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						'Authorization': `Bearer ${getStore().accessToken}`
 					}
 				};
-			
+
 				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log('Error: ', response.status, response.statusText);
@@ -347,57 +372,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ allMessages: data.results });
 			},
-			
+
 			setChatId: (id) => {
 				setStore({ chatId: id });
 				sessionStorage.setItem('chatId', id);
 			},
-			
+
 			getMessagesWithChatId: async () => {
 				const chatId = getStore().chatId;
-    			const url = `${process.env.BACKEND_URL}/api/messages/${chatId}`;
-    			const options = {
-        					method: 'GET',
-        					headers: {
-            					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${getStore().accessToken}`
-        					}
-    		};
-			
+				const url = `${process.env.BACKEND_URL}/api/messages/${chatId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${getStore().accessToken}`
+					}
+				};
+
 				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const data = await response.json();
-    			setStore({ currentChat: data.results });
-    			sessionStorage.setItem('currentChat', JSON.stringify(data.results));
+				setStore({ currentChat: data.results });
+				sessionStorage.setItem('currentChat', JSON.stringify(data.results));
 			},
 
 			postNewMessage: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/messages`;
-    			const options = {
-        					method: 'POST',
-        					headers: {
-            					'Content-Type': 'application/json',
-            					'Authorization': `Bearer ${getStore().accessToken}`
-        					},
-							body: JSON.stringify(dataToSend)
-			}
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${getStore().accessToken}`
+					},
+					body: JSON.stringify(dataToSend)
+				}
 
-			const response = await fetch(url, options);
+				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const newMessage = await response.json();
-    			setStore({ allMessages: [...store.allMessages, newMessage] });;
+				setStore({ allMessages: [...store.allMessages, newMessage] });;
 				console.log(newMessage);
 				getActions().getMessagesWithChatId();
-		},
-	}
+			},
+		}
 	};
-	};
+};
 
 
 export default getState;
