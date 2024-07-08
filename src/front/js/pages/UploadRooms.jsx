@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
@@ -13,20 +13,25 @@ export const UploadRooms = () => {
         square_meters: "",
         image_url_1: "",
         image_url_2: "",
-        flat_img: "",     
-        id_flat: store.roomID,   
-    });
+        id_flat: store.currentFlat?.id || "",
+        flat_img: store.currentFlat?.id_album || "", 
+          });
 
-    const roomID = store.roomID
-    console.log(roomID);
+    const handleRoomId = (id) => {
+        actions.setRoomId(id)
+    }
+    
 
+    const handleFlat = (id) => {
+		actions.setFlatId(id)
+      
+	}
 
     const handleSubmit = () => {
         console.log("Saving data...", formData);
         actions.createNewRoom(formData);
-        actions.setEditingRoom(formData);
-        console.log(store.setEditingRoom);
-        navigate(`RoomProfiles/${roomID}`)
+        const roomId = handleRoomId(); 
+        navigate(`/roomprofile/${roomId}`)
         
         /* const newRoom = store.rooms[store.rooms.length - 1];
         if (newRoom) {
@@ -41,14 +46,24 @@ export const UploadRooms = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    useEffect(() => {
+        setFormData((prevData) => ({
+            ...prevData,
+            flat_img: store.currentFlat?.id_album || "",
+            flat_id: store.currentFlat?.id || ""
+        }));
+    }, [store.currentFlat]);
+
+
     return(
         <>
         {store.userData.is_student ? <NoAccess/>
         :
+        <>
         <div className="container mt-3 mb-2">
             <div className="row d-flex justify-content-center ">
                 <div className="col-xsm-12 col-sm-11 col-md-10 col-lg-8 ">
-                        <h3 className="red-color mb-2 mt-2 text-center">Publica tu habitación</h3>
+                        <h3 className="red-color mb-2 mt-2 text-center">Publica una habitación</h3>
                     <div className="card-body">
                         <h6> Título </h6>
                         <input className="form-control mb-3"
@@ -64,7 +79,7 @@ export const UploadRooms = () => {
                             rows="2"
                             type="text"
                             name="description"
-                            placeholder="ej. Con armario amplio, escritorio... "
+                            placeholder="ej. Con armario, escritorio... "
                             value={formData.description}
                             onChange={handleChange}>
                         </textarea>
@@ -77,7 +92,7 @@ export const UploadRooms = () => {
                             placeholder="000"
                             value={formData.price}
                             onChange={handleChange}
-                            aria-label="default input example"/>
+                            />
                         </div>
                         <h6>Metros cuadrados</h6>
                         <input className="form-control mb-3"
@@ -88,11 +103,12 @@ export const UploadRooms = () => {
                             onChange={handleChange}
                             aria-label="default input example"
                             />
-                        <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => handleSubmit()}>Publicar y subir fotos</button>
+                        <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => {handleSubmit(); handleRoomId();}}>Publicar y subir fotos</button>
                         </div>
                 </div>
             </div>
         </div>
+        </>
 }
         </>
     )

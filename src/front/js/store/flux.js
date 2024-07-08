@@ -226,12 +226,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const newRoom = await response.json();
 				await getActions().getRooms();
 				setStore({ rooms: [...getStore().rooms, newRoom] });;
+				setStore({ roomID: newRoom.id });
 
 			},
 
-			setEditingRoom: (editRoom) => {
+			/* setEditingRoom: (editRoom) => {
 				setStore({ editingRoom: editRoom })
-			},
+			}, */
 
 
 			getFlats: async () => {

@@ -26,6 +26,10 @@ export const FlatProfile = () => {
                     </div>
                     <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
+
+                    <Link to={`/uploadroom/${store.currentFlat.id}`}> Añadir habitación </Link>    
+                                   
+
                     <div>
                         {/* {store.currentFlat.id_landlord === store.userData.id_landlord ?
                         ""
@@ -43,6 +47,7 @@ export const FlatProfile = () => {
                             ""
                         }
                     </div>
+
 
                     <div className="row justify-content-evenly">
                         {!store.rooms.length > 0 ?
