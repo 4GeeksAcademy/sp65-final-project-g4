@@ -4,7 +4,7 @@ export const LOPDPG = () => {
 
 
     return (
-        <>
+        <div className="container mt-5">
         <h2>Política de Protección de Datos de RentUni</h2>
 
         <h3>1. Introducción</h3>
@@ -93,6 +93,6 @@ export const LOPDPG = () => {
         
         <p>Si tiene alguna pregunta o inquietud sobre nuestra política de protección de datos o sobre el tratamiento de sus datos personales, no dude en ponerse en contacto con nosotros a través de los datos de contacto proporcionados en la sección 2.</p>
         </p>
-        </>
+        </ div>
     )
 }

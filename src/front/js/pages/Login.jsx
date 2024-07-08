@@ -51,21 +51,22 @@ export const Login = () => {
       <h2 className="red-color">Login</h2>
       <form onSubmit={handleSumbit}>
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label red-color">Email address</label>
+          <label htmlFor="exampleInputEmail1" className="form-label red-color">Email: </label>
           <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             value={email} onChange={handleEmail} />  {/* 3.1. value 3.2. onChange */}
-          <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+          <div id="emailHelp" className="form-text">Nunca compartiremos tu email con nadie.</div>
         </div>
 
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label red-color">Password</label>
+          <label htmlFor="exampleInputPassword1" className="form-label red-color">Contraseña</label>
           <div className="input-group">
-            <input type={viewPassword ? "text" : "password"} className="form-control" id="exampleInputPassword1"
+            <input type={viewPassword ? "text" : "password"} className="form-control" id="exampleInputPassword1" aria-describedby="passwordHelp"
               value={password} onChange={handlePassword} />
             <span className="input-group-text fs-6" onClick={handleViewPassword}>
               {viewPassword ? <i className="far fa-eye-slash"></i> : <i className="far fa-eye"></i>}
             </span>
           </div>
+            <div id="passwordHelp" className="form-text">¿No tienes cuenta? <Link to="/signup">Regístrate aquí.</Link></div>
         </div>
 
         <button type="submit" className="btn-custom red-background">Submit</button>
