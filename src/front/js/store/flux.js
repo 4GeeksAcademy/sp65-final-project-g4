@@ -10,7 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userName: "",
 			isAdmin: false,
 			users: [],
-			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',
+			lastProfilePicUrl: '',
+			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',	
 			students: [],
 			landlords: [],
 			/* Chats */
@@ -80,7 +81,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logedIn: (userData) => {
 				setStore({ isLogedIn: true, userEmail: userData.email })
 				setStore({ userData: userData.data })
-				userData.is_student ? setStore({ userName: userData.student_name }) : setStore({ userName: userData.landlord_name })
+				setStore({ accessToken: userData.access_token})
+				userData.is_student ? setStore({ userName : userData.student_name}) : setStore({ userName : userData.landlord_name}) 
 			},
 
 			oldLogin: () => {
@@ -93,7 +95,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				} else { console.log('No hay usuario logeado') }
 			},
-
+			
+			settingLastProfPicUrl: (imageUrl) => {
+				setStore({ lastProfilePicUrl: imageUrl})
+			},
 			putStudent: async (studentData, token, id) => {
 				const uri = `${process.env.BACKEND_URL}/api/students/${id}`
 				const options = {

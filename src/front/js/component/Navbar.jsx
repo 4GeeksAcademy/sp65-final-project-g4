@@ -3,12 +3,15 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import profilePicture from "../../img/placeholder-profile-picture.jpg";
 import "../../styles/navbar.css";
+import { useNavigate } from "react-router-dom";
 
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
+	const navigate = useNavigate();
 	const handleLogout = () => {
 		actions.userLogout()
+		navigate('/')
 	}
 
 	return (
@@ -18,7 +21,6 @@ export const Navbar = () => {
 					<span className="navbar-brand mb-0 h1 red-color">RentUni</span>
 				</Link>
 				<div className="custom-link-container">
-
 					{store.isLogedIn ?
 						<>
 							<Link to="/favorites">

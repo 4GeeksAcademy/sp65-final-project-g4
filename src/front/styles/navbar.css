@@ -17,18 +17,42 @@
     button {
         margin: 0 0 0 20px;
     }
+
     a {
         margin: 0 10px;
         color: #000;
         transition: all .3s;
+
         &:hover {
             color: #BF0000;
         }
-        .red-color{
+
+        .red-color {
             transition: all .3s;
+
             &:hover {
                 color: #fff;
             }
         }
+    }
+     
+    .square-container {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .square-container img {
+        position: absolute;
+        min-width: 100%;
+        min-height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 }
