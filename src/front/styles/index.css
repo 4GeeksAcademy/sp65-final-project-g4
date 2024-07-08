@@ -3,8 +3,11 @@
 body{
     font-family: "Roboto Mono", monospace;
     font-size: 14px;
-    color: #828282;
-    padding-top: 53px;
+    background-color: #fdfdfd;
+    .container-custom {
+        margin: 0 auto;
+        min-height: calc(100vh - 100px);
+    }
 }
 p {
     color: #828282;

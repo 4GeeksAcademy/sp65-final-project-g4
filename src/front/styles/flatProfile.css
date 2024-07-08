@@ -1,12 +1,30 @@
 .flat-profile-container {
     width: 80%;
-    margin: 0 auto;
-    padding-top: 35px;
+    margin: 0 auto 70px;
+    padding: 35px 0 0;
     min-height: calc(100vh - 303px);
     .photo-container {
         height: 500px;
     }
     h2 {
         margin: 20px 0;
+    }
+
+    .rooms-container {
+        margin-top: 30px;
+        display: block;
+        background-color: rgba(230,230,230);
+        padding: 20px 15px 0;
+        border: 1px solid red;
+        height: 100%;
+        .photo-container {
+            height: 200px;
+            margin-bottom: 25px;
+        }
+        .room {
+            position: relative;
+            width: 90%;
+            margin-left: 5%;
+        }
     }
 }

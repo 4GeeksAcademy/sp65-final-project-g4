@@ -15,70 +15,71 @@ export const Navbar = () => {
 	}
 
 	return (
-		<nav className="navbar-custom">
-			<div className="navbar-custom-logo">
+		<nav class="navbar navbar-custom sticky-top">
+			<div class="container-fluid">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1 red-color">RentUni</span>
 				</Link>
-			</div>
-			<div className="d-flex align-items-center">
-				<Link to="/demo">
-					<span>Lorem</span>
-				</Link>
-				<Link to="/uploadimg">
-					<span>Upload</span>
-				</Link>
-				<Link to="/uploadflat">
-					<span>Upload Flat</span>
-				</Link>
-				<Link to="/chats/1">
-					<span>Chats</span>
-				</Link>
-				{store.isLogedIn ?
-					<div className="dropdown">
-						<button className="btn btn-custom red-background dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Menú
-							<span className="square-container ms-2"><img src={store.userData.profile_picture != null ? store.userData.profile_picture : profilePicture} /></span>
-						</button>
-						<ul className="dropdown-menu">
-							<li>
-								<Link className="dropdown-item m-0" to="/dashboard">
-									<span className="red-color">Perfil</span>
-								</Link>
-							</li>
-							<li>
-								{store.userData.is_student ?
-									<Link className="dropdown-item m-0" to="/favorites">
-										<span className="red-color">Favoritos</span>
-									</Link>
-									:
-									<Link className="dropdown-item m-0" to="/myflats">
-										<span className="red-color">Mis pisos</span>
-									</Link>
-								}
-							</li>
-							<li>
-								<Link className="dropdown-item m-0" to="/chats/1">
-									<span className="red-color">Mensajes</span>
-								</Link>
-							</li>
-							<li className="d-flex justify-content-center mt-2">
-								
-									<button className="btn-custom red-background m-0" onClick={handleLogout}> <i className="fas fa-sign-out-alt"></i> Desconectar</button>
-								
-							</li>
-						</ul>
-					</div>
-
-					:
-					<>
-						<Link to="/login">
-							<button className="btn-custom red-background">Login</button>
-						</Link>
-						<Link to="/Signup" >
-							<span className="red-color">Sign Up</span>
-						</Link>
-					</>}
+				<div className="custom-link-container">
+					{store.isLogedIn ?
+						<>
+							<Link to="/favorites">
+								<span>Favorites</span>
+							</Link>
+							<Link to="/chats/1">
+								<span>Mensajes</span>
+							</Link>
+							<div className="dropdown">
+								<span className="red-color dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									{store.userData.is_landlord ?
+										store.userData.landlord_name
+										:
+										store.userData.student_name
+									}
+									<span className="profile-picutre"><img src={store.userData.profile_picture != null ? store.userData.profile_picture : profilePicture} /></span>
+								</span>
+								<ul className="dropdown-menu dropdown-menu-end">
+									<li>
+										<Link className="dropdown-item" to="/dashboard">
+											<span>Perfil</span>
+										</Link>
+									</li>
+									<li>
+										{store.userData.is_student ?
+											<Link className="dropdown-item" to="/favorites">
+												<span>Favoritos</span>
+											</Link>
+											:
+											<Link className="dropdown-item" to="/myflats">
+												<span>Mis pisos</span>
+											</Link>
+										}
+									</li>
+									<li>
+										<Link className="dropdown-item" to="/chats/1">
+											<span>Mensajes</span>
+										</Link>
+									</li>
+									<li><hr className="dropdown-divider" /></li>
+									<li>
+										<Link className="dropdown-item" to="/">
+											<span className="red-color" onClick={handleLogout}> <i className="fas fa-sign-out-alt"></i> Desconectar</span>
+										</Link>
+									</li>
+								</ul>
+							</div>
+						</>
+						:
+						<>
+							<Link to="/login">
+								<button className="btn-custom red-background">Login</button>
+							</Link>
+							<Link to="/Signup" >
+								<span className="red-color">Sign Up</span>
+							</Link>
+						</>
+					}
+				</div>
 			</div>
 		</nav>
 	);
