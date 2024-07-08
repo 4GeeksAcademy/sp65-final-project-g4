@@ -15,8 +15,8 @@ export const Navbar = () => {
 	}
 
 	return (
-		<nav class="navbar navbar-custom sticky-top">
-			<div class="container-fluid">
+		<nav className="navbar navbar-custom sticky-top">
+			<div className="container-fluid">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1 red-color">RentUni</span>
 				</Link>
