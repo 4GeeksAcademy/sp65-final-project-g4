@@ -23,7 +23,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			/* Flats */
 			flats: [],
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
-			currentFlat: sessionStorage.getItem('currentFlat') ? sessionStorage.getItem('currentFlat') : '',
+			currentFlat: sessionStorage.getItem('currentFlat') ? JSON.parse(sessionStorage.getItem('currentFlat')) : '',
 			editingFlat: {},
 			albums: [],
 			albumId: "",
@@ -31,7 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			rooms: [],
 			roomId: [],
 			roomId: sessionStorage.getItem('roomId') ? sessionStorage.getItem('roomId') : '',
-			currentRoom: sessionStorage.getItem('currentRoom') ? sessionStorage.getItem('currentRoom') : '',
+			currentRoom: sessionStorage.getItem('currentRoom') ? JSON.parse(sessionStorage.getItem('currentRoom')) : '',
 			editingRoom: [],
 
 		},
