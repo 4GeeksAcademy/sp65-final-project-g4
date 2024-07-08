@@ -372,10 +372,7 @@ def handle_rooms_post():
         price=data['price'],
         square_meters=data['square_meters'],
         id_flat=id_flat,
-        publication_date=datetime.today(),
-        image_url_1=data['image_url_1'],
-        image_url_2=data['image_url_2'],
-        flat_img=data['flat_img']
+        publication_date=datetime.today()
     )
     db.session.add(row)
     db.session.commit()
