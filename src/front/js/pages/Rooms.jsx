@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { Link } from "react-router-dom";
+import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 
 export const AllRooms = () => {
     const { store, actions } = useContext(Context);
@@ -67,7 +68,7 @@ export const AllRooms = () => {
             ) : (
                 <div>
                     <div className="row">
-                        <div className="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                        <div className="col-md-2 col-lg-3 col-sm-3 col-xs-12">
                             <div className="sort-buttons justify-content-left">
                                 <p><strong>Ordenar por:</strong></p>
                                 <button className="sort-btn-custom" onClick={() => handleSort('price')}><i class="fa-solid fa-sort sort-btn-custom"></i>Precio</button>
@@ -91,23 +92,25 @@ export const AllRooms = () => {
                         </div>
                     </div>
                         {filteredAndSortedRooms.map((item, index) => (
-                            <div className="col-md-3 col-lg-3 col-sm-6 col-xs-12" key={index}>
-                                <div className="card">
-                                    <img src="https://cdn.autonomous.ai/static/upload/images/common/upload/20220507/Where-To-Put-A-Desk-In-Bedroom-6-Options_27391ab6a55.jpg" alt="Room picture" />
-                                    <div className="card-body">
+                            <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 h-100" key={index}>
+                                <div className="photo-gallery-view">
+                                    <PhotoGalleryRooms/>
+                                </div> 
+                                    <div className="card-body-view">
                                         <h5>{item.title}</h5>
                                         <p>{item.price} €</p>
-                                        <p>{item.description}</p>
+                                        <p className="description-overflow">{item.description}</p>
                                         <p>{item.square_meters}m²</p>
                                         <p>Publicado el {item.publication_date}</p>
+                                    </div>
                                         <div className="d-flex justify-content-between ml-0 pl-0">
+                                     
                                         <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
                                                 <strong>Ver detalle</strong>
-                                            </Link>
+                                        </Link>
                                         </div>
-                                    </div>
                                 </div>
-                            </div>
+                        
                         ))}
                     </div>
                 </div>

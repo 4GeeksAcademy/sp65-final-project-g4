@@ -21,24 +21,21 @@ export const UploadRooms = () => {
         actions.setRoomId(id)
     }
     
-
-    const handleFlat = (id) => {
-		actions.setFlatId(id)
-      
-	}
+    /* const newRoom = store.rooms[store.rooms.length - 1];
+    if (newRoom) {
+        const roomId = (newRoom.id)+1;
+   
+ } */
 
     const handleSubmit = () => {
         console.log("Saving data...", formData);
         actions.createNewRoom(formData);
-        const roomId = handleRoomId(); 
-        navigate(`/roomprofile/${roomId}`)
-        
-        /* const newRoom = store.rooms[store.rooms.length - 1];
+        const newRoom = store.rooms[store.rooms.length - 1];
         if (newRoom) {
-            const roomId = (newRoom.id)+1; */
-            /* navigate(`/RoomProfiles/${roomId}`); */
-
-};
+        const roomId = (newRoom.id)+1;
+        navigate(`/roomprofile/${roomId}`)
+        }
+    };
     
 
     const handleChange = (e) => {
@@ -50,7 +47,7 @@ export const UploadRooms = () => {
         setFormData((prevData) => ({
             ...prevData,
             flat_img: store.currentFlat?.id_album || "",
-            flat_id: store.currentFlat?.id || ""
+            room_id: store.currentFlat?.id || ""
         }));
     }, [store.currentFlat]);
 
@@ -103,7 +100,7 @@ export const UploadRooms = () => {
                             onChange={handleChange}
                             aria-label="default input example"
                             />
-                        <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => {handleSubmit(); handleRoomId();}}>Publicar y subir fotos</button>
+                        <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => {handleSubmit(); handleRoomId()}}>Publicar y subir fotos</button>
                         </div>
                 </div>
             </div>
