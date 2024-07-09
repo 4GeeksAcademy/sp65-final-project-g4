@@ -39,12 +39,12 @@ export const Home = () => {
 				<div className="row justify-content-between section-custom">
 					<h2 className="red-color">Pisos Recientes</h2>
 					{store.flats.slice(0, 3).map((item, key) =>
-						<div className="col-lg-4 col-md-6 col-sm-12 mt-4">
+						<div key={key} className="col-lg-4 col-md-6 col-sm-12 mt-4">
 							<div className="piso-container">
 								<div className="photo-container">
 									<PhotoGallery userId={item.id} />
 								</div>
-								<div key={key} className="piso">
+								<div className="piso">
 									<h3 className="red-color">{item.address}</h3>
 									<p>{item.description.substring(0, 50)}...</p>
 									<Link className="detalles mt-1 mb-4" to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>

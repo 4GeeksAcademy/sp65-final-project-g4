@@ -530,10 +530,10 @@ def handle_favorites_post():
 @jwt_required()
 def handle_favorite_id(favorite_id):
     response_body = {}
+    favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
     if request.method == 'PUT':
         data = request.json
         print(data)
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             favorite.id_student = data['id_student']
             favorite.id_room = data['id_room']
@@ -545,17 +545,16 @@ def handle_favorite_id(favorite_id):
         response_body['results'] = {}
         return response_body, 404
     if request.method == 'DELETE':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             db.session.delete(favorite)
             db.session.commit()
             response_body['message'] = 'Favorite deleted'
             response_body['results'] = {}
+            return response_body, 200
         response_body['message'] = 'Favorite not found'
         response_body['results'] = {}
         return response_body, 200
     if request.method == 'GET':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             response_body['results'] = favorite.serialize()
             response_body['message'] = 'Favorite found'

@@ -26,10 +26,6 @@ export const FlatProfile = () => {
                     </div>
                     <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
-
-                    <Link to={`/uploadroom/${store.currentFlat.id}`}> Añadir habitación </Link>    
-                                   
-
                     <div>
                         {/* {store.currentFlat.id_landlord === store.userData.id_landlord ?
                         ""
@@ -41,13 +37,12 @@ export const FlatProfile = () => {
                         {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
                             <div>
                                 <button className="btn-custom red-background mx-2 mb-2">Editar perfil</button>
-                                <button className="btn-custom red-background mb-2">Añadir habitacion</button>
+                                <Link to={`/uploadroom/${store.currentFlat.id}`}><button className="btn-custom red-background mb-2">Añadir habitacion</button></Link>    
                             </div>
                             :
                             ""
                         }
                     </div>
-
 
                     <div className="row justify-content-evenly">
                         {!store.rooms.length > 0 ?
@@ -57,12 +52,12 @@ export const FlatProfile = () => {
                                 {store.rooms.map((item, key) =>
                                     <>
                                         {item.id_flat === store.currentFlat.id ?
-                                            <div className="col-4">
+                                            <div key={key} className="col-4">
                                                 <div className="rooms-container">
                                                     <div className="photo-container">
                                                         <PhotoGallery userId={item.id} />
                                                     </div>
-                                                    <div key={key} className="room">
+                                                    <div className="room">
                                                         <h3 className="red-color">{item.title}</h3>
                                                         <p>{item.description}</p>
                                                         <div className='d-flex justify-content-evenly'>
@@ -75,7 +70,6 @@ export const FlatProfile = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
                                             :
                                             ""
                                         }

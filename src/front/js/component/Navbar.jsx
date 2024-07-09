@@ -23,13 +23,10 @@ export const Navbar = () => {
 				<div className="custom-link-container">
 					{store.isLogedIn ?
 						<>
-							<Link to="/favorites">
-								<span>Favorites</span>
+							<Link to="/Map">
+								<span>Mapa</span>
 							</Link>
-							<Link to="/chats/1">
-								<span>Mensajes</span>
-							</Link>
-							<div className="dropdown">
+							<div className="dropdown h-1 mx-3">
 								<span className="red-color dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									{store.userData.is_landlord ?
 										store.userData.landlord_name
@@ -46,7 +43,7 @@ export const Navbar = () => {
 									</li>
 									<li>
 										{store.userData.is_student ?
-											<Link className="dropdown-item" to="/favorites">
+											<Link className="dropdown-item" to="/FavoritesProfile">
 												<span>Favoritos</span>
 											</Link>
 											:
