@@ -14,7 +14,6 @@ export const UploadRoomImg = () => {
         setSelectedFile(event.target.files[0]);
     };
     
-
     const handleSubmit = (event) => {
         event.preventDefault();
         uploadToCloudinary();
