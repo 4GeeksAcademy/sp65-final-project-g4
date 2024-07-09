@@ -8,12 +8,13 @@ import "../../styles/photoGallery.css";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { PhotoGallery } from '../component/PhotoGallery.jsx';
 
 export const PhotoGalleryRooms = ({ roomId }) => {
   const [photos, setPhotos] = useState([]);
   const { store, actions } = useContext(Context);
 
-  const fetchImages = async ({ roomId}) => {
+  const fetchImages = async () => {
     const response = await fetch(`${process.env.BACKEND_URL}/api/imagesrooms/${roomId}`);
     if (!response.ok) {
       console.log("Error loading message from backend", response.status, response.statusText)
@@ -44,6 +45,11 @@ export const PhotoGalleryRooms = ({ roomId }) => {
             </div>
           </SwiperSlide>
         ))}
+        {store.flats.map((item, index) =>
+        <SwiperSlide key={index}>
+            <PhotoGallery userId={store.currentRoom.id_flat}/>
+        </SwiperSlide>
+        )}
       </Swiper>
     </div>
   );

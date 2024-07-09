@@ -3,6 +3,8 @@ import { Context } from "../store/appContext";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { Link } from "react-router-dom";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
+import "../../styles/cardsviews.css";
+
 
 export const AllRooms = () => {
     const { store, actions } = useContext(Context);
@@ -92,14 +94,14 @@ export const AllRooms = () => {
                         </div>
                     </div>
                         {filteredAndSortedRooms.map((item, index) => (
-                            <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 h-100" key={index}>
-                                <div className="photo-gallery-view">
-                                    <PhotoGalleryRooms/>
+                            <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 view-container" key={index}>
+                                <div className="photo-container">
+                                    <PhotoGalleryRooms roomId={item.id}/>
                                 </div> 
-                                    <div className="card-body-view">
+                                    <div className="view-text">
                                         <h5>{item.title}</h5>
                                         <p>{item.price} €</p>
-                                        <p className="description-overflow">{item.description}</p>
+                                        <p className="description">{item.description}</p>
                                         <p>{item.square_meters}m²</p>
                                         <p>Publicado el {item.publication_date}</p>
                                     </div>
