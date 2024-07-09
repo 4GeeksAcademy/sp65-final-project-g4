@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext";
+import { Context } from "../store/appContext.js";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
 
-export const UploadFlatsModified = () => {
+export const UploadFlats = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -14,18 +14,19 @@ export const UploadFlatsModified = () => {
         
     });
 
+    const handleNewFlatId = (id) => {
+        actions.setNewFlatId(id)
+    }
 
     const handleSubmit = () => {
         console.log("Saving data...", formData);
         actions.createNewFlat(formData);
         actions.setEditingFlat(formData);
         console.log(store.editingFlat);
-        const newFlat = store.flats[store.flats.length - 1];
-        if (newFlat) {
-            const flatId = (newFlat.id)+1;
-            navigate(`/FlatProfile/${flatId}`);
-    };
-};
+        const newFlatId = handleNewFlatId();
+            navigate(`/FlatProfile/${newFlatId}`);
+        }
+
     
 
     const handleChange = (e) => {

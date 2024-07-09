@@ -279,8 +279,8 @@ def handle_flats_post():
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
-    if Landlords.id == current_landlord:
-        data = request.json
+    data = request.json
+    if current_landlord:
         flat = Flats()
         flat.address = data['address']
         flat.description = data['description']
@@ -292,6 +292,7 @@ def handle_flats_post():
         response_body['results'] = flat.serialize()
         response_body['message'] = 'Flat posted'
         return response_body, 200
+
 
 
 @api.route('/flats/<int:flat_id>', methods=['GET'])

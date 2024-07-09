@@ -18,16 +18,18 @@ import { UploadImagesFlats } from "./component/UploadImagesFlats.jsx";
 import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { FlatProfile } from "./pages/FlatProfile.jsx";
-import { UploadNewFlat } from "./pages/uploadNewFlat.jsx";
 import { LOPDPG } from "./pages/LOPDPG.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
-import { UploadFlatsModified } from "./pages/UploadFlatsModified.jsx";
 import { UploadRooms } from "./pages/UploadRooms.jsx";
 import { RoomProfile } from "./pages/RoomProfile.jsx";
 import { FavoritesProfile } from "./pages/FavoritesProfile.jsx";
 import { MyFlats } from "./pages/myFlats.jsx";
 import { NoAccess } from "./pages/NoAccess.jsx";
 import { AllRooms } from "./pages/Rooms.jsx";
+import { PostFlatImg } from "./pages/UploadFlatImg.jsx";
+import { UploadImagesUsers } from "./component/UploadImagesUsers.jsx";
+import { EditImg } from "./pages/SubirFotos.jsx";
+import { UploadFlats } from "./pages/UploadFlats.jsx";
 
 
 
@@ -63,12 +65,15 @@ const Layout = () => {
                             <Route element={<FavoritesProfile />} path="/FavoritesProfile/" />
                             <Route element={<LOPDPG />} path="/LPD" />
                             <Route element={<Contacto />} path="/contact" />
-                            <Route element= {<UploadFlatsModified/>} path="/uploadflat" />
+                            <Route element= {<UploadFlats/>} path="/uploadflat" />
                             <Route element= {<UploadRooms/>} path="/uploadroom/:theid" />
                             <Route element= {<RoomProfile/>} path="/roomprofile/:theid"/>
                             <Route element= {<MyFlats/>} path="/myflats"/>
                             <Route element= {<AllRooms/>} path="/rooms"/>
-                            <Route element= {<UploadImagesFlats/>} path="/imgflats"/>
+                            <Route element= {<PostFlatImg />} path="/uploadflatimg/:theid"/>
+                            <Route element= {<UploadImagesUsers />} path="/imgusers"/>
+                            <Route element= {<EditImg />} path="/editimg/:theid"/>
+
                         </Routes>
                     </div>
 
