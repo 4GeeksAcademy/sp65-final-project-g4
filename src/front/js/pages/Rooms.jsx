@@ -93,8 +93,7 @@ export const AllRooms = () => {
                                 </div>
                             </div>
                         </div>
-                        {filteredAndSortedRooms.map((item, index) => (
-
+                            {filteredAndSortedRooms.map((item, index) => (
                             <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 view-container" key={index}>
                                 <div className="photo-container">
                                     <PhotoGalleryRooms roomId={item.id}/>
@@ -111,9 +110,13 @@ export const AllRooms = () => {
                                         <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
                                                 <strong>Ver detalle</strong>
                                         </Link>
-                                        </div>                                             
-                                <div className="d-flex justify-content-between ml-0 pl-0">
 
+                                        </div>
+
+
+                                        </div>                                             
+
+                                <div className="d-flex justify-content-between ml-0 pl-0">
                                     <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
                                         <strong>Ver detalle</strong>
                                     </Link>
