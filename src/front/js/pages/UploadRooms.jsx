@@ -24,7 +24,6 @@ export const UploadRooms = () => {
     const handleSubmit = () => {
         console.log("Saving data...", formData);
         actions.createNewRoom(formData);
-        
         const newRoom = store.rooms[(store.rooms.length - 1)+1];
         if (newRoom) {
         const roomId = (newRoom.id);
