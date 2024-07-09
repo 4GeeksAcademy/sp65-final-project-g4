@@ -361,8 +361,10 @@ def handle_rooms_post():
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
+    print(current_landlord)
     data = request.json
     id_flat = data.get('id_flat')
+    print(id_flat)
     if not id_flat:
         return {"message": "id_flat is required"}, 400
     flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlord)).scalar()
@@ -415,9 +417,6 @@ def handle_room_id(room_id):
                 room.square_meters = data['square_meters']
                 room.id_flat = data['id_flat']
                 room.publication_date = datetime.today()
-                room.image_url_1 = data['image_url_1']
-                room.image_url_2 = data['image_url_2']
-                room.flat_img = data['flat_img']
                 db.session.commit()
                 response_body['message'] = 'Room updated'
                 response_body['results'] = room.serialize()
