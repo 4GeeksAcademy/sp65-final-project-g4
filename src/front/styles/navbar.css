@@ -59,7 +59,15 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
-    .dropdown-toggle {
-        line-height: 29px;
+
+    .dropdown {
+
+        a {
+            margin: 0;
+        }
+
+        .dropdown-toggle {
+            line-height: 29px;
+        }
     }
 }
