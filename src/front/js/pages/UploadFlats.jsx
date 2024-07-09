@@ -14,8 +14,15 @@ export const UploadFlats = () => {
         
     });
 
-    const handleNewFlatId = (id) => {
-        actions.setNewFlatId(id)
+   /*  const handleNewFlatId = (id) => {
+        actions.setFlatId(id)
+    } */
+
+   /*  const handleNewFlatId = () => store.flats.id */
+    const handleNewFlatId = () => {
+    if (store.flats.length > 0) {
+        return store.flats[store.flats.length - 1].id;
+      }
     }
 
     const handleSubmit = () => {

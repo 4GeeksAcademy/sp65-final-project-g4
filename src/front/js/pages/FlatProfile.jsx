@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../../styles/flatProfile.css";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
+import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 
 export const FlatProfile = () => {
     const { store, actions } = useContext(Context);
@@ -65,7 +66,7 @@ export const FlatProfile = () => {
                                             <div key={key} className="col-4">
                                                 <div className="rooms-container">
                                                     <div className="photo-container">
-                                                        <PhotoGallery userId={item.id} />
+                                                        <PhotoGalleryRooms roomId={item.id} />
                                                     </div>
                                                     <div className="room">
                                                         <h3 className="red-color">{item.title}</h3>

@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
+import "../../styles/cardsviews.css";
 
 
 export const MyFlats = () => {
@@ -35,12 +36,14 @@ export const MyFlats = () => {
             ) : (
                 <div className="row">
                     {myFlats.map((item, index) => (
-                        <div className="col-lg-3 col-md-4 col-sm-6 col-xsm-12 h-100" key={item.id}>
-                                <PhotoGallery userId={item.id} />
-                                <div className="card-body-view">
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-xsm-12 view-container" key={item.id}>
+                          
+                                <PhotoGallery userId={item.id} className="photo-container" />
+                          
+                                <div className="view-text">
                                     <h5>{item.address}</h5>
                                     <p>{item.city}</p>
-                                    <p>{item.description}</p>
+                                    <p className="description">{item.description}</p>
                                 </div>
                                 <div className="red-color float-end">
                                     <Link to={`/FlatProfile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>Ver detalles</strong></Link>
