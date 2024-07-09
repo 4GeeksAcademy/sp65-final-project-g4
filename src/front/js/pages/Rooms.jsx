@@ -114,7 +114,7 @@ export const AllRooms = () => {
                                         </Link>
                                         </div>
 
-                       
+                                </div>
                                 <div className="d-flex justify-content-between ml-0 pl-0">
 
                                     <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
