@@ -99,6 +99,7 @@ export const AllRooms = () => {
                                 <div className="photo-container">
                                     <PhotoGalleryRooms roomId={item.id}/>
                                 </div> 
+                                <div>
                                     <div className="view-text">
                                         <h5>{item.title}</h5>
                                         <p>{item.price} €</p>
@@ -112,7 +113,6 @@ export const AllRooms = () => {
                                                 <strong>Ver detalle</strong>
                                         </Link>
                                         </div>
-
                                 </div>
                                 <div className="d-flex justify-content-between ml-0 pl-0">
 
@@ -123,9 +123,10 @@ export const AllRooms = () => {
                             </div>
 
                         ))}
-                    </div>
                 </div>
-            )}
-        </div>
+                </div>
+    )
+}
+        </div >
     );
 };
