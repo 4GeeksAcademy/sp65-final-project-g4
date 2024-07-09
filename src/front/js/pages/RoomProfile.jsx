@@ -29,11 +29,11 @@ export const RoomProfile = () => {
                     }
 
                     </div>
+
+
                     <div className="photo-container">
-                    
-                            <PhotoGalleryRooms roomId={store.currentRoom.id} />
-                  
-                    </div>
+                    <PhotoGalleryRooms roomId={store.currentRoom.id} />
+                  </div>
                     <p className="mt-5"><strong>Descripción: </strong>{store.currentRoom.description}</p>
                     <p className='price'><strong>Precio:</strong> {store.currentRoom.price}€</p>
                     <p className='price'><strong>Superficie:</strong> {store.currentRoom.square_meters}m2</p>
