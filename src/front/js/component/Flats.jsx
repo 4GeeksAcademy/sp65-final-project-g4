@@ -38,7 +38,6 @@ export const Flats = (props) => {
     };
 
     const filterHandle = (filterOptions) => {
-        console.log("hi")
         if (filterOptions.lat !== 0 && filterOptions.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
             const toRadians = (degrees) => degrees * (Math.PI / 180);
             let lat1 = toRadians(coordinates.lat);
@@ -112,8 +111,8 @@ export const Flats = (props) => {
                                             <p><strong>Superficie:</strong></p>
                                         </span>
                                         {store.rooms.filter(room => room.id_flat === props.item.id).map((item, key) =>
-                                            <span>
-                                                <p><strong>{key+1}</strong></p>
+                                            <span key={key}>
+                                                <p><strong>{key + 1}</strong></p>
                                                 <p className='price'>{item.price}€</p>
                                                 <p className='price'>{item.square_meters}m2</p>
                                             </span>
@@ -125,8 +124,6 @@ export const Flats = (props) => {
                     </Popup>
                 </Marker>
             }
-
         </>
-
     );
 };

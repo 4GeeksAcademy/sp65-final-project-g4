@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext.js";
 import "../../styles/flatProfile.css";
-import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { Favorites } from "../component/Favorites.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 
 export const RoomProfile = () => {
@@ -41,7 +41,7 @@ export const RoomProfile = () => {
                     }
                     {store.userData.is_student ?
                         <div>
-                            <button className="btn-custom red-background mx-2 mb-2">Añadir a favoritos</button>
+                            <Favorites id={store.currentRoom.id} />
                         </div>
                         :
                         ""
@@ -50,6 +50,5 @@ export const RoomProfile = () => {
             }
         </>
     );
-
 };
 
