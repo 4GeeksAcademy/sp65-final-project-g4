@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
+import "../../styles/cardsviews.css";
 
 
 export const MyRooms = () => {
@@ -35,17 +36,19 @@ export const MyRooms = () => {
             {mrooms.length === 0 ? (
                 <h3 className="mb-4 text-center">No tienes habitaciones publicadas</h3>
             ) : (
-                <div className="row">
+                <div className="row ">
                     {mrooms.map((item, index) => (
-                        <div className="col-lg-3 col-md-4 col-sm-6 col-xsm-12 h-100" key={item.id}>
-                                <PhotoGalleryRooms userId={item.id} />
-                                <div className="card-body-view">
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-xsm-12 view-container" key={item.id}>
+                            <div className="photo-container">
+                                <PhotoGalleryRooms roomId={item.id} />
+                            </div>
+                            <div className="view-text">
                                     <h5>{item.address}</h5>
                                     <p>{item.city}</p>
-                                    <p>{item.description}</p>
+                                    <p className="description">{item.description}</p>
                                 </div>
                                 <div className="red-color float-end">
-                                    <Link to={`/FlatProfile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>Ver detalles</strong></Link>
+                                    <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>Ver detalles</strong></Link>
                                 </div>
                             </div>
                         

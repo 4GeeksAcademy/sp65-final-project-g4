@@ -210,6 +210,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
+				console.log(data);
 				setStore({ currentRoom: data.results });
 				sessionStorage.setItem('currentRoom', JSON.stringify(data.results))
 			},
@@ -220,8 +221,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`
-					},
+						'Authorization': `Bearer ${getStore().accessToken}`,
+						'Mode': 'no-cors'					},
 					body: JSON.stringify(dataToSend)
 				}
 
