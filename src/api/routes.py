@@ -405,8 +405,7 @@ def handle_room_id(room_id):
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
-    if Landlords.id == current_landlord:
-        if request.method == 'PUT':
+    if request.method == 'PUT':
             data = request.json
             print(data)
             room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
@@ -424,7 +423,7 @@ def handle_room_id(room_id):
             response_body['message'] = 'Room not found'
             response_body['results'] = {}
             return response_body, 404
-        if request.method == 'DELETE':
+    if request.method == 'DELETE':
             room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
             if room:
                 db.session.delete(room)

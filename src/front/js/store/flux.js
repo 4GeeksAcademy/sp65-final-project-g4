@@ -240,7 +240,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-
+			putRoom: async (roomData, token, id) => {
+				const uri = `${process.env.BACKEND_URL}/api/rooms/${id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						'Authorization': `Bearer ${getStore().accessToken}`,
+					},
+					body: JSON.stringify(roomData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				setStore({ currentRoom: data.results })
+			},
 
 			
 			getFlats: async () => {
