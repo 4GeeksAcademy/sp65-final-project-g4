@@ -30,10 +30,10 @@ export const UploadImagesUsers = () => {
         setImageUrl(data.img_url);
         console.log("Sucessful uploading", data.img_url)
         actions.settingLastProfPicUrl(data.img_url)
-        alert("Your picture has been sucessfully uploaded")
+        localStorage.setItem('profileImageUrl', data.img_url)
       } else {
         console.log("Error uploading picture", response.status, response.statusText)
-        alert("Error! Tu no imagen no se ha subido")
+        alert("Error! Tu imagen no se ha subido")
       }
     } else {
       alert('Please, select a file to upload');
