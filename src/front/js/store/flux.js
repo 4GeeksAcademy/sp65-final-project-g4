@@ -10,7 +10,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userName: "",
 			isAdmin: false,
 			users: [],
-			lastProfilePicUrl: '',
 			userData: localStorage.getItem('user') ? localStorage.getItem('user') : '',
 			students: [],
 			landlords: [],
@@ -101,9 +100,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} else { console.log('No hay usuario logeado') }
 			},
 
-			settingLastProfPicUrl: (imageUrl) => {
-				setStore({ lastProfilePicUrl: imageUrl })
-			},
 			putStudent: async (studentData, token, id) => {
 				const uri = `${process.env.BACKEND_URL}/api/students/${id}`
 				const options = {

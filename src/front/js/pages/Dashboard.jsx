@@ -15,13 +15,19 @@ export const Dashboard = () => {
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
 
+	const [university, setUniversity] = useState('');
 	const [name, setName] = useState('');
 	const [lastname, setLastname] = useState('');
 	const [birthDate, setBirthDate] = useState('');
 	const [dni, setDni] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
+	const [selectedFile, setSelectedFile] = useState(null);
 	const [urlImage, setUrlImage] = useState('');
 
+
+	const handleUniversity = (event) => {
+		setUniversity(event.target.value)
+	}
 	const handleName = (event) => {
 		setName(event.target.value)
 	}
@@ -37,11 +43,42 @@ export const Dashboard = () => {
 	const handlePhoneNumber = (event) => {
 		setPhoneNumber(event.target.value)
 	}
-	const handleUrlImage = (event) => {
-		setUrlImage(event.target.value)
-	}
+	const handleFileChange = (event) => {
+		setSelectedFile(event.target.files[0]);
+	};
+
+	const handleImgSubmit = async (event) => {
+		event.preventDefault();
+		if (selectedFile) {
+			const formData = new FormData();
+			formData.append("img", selectedFile);
+			const url = `${process.env.BACKEND_URL}/api/photo`
+			const options = {
+				method: "POST",
+				headers: {
+					'Authorization': `Bearer ${store.accessToken}`
+				},
+				body: formData,
+			}
+			const response = await fetch(url, options);
+
+			if (response.ok) {
+				const data = await response.json();
+				setUrlImage(data.img_url);
+				console.log("Sucessful uploading", data.img_url)
+				actions.settingLastProfPicUrl(data.img_url)
+				localStorage.setItem('profileImageUrl', data.img_url)
+			} else {
+				console.log("Error uploading picture", response.status, response.statusText)
+				alert("Error! Tu imagen no se ha subido")
+			}
+		} else {
+			alert('Please, select a file to upload');
+		}
+	};
 
 	const handleModalReset = () => {
+		setUniversity('');
 		setName('');
 		setLastname('');
 		setBirthDate('');
@@ -52,9 +89,10 @@ export const Dashboard = () => {
 
 
 	const initializeStudentModal = () => {
+		setUniversity(store.userData.id_university);
 		setName(store.userData.student_name);
 		setLastname(store.userData.student_lastname);
-		setBirthDate(store.userData.birth_Date);
+		setBirthDate(store.userData.birth_date);
 		setDni(store.userData.dni);
 		setPhoneNumber(store.userData.phone_number);
 		setUrlImage(store.userData.profile_picture)
@@ -63,7 +101,7 @@ export const Dashboard = () => {
 	const initializeLandlordModal = () => {
 		setName(store.userData.landlord_name);
 		setLastname(store.userData.landlord_lastname);
-		setBirthDate(store.userData.birth_Date);
+		setBirthDate(store.userData.birth_date);
 		setDni(store.userData.dni);
 		setPhoneNumber(store.userData.phone_number);
 		setUrlImage(store.userData.profile_picture)
@@ -72,13 +110,13 @@ export const Dashboard = () => {
 	const handleStudentModalSubmit = (event) => {
 		event.preventDefault();
 		const dataToSend = {
-			id_university: 1,
+			id_university: university,
 			name: name,
 			lastname: lastname,
-			birth_date: birthDate, // Falta darle la vuelta a la fecha
+			birth_date: birthDate,
 			dni: dni,
 			phone_number: phoneNumber,
-			profile_picture: store.lastProfilePicUrl
+			profile_picture: urlImage
 		}
 		actions.putStudent(dataToSend, store.accessToken, store.userData.id_student);
 		handleModalReset();
@@ -87,26 +125,16 @@ export const Dashboard = () => {
 	const handleLandlordModalSubmit = (event) => {
 		event.preventDefault();
 		const dataToSend = {
-			id_university: 1,
 			name: name,
 			lastname: lastname,
 			birth_date: birthDate,
 			dni: dni,
 			phone_number: phoneNumber,
-			profile_picture: store.lastProfilePicUrl
+			profile_picture: urlImage
 		}
 		actions.putLandlord(dataToSend, store.accessToken, store.userData.id_landlord);
 		handleModalReset();
 	}
-
-	const handleLogout = () => {
-		actions.userLogout()
-	}
-
-
-	/* if (store.isLogedIn != true) {
-		navigate('/signup')
-	} */
 
 	return (
 		<>
@@ -124,6 +152,17 @@ export const Dashboard = () => {
 									</div>
 									<div className="modal-body">
 										<div className="mb-3">
+											<select class="form-select" aria-label="Default select example" onChange={handleUniversity} placeholder={store.userData.id_university}>
+												<option selected>Seleccionar la universidad</option>
+												{!store.universities ?
+													""
+													:
+													<>
+														{store.universities.map((item, key) =>
+															<option value={item.id} key={key}>{item.name}</option>)}
+													</>
+												}
+											</select>
 											<div className="mb-2">
 												<label htmlFor="FormControlStudentName" className="form-label">Nombre:</label>
 												<input type="string" className="form-control" id="FormControlStudentName" onChange={handleName} placeholder={store.userData.student_name} />
@@ -133,8 +172,8 @@ export const Dashboard = () => {
 												<input type="string" className="form-control" id="FormControlStudentLastName" onChange={handleLastname} placeholder={store.userData.student_lastname} />
 											</div>
 											<div className="mb-2">
-												<label htmlFor="FormControlStudentBirthDate" className="form-label">Fecha de nacimiento:</label>
-												<input type="date" className="form-control" id="FormControlStudentBirthDate" onChange={handleBirthDate} placeholder={store.userData.birth_date} />
+												<label htmlFor="FormControlStudentBirthDate" className="form-label">Fecha de nacimiento (DD/MM/YYYY):</label>
+												<input type="string" className="form-control" id="FormControlStudentBirthDate" onChange={handleBirthDate} placeholder={store.userData.birth_date} />
 											</div>
 											<div className="mb-2">
 												<label htmlFor="FormControlStudentDni" className="form-label">DNI:</label>
@@ -144,7 +183,21 @@ export const Dashboard = () => {
 												<label htmlFor="FormControlStudentPhoneNumber" className="form-label">Teléfono:</label>
 												<input type="int" className="form-control" id="FormControlStudentPhoneNumber" onChange={handlePhoneNumber} placeholder={store.userData.phone_number} />
 											</div>
-											<UploadImagesUsers />
+											<div className='col-12 justify-content-center'>
+												<p className="mb-4 text-center red-color">¡Sube tu foto de perfil!</p>
+												<form onSubmit={handleImgSubmit}>
+													<div className="mb-3">
+														<input
+															type="file"
+															className="form-control-sm"
+															onChange={handleFileChange}
+															accept="image/*"
+														/>
+													</div>
+													<button type="submit" className="btn-custom red-background justify-content-center">Upload picture</button>
+												</form>
+												<img src={urlImage}></img>
+											</div>
 										</div>
 									</div>
 									<div className="modal-footer">
@@ -157,6 +210,7 @@ export const Dashboard = () => {
 						<div className="col-3">
 							<div className="d-flex flex-column flex-shrink-0 p-2">
 								<ul className="list-group list-group-flush">
+									<li className="list-group-item">Universidad: {store.userData.university_name ? store.userData.university_name : 'Pendiente de cumplimentar'}</li>
 									<li className="list-group-item">E-mail: {store.userData.email ? store.userData.email : 'Pendiente de cumplimentar'}</li>
 									<li className="list-group-item">Nombre: {store.userData.student_name != ' ' ? store.userData.student_name : 'Pendiente de cumplimentar'}</li>
 									<li className="list-group-item">Apellidos: {store.userData.student_lastname != ' ' ? store.userData.student_lastname : 'Pendiente de cumplimentar'}</li>
@@ -193,8 +247,8 @@ export const Dashboard = () => {
 												<input type="string" className="form-control" id="FormControlLandlordLastName" onChange={handleLastname} placeholder={store.userData.landlord_lastname} />
 											</div>
 											<div className="mb-2">
-												<label htmlFor="FormControlLandlordBirthDate" className="form-label">Fecha de nacimiento:</label>
-												<input type="date" className="form-control" id="FormControlLandlordBirthDate" onChange={handleBirthDate} placeholder={store.userData.birth_date} />
+												<label htmlFor="FormControlLandlordBirthDate" className="form-label">Fecha de nacimiento (DD/MM/YYYY):</label>
+												<input type="string" className="form-control" id="FormControlLandlordBirthDate" onChange={handleBirthDate} placeholder={store.userData.birth_date} />
 											</div>
 											<div className="mb-2">
 												<label htmlFor="FormControlLandlordDni" className="form-label">DNI:</label>
@@ -204,7 +258,21 @@ export const Dashboard = () => {
 												<label htmlFor="FormControlLandlordPhoneNumber" className="form-label">Teléfono:</label>
 												<input type="int" className="form-control" id="FormControlLandlordPhoneNumber" onChange={handlePhoneNumber} placeholder={store.userData.phone_number} />
 											</div>
-											<UploadImagesUsers />
+											<div className='col-12 justify-content-center'>
+												<p className="mb-4 text-center red-color">¡Sube tu foto de perfil!</p>
+												<form onSubmit={handleImgSubmit}>
+													<div className="mb-3">
+														<input
+															type="file"
+															className="form-control-sm"
+															onChange={handleFileChange}
+															accept="image/*"
+														/>
+													</div>
+													<button type="submit" className="btn-custom red-background justify-content-center">Upload picture</button>
+												</form>
+												<img src={urlImage}></img>
+											</div>
 										</div>
 									</div>
 									<div className="modal-footer">
@@ -238,3 +306,18 @@ export const Dashboard = () => {
 
 	);
 };
+
+
+
+
+
+
+/* {!store.universities ?
+	""
+	:
+	<>
+		{store.universities.map((item, key) =>
+			<Universities key={key} item={item} />
+		)}
+	</>
+} */

@@ -108,12 +108,13 @@ def login():
         return jsonify({"msg": "Wrong password"}) , 401
     if user.is_student:
         student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+        university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
                                                      'email': user.email,
                                                      'student_id': student.id})
-        serialized_data = {**user.serialize(), **student.public_serialize()}
+        serialized_data = {**user.serialize(), **student.public_serialize(), **university.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
         response_body['data'] = serialized_data
@@ -593,8 +594,9 @@ def handle_single_student(id):
     response_body = {}
     student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
+    university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
     if student:
-        serialized_data = {**user.serialize(), **student.public_serialize()}
+        serialized_data = {**user.serialize(), **student.public_serialize(), **university.serialize()}
         response_body['results'] = serialized_data
         return response_body, 200
     response_body['message'] = 'ID estudiante inexistente'
@@ -609,6 +611,7 @@ def modify_single_student(id):
         data = request.json
         student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
         user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
+        university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
         if student:
             student.id_university = data['id_university']
             student.name = data['name']
@@ -619,7 +622,7 @@ def modify_single_student(id):
             student.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Datos del estudiante actualizados'
-            response_body['results'] = {**user.serialize(), **student.public_serialize()}
+            response_body['results'] = {**user.serialize(), **student.public_serialize(), **university.public_serialize()}
             return response_body, 200
         response_body['message'] = 'ID estudiante inexistente'
         response_body['results'] = {}
