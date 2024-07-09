@@ -90,12 +90,6 @@ class Rooms(db.Model):
     square_meters = db.Column(db.Float(), nullable = False)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
-    id_assigned_student = db.Column(db.Integer() , db.ForeignKey('students.id'))
-    to_id_assigned_student = db.relationship('Students' , foreign_keys=[id_assigned_student])
-    image_url_1 = db.Column(db.String())
-    image_url_2 = db.Column(db.String())
-    flat_img = db.Column(db.Integer() , db.ForeignKey('albums.id'))
-    to_flat_img = db.relationship('Albums' , foreign_keys=[flat_img]) 
     publication_date = db.Column(db.Date() , unique = False)
 
     def __repr__(self):
@@ -103,16 +97,12 @@ class Rooms(db.Model):
 
     def serialize(self):
         return {"id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "price" : self.price,
-            "square_meters": self.square_meters,
-            "id_flat" : self.id_flat,
-            "id_assigned_student" : self.id_assigned_student, 
-            "publication_date" : self.publication_date,
-            "image_url_1" : self.image_url_1,
-            "image_url_2" : self.image_url_2,
-            "flat_img": self.flat_img}
+                "title": self.title,
+                "description": self.description,
+                "price" : self.price,
+                "square_meters": self.square_meters,
+                "id_flat" : self.id_flat,
+                "publication_date" : self.publication_date}
 
 
 class Favorites(db.Model):
