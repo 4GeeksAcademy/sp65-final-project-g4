@@ -23,20 +23,39 @@ export const UploadRooms = () => {
 
     const handleSubmit = () => {
         console.log("Saving data...", formData);
-        actions.createNewRoom(formData);
-        
-        const newRoom = store.rooms[(store.rooms.length - 1)];
-
-        if (newRoom) {
-        const roomId = (newRoom.id);
-        navigate(`/roomprofile/${roomId}`)
-        }
+        createNewRoom(formData);
     };
 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const createNewRoom = async (dataToSend) => {
+        const url = `${process.env.BACKEND_URL}/api/rooms`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${store.accessToken}`					
+            },
+            body: JSON.stringify(dataToSend)
+        }
+
+        const response = await fetch(url, options);
+    
+        if (!response.ok) {
+            console.log("Error");
+            return;
+        }
+        const newRoom = await response.json();
+        actions.setRoomId(newRoom.redirect)
+        if (newRoom.redirect) { 
+            navigate(`/roomprofile/${newRoom.redirect}`)
+         }  
+        await actions.getRooms();
+        actions.createNewRoom(newRoom)
     };
 
     useEffect(() => {

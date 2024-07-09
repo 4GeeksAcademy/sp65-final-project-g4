@@ -21,8 +21,11 @@ export const MyRooms = () => {
     const myFlatIds = myFlats.map(flat => flat.id);
     // Filter rooms by flat IDs
     const mrooms = store.rooms.filter(room => myFlatIds.includes(room.id_flat));
-    console.log(myFlats);
-    console.log(mrooms);
+
+
+    const handleRoom = (id) => {
+        actions.setRoomId(id)
+    }
 
     useEffect(() => {
         actions.getFlats();
@@ -48,7 +51,7 @@ export const MyRooms = () => {
                                     <p className="description">{item.description}</p>
                                 </div>
                                 <div className="red-color float-end">
-                                    <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>Ver detalles</strong></Link>
+                                    <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleRoom(item.id)}><strong>Ver detalles</strong></Link>
                                 </div>
                             </div>
                         
