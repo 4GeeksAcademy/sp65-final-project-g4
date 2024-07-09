@@ -280,8 +280,8 @@ def handle_flats_post():
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
-    if Landlords.id == current_landlord:
-        data = request.json
+    data = request.json
+    if current_landlord:
         flat = Flats()
         flat.address = data['address']
         flat.description = data['description']
@@ -293,6 +293,7 @@ def handle_flats_post():
         response_body['results'] = flat.serialize()
         response_body['message'] = 'Flat posted'
         return response_body, 200
+
 
 
 @api.route('/flats/<int:flat_id>', methods=['GET'])
@@ -364,7 +365,7 @@ def handle_rooms_post():
     id_flat = data.get('id_flat')
     if not id_flat:
         return {"message": "id_flat is required"}, 400
-    flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlor)).scalar()
+    flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlord)).scalar()
     if flat is None:
         return {"message": "Flat not found or you do not have permission to post rooms to this flat"}, 403
     row = Rooms(
@@ -373,10 +374,7 @@ def handle_rooms_post():
         price=data['price'],
         square_meters=data['square_meters'],
         id_flat=id_flat,
-        publication_date=datetime.today(),
-        image_url_1=data['image_url_1'],
-        image_url_2=data['image_url_2'],
-        flat_img=data['flat_img']
+        publication_date=datetime.today()
     )
     db.session.add(row)
     db.session.commit()
@@ -534,10 +532,10 @@ def handle_favorites_post():
 @jwt_required()
 def handle_favorite_id(favorite_id):
     response_body = {}
+    favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
     if request.method == 'PUT':
         data = request.json
         print(data)
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             favorite.id_student = data['id_student']
             favorite.id_room = data['id_room']
@@ -549,17 +547,16 @@ def handle_favorite_id(favorite_id):
         response_body['results'] = {}
         return response_body, 404
     if request.method == 'DELETE':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             db.session.delete(favorite)
             db.session.commit()
             response_body['message'] = 'Favorite deleted'
             response_body['results'] = {}
+            return response_body, 200
         response_body['message'] = 'Favorite not found'
         response_body['results'] = {}
         return response_body, 200
     if request.method == 'GET':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             response_body['results'] = favorite.serialize()
             response_body['message'] = 'Favorite found'
@@ -686,6 +683,30 @@ def get_images_flats(flat_id):
     )
     image_urls = [resource['secure_url'] for resource in resources['resources']]
     return jsonify({"urls": image_urls}), 200
+
+
+@api.route('/photorooms/<room_id>', methods=['POST'])
+@jwt_required()
+def upload_photo_rooms(room_id):
+    response_body = {}
+    img = request.files["img"]
+    folder_path = f"rooms/{room_id}"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
+
+@api.route('/imagesrooms/<room_id>', methods=['GET'])
+def get_images_rooms(room_id):
+    folder_path = f"rooms/{room_id}"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
+
 
 @api.route('/chats', methods=['GET'])
 @jwt_required()

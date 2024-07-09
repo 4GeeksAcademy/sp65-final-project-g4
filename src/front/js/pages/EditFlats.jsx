@@ -14,13 +14,20 @@ export const EditFlats = () => {
         
     });
    
-    const handleNext = (step) => {
-        setActiveStep(step);
-    };
+    const initializeFlatData = () => {
+		setName(store.userData.landlord_name);
+		setLastname(store.userData.landlord_lastname);
+		setBirthDate(store.userData.birth_Date);
+		setDni(store.userData.dni);
+		setPhoneNumber(store.userData.phone_number);
+		setUrlImage(store.userData.profile_picture)
+	}
 
-    const handleLast = (step) => {
-        setActiveStep(step);
-    };
+    const [description, setDescription] = useState('');
+	const [address, setAddress] = useState('');
+	const [postal_code, setPostal_code] = useState('');
+	const [city, setCity] = useState('');
+	const [albumId, setAlbumId] = useState('');
 
     const handleSave = () => {
         console.log("Saving data...", formData);

@@ -13,7 +13,7 @@ export const Flats = (props) => {
     const [coordinates, setCoordinates] = useState({ lat: 0, lon: 0 });
     const [error, setError] = useState(null);
     const [contents, setContents] = useState([]);
-    
+
     const getCoordinates = async (address) => {
         try {
             const response = await axios.get('https://nominatim.openstreetmap.org/search', {
@@ -38,7 +38,6 @@ export const Flats = (props) => {
     };
 
     const filterHandle = (filterOptions) => {
-        console.log("hi")
         if (filterOptions.lat !== 0 && filterOptions.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
             const toRadians = (degrees) => degrees * (Math.PI / 180);
             let lat1 = toRadians(coordinates.lat);
@@ -59,20 +58,20 @@ export const Flats = (props) => {
             let i = 0
 
             rooms.map(item => {
-                if((filterOptions.price.max < item.price) || (filterOptions.price.min > item.price)) i++
+                if ((filterOptions.price.max < item.price) || (filterOptions.price.min > item.price)) i++
             })
-            if(i == rooms.length) setIsVisible(false)
+            if (i == rooms.length) setIsVisible(false)
         }
         if (filterOptions.surface) {
             const rooms = store.rooms.filter(room => room.id_flat === props.item.id);
             let i = 0
             rooms.map(item => {
-                if(filterOptions.surface > item.square_meters) i++
+                if (filterOptions.surface > item.square_meters) i++
             })
-            if(i == rooms.length) setIsVisible(false)
+            if (i == rooms.length) setIsVisible(false)
         }
     }
-    
+
     const handleFlat = (id) => {
         actions.setFlatId(id)
     }
@@ -98,31 +97,33 @@ export const Flats = (props) => {
                         </div>
                         <Link id={props.item.id} to={`/FlatProfile/${props.item.id}`} onClick={() => handleFlat(props.item.id)}>
 
-                            <h3 className='red-color'>{props.item.address}</h3>
+                            <h3 className='red-color mt-2'>{props.item.address}</h3>
                             <p>{props.item.description.substring(0, 50)}...</p>
                             {!store.rooms.length > 0 ?
                                 ""
                                 :
                                 <>
-                                    {store.rooms.map((item, key) =>
-                                        <>
-                                            {item.id_flat === props.item.id ?
-                                                <div>
-                                                    <p className='price'>{item.price}€</p>
-                                                </div>
-                                                :
-                                                ""
-                                            }
-                                        </>
-                                    )}
+                                    <p>Habitaciones disponibles: {store.rooms.filter(room => room.id_flat === props.item.id).length}</p>
+                                    <div className='d-flex justify-content-evenly room-info-container'>
+                                        <span>
+                                            <p><strong>Habitacion:</strong></p>
+                                            <p><strong>Precio:</strong></p>
+                                            <p><strong>Superficie:</strong></p>
+                                        </span>
+                                        {store.rooms.filter(room => room.id_flat === props.item.id).map((item, key) =>
+                                            <span key={key}>
+                                                <p><strong>{key + 1}</strong></p>
+                                                <p className='price'>{item.price}€</p>
+                                                <p className='price'>{item.square_meters}m2</p>
+                                            </span>
+                                        )}
+                                    </div>
                                 </>
                             }
                         </Link>
                     </Popup>
                 </Marker>
             }
-
         </>
-
     );
 };

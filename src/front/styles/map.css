@@ -6,12 +6,15 @@
     height: calc(100vh - 100px);
     z-index: 0;
     margin-top: -53px;
+    p {
+        margin: 10px 0;
+    }
     .filter-menu {
         position: absolute;
         z-index: 401;
         left: 0;
         top: 20vh;
-        width: 200px;
+        width: 180px;
         background-color: rgba(0,0,0, 0.8);
         padding-left: 10px;
         .filter-item {
@@ -27,14 +30,30 @@
                 width: 90%;
                 font-size: 12px;
             }
+            select+select {
+                margin-top: 10px;
+            }
         }
     }
     .leaflet-control-container {
         .leaflet-top{
             top: 80px;
         }
+        .leaflet-left {
+            left: auto;
+            right: 20px;
+        }
     }
     .photo-container {
-        height: 200px;
+        height: 160px;
+    }
+}
+.room-info-container{
+    p{
+        font-size: 11px;
+        line-height: 8px;
+        strong {
+            color: #333;
+        }
     }
 }

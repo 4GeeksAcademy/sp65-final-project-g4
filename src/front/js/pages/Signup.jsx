@@ -78,49 +78,48 @@ export const Signup = () => {
   const handleLandlordSubmit = async (event) => {
     event.preventDefault();
     if (password1 == password2) {
-    const dataToSend = {
-      email: email,
-      password: password1
-    };
-    const url = `${process.env.BACKEND_URL}/api/signuplandlords`;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dataToSend)
-    };
-    const response = await fetch(url, options)
-    console.log(response)
-    if (!response.ok) {
-      console.log('Error: ', response.status, response.statusText)
-      return
+      const dataToSend = {
+        email: email,
+        password: password1
+      };
+      const url = `${process.env.BACKEND_URL}/api/signuplandlords`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+      };
+      const response = await fetch(url, options)
+      console.log(response)
+      if (!response.ok) {
+        console.log('Error: ', response.status, response.statusText)
+        return
+      }
+      const data = await response.json()
+      console.log(data)
+      localStorage.setItem('token', data.access_token)
+      localStorage.setItem('user', JSON.stringify(data.data))
+      actions.logedIn(data)
+      console.log(data.access_token);
+      navigate('/dashboard')
+    } else {
+      setPassword1('');
+      setPassword2('');
+      warningPop()
     }
-    const data = await response.json()
-    console.log(data)
-    localStorage.setItem('token', data.access_token)
-    localStorage.setItem('user', JSON.stringify(data.data))
-    actions.logedIn(data)
-    console.log(data.access_token);
-    navigate('/dashboard')
-  } else {
-    setPassword1('');
-    setPassword2('');
-    warningPop()
-  }
 
   };
 
   return (
     <>
-      <div className="row d-flex justify-content-center">
+      <div className="row d-flex justify-content-end">
         <div className="col-6 d-flex justify-content-center">
-          <button type="button" className="btn-custom p-3 mt-4 red-background mx-auto" onClick={switchRole}>
+          <a type="button" className="detalles p-3 mt-4 mx-auto" onClick={switchRole}>
             {role ? 'Soy propietario' : 'Soy estudiante'}
-          </button>
+          </a>
         </div>
       </div>
-
 
       {role ?
         <div className="login-container">

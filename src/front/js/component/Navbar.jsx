@@ -23,13 +23,25 @@ export const Navbar = () => {
 				<div className="custom-link-container">
 					{store.isLogedIn ?
 						<>
-							<Link to="/favorites">
-								<span>Favorites</span>
+						{store.userData.is_student ?
+						<>
+							<Link to="/map">
+								<span>Mapa</span>
 							</Link>
-							<Link to="/chats/1">
-								<span>Mensajes</span>
+							<Link to="/rooms">
+								<span>Listado de habitaciones</span>
 							</Link>
-							<div className="dropdown">
+						</> :
+						<>
+							<Link to="/uploadflat">
+							<span>Publicar un piso</span>
+						</Link>
+						<Link to="/myflats">
+							<span>Mis pisos</span>
+						</Link>
+						</>
+							}
+							<div className="dropdown mx-3">
 								<span className="red-color dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									{store.userData.is_landlord ?
 										store.userData.landlord_name
@@ -46,13 +58,19 @@ export const Navbar = () => {
 									</li>
 									<li>
 										{store.userData.is_student ?
-											<Link className="dropdown-item" to="/favorites">
+											<Link className="dropdown-item" to="/FavoritesProfile">
 												<span>Favoritos</span>
 											</Link>
 											:
+											<>
 											<Link className="dropdown-item" to="/myflats">
 												<span>Mis pisos</span>
 											</Link>
+											<Link className="dropdown-item" to="/myrooms">
+												<span>Mis habitaciones</span>
+											</Link>
+											</>
+
 										}
 									</li>
 									<li>
