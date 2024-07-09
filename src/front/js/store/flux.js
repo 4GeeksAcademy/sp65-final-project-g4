@@ -25,8 +25,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			flatId: sessionStorage.getItem('flatId') ? sessionStorage.getItem('flatId') : '',
 			currentFlat: sessionStorage.getItem('currentFlat') ? JSON.parse(sessionStorage.getItem('currentFlat')) : '',
 			editingFlat: {},
+			// Images
 			albums: [],
 			albumId: "",
+			newAlbumId: "",
+			albumCloudinary: [],
 			// Rooms
 			rooms: [],
 			roomId: [],
@@ -230,11 +233,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-			/* setEditingRoom: (editRoom) => {
-				setStore({ editingRoom: editRoom })
-			}, */
-
-
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {
@@ -256,6 +254,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setFlatId: (id) => {
 				setStore({ flatId: id })
 				sessionStorage.setItem('flatId', id)
+			},
+
+			setNewFlatId: (id) => {
+				setStore({ newFlatId: id })
+				sessionStorage.setItem('newFlatId', id)
 			},
 
 			getFlatsId: async () => {
@@ -302,6 +305,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ editingFlat: editFlat })
 			},
 
+			editFlats: async (dataToEdit) => {
+				const url = `${process.env.BACKEND_URL}/api/flats/${getStore().currentFlat.id}`;
+				const options = {
+					method: "PUT",
+					body: JSON.stringify(dataToEdit),
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${store.accessToken}`
+					}
+				};
+				
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error updating flat", response.status, response.statusText);
+					return;
+				}
+				const updatedFlat = await response.json();
+				setStore({ flats: getStore().flats.map(flat => flat.id === updatedFlat.id ? updatedFlat : flat) });
+				console.log("Flat updated successfully");
+			},
+			
 			createAlbum: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/albums`;
 				const options = {
@@ -310,23 +334,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 						'Content-Type': 'application/json',
 						'Authorization': `Bearer ${getStore().accessToken}`
 					},
-					body: JSON.stringify(dataToSend)
-				}
+					body: JSON.stringify(dataToSend),
+				};
 
+				
+		
 				const response = await fetch(url, options);
 				if (!response.ok) {
 					console.log("Error");
 					return;
 				}
 				const newAlbum = await response.json();
-				await getActions().getFlats();
-				setStore({ albums: [...getStore().albums, newAlbum] });;
+				setStore({ albums: [...getStore().albums, newAlbum], newAlbumId: newAlbum.id });
+				
+				console.log(newAlbum);
+			},
+		
+			uploadToCloudinary: async (formData) => {
+				const url = `${process.env.BACKEND_URL}/api/photoflats/${getStore().currentFlat.id}`;
+				const options = {
+					method: "POST",
+					headers: {
+						'Authorization': `Bearer ${getStore().accessToken}`
+					},
+					body: formData,
+				};
+				
+				const response = await fetch(url, options);
+				if (!response.ok) {
+					console.log("Error uploading pictures", response.status, response.statusText);
+					alert("Lo sentimos. Tus fotos no se han podido subir");
+					return;
+				}
+		
+				const newAlbumCloudinary = await response.json();
+				setStore({ albumCloudinary: newAlbumCloudinary });
 			},
 
 			setAlbumId: (idAlbum) => {
-				setStore({ albumId: idAlbum })
+				setStore({ newAlbumId: idAlbum })
 			},
-
 
 			getUsers: async () => {
 				const url = `${process.env.BACKEND_URL}/api/users`;
@@ -478,6 +525,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const newMessage = await response.json();
 				setStore({ currentChat: [...currentChat, newMessage.results] });
 			},
+		
 
 		}
 	};

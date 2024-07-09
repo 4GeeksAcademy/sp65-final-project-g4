@@ -3,6 +3,7 @@ import { Context } from "../store/appContext.js";
 import { Link } from "react-router-dom";
 import "../../styles/flatProfile.css";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { NoAccess } from "./NoAccess.jsx";
 
 export const FlatProfile = () => {
     const { store, actions } = useContext(Context);
@@ -18,33 +19,31 @@ export const FlatProfile = () => {
     return (
         <>
             {store.currentFlat.id == undefined ?
-                ""
+                <NoAccess/>
                 :
+                <>
                 <div className="flat-profile-container">
+                    <div className="header'custom">
+                    <h3 className="red-color">{store.currentFlat.address}</h3>
+                    <Link to={`/editimg/${store.currentFlat.id}`} className="btn-custom send-button red-background">Añadir fotos</Link>
+                    </div>
                     <div className="photo-container">
-                        <PhotoGallery userId={store.currentFlat.id} />
+                        
+                            <PhotoGallery userId={store.currentFlat.id} />
+                        
+                                                    
                     </div>
-                    <h2 className="red-color">{store.currentFlat.address}</h2>
                     <p>{store.currentFlat.description}</p>
-
-                    <Link to={`/uploadroom/${store.currentFlat.id}`}> Añadir habitación </Link>    
-                                   
-
-                    <div>
-                        {/* {store.currentFlat.id_landlord === store.userData.id_landlord ?
-                        ""
-                        : 
-                        "otra cosa"
-                    } */}
-                    </div>
                     <div className="row">
                         {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
                             <div>
-                                <button className="btn-custom red-background mx-2 mb-2">Editar perfil</button>
-                                <button className="btn-custom red-background mb-2">Añadir habitacion</button>
-                            </div>
-                            :
-                            ""
+                                <button className="btn-custom red-background mx-2 mb-2">Editar</button>
+                                {store.currentFlat.id_album  ? (
+                                <Link to={`/uploadroom/${store.currentFlat.id}`} className="btn-custom send-button red-background mb-2">Añadir habitacion</Link>)
+                                : "" }
+                            </div>      
+                            : ""
+
                         }
                     </div>
 
@@ -85,6 +84,7 @@ export const FlatProfile = () => {
                         }
                     </div>
                 </div>
+            </>
             }
         </>
     );
