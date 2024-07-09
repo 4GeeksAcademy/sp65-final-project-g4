@@ -9,9 +9,23 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-export const PhotoGalleryRooms = ({ userId }) => {
+export const PhotoGalleryRooms = ({ roomId }) => {
   const [photos, setPhotos] = useState([]);
   const { store, actions } = useContext(Context);
+
+  const fetchImages = async ({ roomId}) => {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/imagesrooms/${roomId}`);
+    if (!response.ok) {
+      console.log("Error loading message from backend", response.status, response.statusText)
+      return
+    }
+    const data = await response.json()
+    setPhotos(data.urls);
+  };
+
+  useEffect(() => {
+    fetchImages()
+  }, [])
 
   
   return (
@@ -23,17 +37,13 @@ export const PhotoGalleryRooms = ({ userId }) => {
         navigation 
       >
         
-          <SwiperSlide>
+        {photos.map((url, index) => (
+          <SwiperSlide key={index}>
             <div className="photo-item">
-              <img src={store.currentRoom.image_url_1} alt={store.currentRoom.title} />
+              <img src={url} alt={`Uploaded ${index}`} />
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="photo-item">
-              <img src={store.currentRoom.image_url_2} alt={store.currentRoom.title} />
-            </div>
-          </SwiperSlide>
-       
+        ))}
       </Swiper>
     </div>
   );

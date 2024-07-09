@@ -23,9 +23,15 @@ export const FlatProfile = () => {
                 :
                 <>
                 <div className="flat-profile-container">
-                    <div className="header'custom">
-                    <h3 className="red-color">{store.currentFlat.address}</h3>
-                    <Link to={`/editimg/${store.currentFlat.id}`} className="btn-custom send-button red-background">Añadir fotos</Link>
+                    <div className="container">
+
+                    <div className="header-custom container-flex row">
+                    <h3 className="red-color col-8">{store.currentFlat.address} </h3>
+                    {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
+                    <Link to={`/editimg/${store.currentFlat.id}`} className="fotos-add-custom col-4">Añadir fotos</Link>
+                    :
+                     "" }
+                    </div>
                     </div>
                     <div className="photo-container">
                         
@@ -38,11 +44,12 @@ export const FlatProfile = () => {
                         {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
                             <div>
                                 <button className="btn-custom red-background mx-2 mb-2">Editar</button>
-                                {store.currentFlat.id_album  ? (
-                                <Link to={`/uploadroom/${store.currentFlat.id}`} className="btn-custom send-button red-background mb-2">Añadir habitacion</Link>)
-                                : "" }
+                               
+                                <Link to={`/uploadroom/${store.currentFlat.id}`} className="btn-custom send-button red-background mb-2">Añadir habitacion</Link>
+                             
                             </div>      
-                            : ""
+                          :
+                          ""
 
                         }
                     </div>

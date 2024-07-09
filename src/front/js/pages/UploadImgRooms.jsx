@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
-export const EditImg = () => {
+export const UploadRoomImg = () => {
 
     const {store, actions} = useContext(Context);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -25,8 +25,8 @@ export const EditImg = () => {
         if (selectedFile) {
             const formData = new FormData();
             formData.append("img", selectedFile);
-            const flatID = store.currentFlat.id
-            const url = `${process.env.BACKEND_URL}/api/photoflats/${flatID}`;
+            const roomID = store.currentRoom.id
+            const url = `${process.env.BACKEND_URL}/api/photorooms/${roomID}`;
             const options = {
                 method: "POST",
                 headers: {
@@ -70,7 +70,7 @@ export const EditImg = () => {
           <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
         </form>
         <img src={imageUrl}></img>
-          <Link to={`/FlatProfile/${store.currentFlat.id}`} className="send-button btn-custom red-background mt-1"><strong>Publicar</strong></Link>
+          <Link to={`/roomprofile/${store.currentRoom.id}`} className="send-button btn-custom red-background mt-1"><strong>Publicar</strong></Link>
       </div>
     </div>
     )

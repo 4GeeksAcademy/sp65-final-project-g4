@@ -3,6 +3,7 @@ import { Context } from "../store/appContext.js";
 import "../../styles/flatProfile.css";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
+import { Link } from "react-router-dom";
 
 export const RoomProfile = () => {
     const { store, actions } = useContext(Context);
@@ -18,15 +19,16 @@ export const RoomProfile = () => {
                 "Vacio"
                 :
                 <div className="flat-profile-container">
-                    <h3 className="red-color mb-6 pb-6">{store.currentRoom.title}</h3>
+                    <div className="row">
+                    <h3 className="red-color mb-6 pb-6 col-8">{store.currentRoom.title}</h3>
+                    {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
+                    <Link to={`/uploadroomimg/${store.currentRoom.id}`} className="fotos-add-custom mb-2 col-4">Añadir fotos</Link>
+                    : ""}
+                    </div>
                     <div className="photo-container">
-                    {store.currentRoom.image_url_1 || store.currentRoom.image_url_2  ? (
-                            <PhotoGalleryRooms roomId={store.currentRoom.id} />
-                        ) : (
-                            <div className="upload-first-photo container d-flex justify-content-center mt-6 pt-6">
-                                <Link to={`/uploadflatimg/${store.currentFlat.id}`} className="btn-custom send-button red-background mb-2">Sube fotos de tu piso</Link>
-                            </div>
-                        )}
+                    
+                            <PhotoGalleryRooms userId={store.currentRoom.id} />
+                  
                     </div>
                     <p className="mt-5"><strong>Descripción: </strong>{store.currentRoom.description}</p>
                     <p className='price'><strong>Precio:</strong> {store.currentRoom.price}€</p>

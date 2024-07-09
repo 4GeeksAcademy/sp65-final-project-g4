@@ -682,6 +682,30 @@ def get_images_flats(flat_id):
     image_urls = [resource['secure_url'] for resource in resources['resources']]
     return jsonify({"urls": image_urls}), 200
 
+
+@api.route('/photorooms/<room_id>', methods=['POST'])
+@jwt_required()
+def upload_photo_rooms(room_id):
+    response_body = {}
+    img = request.files["img"]
+    folder_path = f"rooms/{room_id}"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
+
+@api.route('/imagesrooms/<room_id>', methods=['GET'])
+def get_images_rooms(room_id):
+    folder_path = f"rooms/{room_id}"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
+
+
 @api.route('/chats', methods=['GET'])
 @jwt_required()
 def get_all_chats_with_last_message():

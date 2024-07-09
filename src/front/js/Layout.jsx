@@ -29,6 +29,9 @@ import { PostFlatImg } from "./pages/UploadFlatImg.jsx";
 import { UploadImagesUsers } from "./component/UploadImagesUsers.jsx";
 import { EditImg } from "./pages/SubirFotos.jsx";
 import { UploadFlats } from "./pages/UploadFlats.jsx";
+import { UploadRoomImg } from "./pages/UploadImgRooms.jsx";
+import { PhotoGallery } from "./component/PhotoGallery.jsx";
+import { MyRooms } from "./pages/myrooms.jsx";
 
 
 
@@ -71,6 +74,11 @@ const Layout = () => {
                             <Route element= {<PostFlatImg />} path="/uploadflatimg/:theid"/>
                             <Route element= {<UploadImagesUsers />} path="/imgusers"/>
                             <Route element= {<EditImg />} path="/editimg/:theid"/>
+                            <Route element= {<UploadRoomImg />} path="/uploadroomimg/:theid"/>
+                            <Route element= {<PhotoGallery />} path="/photosflat/:theid"/>
+                            <Route element= {<MyRooms />} path="/myrooms"/>
+
+
 
                         </Routes>
                     </div>

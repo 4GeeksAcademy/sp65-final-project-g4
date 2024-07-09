@@ -62,9 +62,15 @@ export const Navbar = () => {
 												<span>Favoritos</span>
 											</Link>
 											:
+											<>
 											<Link className="dropdown-item" to="/myflats">
 												<span>Mis pisos</span>
 											</Link>
+											<Link className="dropdown-item" to="/myrooms">
+												<span>Mis habitaciones</span>
+											</Link>
+											</>
+
 										}
 									</li>
 									<li>
