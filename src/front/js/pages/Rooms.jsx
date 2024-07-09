@@ -73,27 +73,28 @@ export const AllRooms = () => {
                         <div className="col-md-2 col-lg-3 col-sm-3 col-xs-12">
                             <div className="sort-buttons justify-content-left">
                                 <p><strong>Ordenar por:</strong></p>
-                                <button className="sort-btn-custom" onClick={() => handleSort('price')}><i class="fa-solid fa-sort sort-btn-custom"></i>Precio</button>
-                                <button className="sort-btn-custom" onClick={() => handleSort('square_meters')}><i class="fa-solid fa-sort sort-btn-custom"></i>Tamaño</button>
-                                <button className="sort-btn-custom" onClick={() => handleSort('publication_date')}><i class="fa-solid fa-sort sort-btn-custom"></i>Fecha de publicación</button>
+                                <button className="sort-btn-custom" onClick={() => handleSort('price')}><i className="fa-solid fa-sort sort-btn-custom"></i>Precio</button>
+                                <button className="sort-btn-custom" onClick={() => handleSort('square_meters')}><i className="fa-solid fa-sort sort-btn-custom"></i>Tamaño</button>
+                                <button className="sort-btn-custom" onClick={() => handleSort('publication_date')}><i className="fa-solid fa-sort sort-btn-custom"></i>Fecha de publicación</button>
                             </div>
                             <div className="filter-inputs mt-3">
-                            <p><strong>Filtrar por:</strong></p>
-                            <div>
-                                <label>Precio mínimo</label>
-                                <input type="number" name="min" value={priceFilter.min} onChange={handlePriceFilterChange} />
-                                <label>Precio máximo</label>
-                                <input type="number" name="max" value={priceFilter.max} onChange={handlePriceFilterChange} />
-                            </div>
-                            <div>
-                                <label>Mínimo m²</label>
-                                <input type="number" name="min" value={squareMetersFilter.min} onChange={handleSquareMetersFilterChange} />
-                                <label>Máximo m²</label>
-                                <input type="number" name="max" value={squareMetersFilter.max} onChange={handleSquareMetersFilterChange} />
+                                <p><strong>Filtrar por:</strong></p>
+                                <div>
+                                    <label>Precio mínimo</label>
+                                    <input type="number" name="min" value={priceFilter.min} onChange={handlePriceFilterChange} />
+                                    <label>Precio máximo</label>
+                                    <input type="number" name="max" value={priceFilter.max} onChange={handlePriceFilterChange} />
+                                </div>
+                                <div>
+                                    <label>Mínimo m²</label>
+                                    <input type="number" name="min" value={squareMetersFilter.min} onChange={handleSquareMetersFilterChange} />
+                                    <label>Máximo m²</label>
+                                    <input type="number" name="max" value={squareMetersFilter.max} onChange={handleSquareMetersFilterChange} />
+                                </div>
                             </div>
                         </div>
-                    </div>
                         {filteredAndSortedRooms.map((item, index) => (
+
                             <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 view-container" key={index}>
                                 <div className="photo-container">
                                     <PhotoGalleryRooms roomId={item.id}/>
@@ -111,8 +112,16 @@ export const AllRooms = () => {
                                                 <strong>Ver detalle</strong>
                                         </Link>
                                         </div>
+
                                 </div>
-                        
+                                <div className="d-flex justify-content-between ml-0 pl-0">
+
+                                    <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
+                                        <strong>Ver detalle</strong>
+                                    </Link>
+                                </div>
+                            </div>
+
                         ))}
                     </div>
                 </div>

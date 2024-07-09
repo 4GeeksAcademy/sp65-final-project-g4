@@ -66,7 +66,6 @@ export const Dashboard = () => {
 				const data = await response.json();
 				setUrlImage(data.img_url);
 				console.log("Sucessful uploading", data.img_url)
-				actions.settingLastProfPicUrl(data.img_url)
 				localStorage.setItem('profileImageUrl', data.img_url)
 			} else {
 				console.log("Error uploading picture", response.status, response.statusText)
@@ -152,7 +151,7 @@ export const Dashboard = () => {
 									</div>
 									<div className="modal-body">
 										<div className="mb-3">
-											<select class="form-select" aria-label="Default select example" onChange={handleUniversity} placeholder={store.userData.id_university}>
+											<select className="form-select" aria-label="Default select example" onChange={handleUniversity} placeholder={store.userData.id_university}>
 												<option selected>Seleccionar la universidad</option>
 												{!store.universities ?
 													""
