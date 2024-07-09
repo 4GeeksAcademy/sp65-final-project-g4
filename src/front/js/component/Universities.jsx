@@ -36,7 +36,7 @@ export const Universities = (props) => {
     }, [])
     const customIcon = new L.Icon({
         iconUrl: uniMapPointer,
-        iconSize: [32, 32], // Tamaño del icono
+        iconSize: [50, 50], // Tamaño del icono
         iconAnchor: [16, 32], // Punto del icono que estará anclado a la coordenada (centrado inferior)
         popupAnchor: [0, -32] // Punto desde donde se abrirá el popup
       });
