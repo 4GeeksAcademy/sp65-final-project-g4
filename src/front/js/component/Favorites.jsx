@@ -8,7 +8,7 @@ export const Favorites = (props) => {
         event.preventDefault();
         if (!store.favorites.some(obj => obj.id_room === props.id)) {
           const dataToSend = {
-            "id_student": props.id,
+            "id_student": store.userData.id_student,
             "id_room": props.id
           };
           const url = `${process.env.BACKEND_URL}/api/favorites`;
