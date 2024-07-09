@@ -215,7 +215,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			createNewRoom: (newRoom) => {
 				actions().setStore({ rooms: [...actions.getStore().rooms, newRoom] });;
-				actions().setStore({ roomID: newRoom.id });
 			},
 			
 			getFlats: async () => {

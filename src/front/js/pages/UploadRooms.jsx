@@ -24,13 +24,6 @@ export const UploadRooms = () => {
     const handleSubmit = () => {
         console.log("Saving data...", formData);
         createNewRoom(formData);
-        
-        const newRoom = store.rooms[(store.rooms.length - 1)];
-
-        if (newRoom) {
-        const roomId = (newRoom.id);
-        navigate(`/roomprofile/${roomId}`)
-        }
     };
 
 
@@ -57,9 +50,10 @@ export const UploadRooms = () => {
             return;
         }
         const newRoom = await response.json();
+        actions.setRoomId(newRoom.redirect)
         if (newRoom.redirect) { 
             navigate(`/roomprofile/${newRoom.redirect}`)
-         }
+         }  
         await actions.getRooms();
         actions.createNewRoom(newRoom)
     };
