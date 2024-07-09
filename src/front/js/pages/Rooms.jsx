@@ -65,9 +65,9 @@ export const AllRooms = () => {
     return (
         <div className="container mt-4">
             <h3 className="red-color text-center mb-4">Habitaciones publicadas</h3>
-            {!store.rooms ? (
+            {!store.rooms ?
                 "Pantalla de carga"
-            ) : (
+                :
                 <div>
                     <div className="row">
                         <div className="col-md-2 col-lg-3 col-sm-3 col-xs-12">
@@ -93,11 +93,12 @@ export const AllRooms = () => {
                                 </div>
                             </div>
                         </div>
-                            {filteredAndSortedRooms.map((item, index) => (
+                        {filteredAndSortedRooms.map((item, index) => (
                             <div className="col-md-5 col-lg-3 col-sm-6 col-xs-12 view-container" key={index}>
                                 <div className="photo-container">
-                                    <PhotoGalleryRooms roomId={item.id}/>
-                                </div> 
+                                    <PhotoGalleryRooms roomId={item.id} />
+                                </div>
+                                <div>
                                     <div className="view-text">
                                         <h5>{item.title}</h5>
                                         <p>{item.price} €</p>
@@ -105,29 +106,23 @@ export const AllRooms = () => {
                                         <p>{item.square_meters}m²</p>
                                         <p>Publicado el {item.publication_date}</p>
                                     </div>
-                                        <div className="d-flex justify-content-between ml-0 pl-0">
-                                     
+                                    <div className="d-flex justify-content-between ml-0 pl-0">
+
                                         <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
-                                                <strong>Ver detalle</strong>
+                                            <strong>Ver detalle</strong>
                                         </Link>
-
-                                        </div>
-
-
-                                        </div>                                             
-
-                                <div className="d-flex justify-content-between ml-0 pl-0">
-                                    <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
-                                        <strong>Ver detalle</strong>
-                                    </Link>
+                                    </div>
+                                    <div className="d-flex justify-content-between ml-0 pl-0">
+                                        <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
+                                            <strong>Ver detalle</strong>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-
                         ))}
+                    </div>
                 </div>
-                </div>
+            }
+        </div>
     )
 }
-        </div >
-    );
-};
