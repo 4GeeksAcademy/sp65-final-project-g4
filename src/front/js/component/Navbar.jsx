@@ -41,7 +41,7 @@ export const Navbar = () => {
 						</Link>
 						</>
 							}
-							<div className="dropdown">
+							<div className="dropdown mx-3">
 								<span className="red-color dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									{store.userData.is_landlord ?
 										store.userData.landlord_name
@@ -58,7 +58,7 @@ export const Navbar = () => {
 									</li>
 									<li>
 										{store.userData.is_student ?
-											<Link className="dropdown-item" to="/favorites">
+											<Link className="dropdown-item" to="/FavoritesProfile">
 												<span>Favoritos</span>
 											</Link>
 											:

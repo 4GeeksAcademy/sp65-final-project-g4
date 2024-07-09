@@ -36,7 +36,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			roomId: sessionStorage.getItem('roomId') ? sessionStorage.getItem('roomId') : '',
 			currentRoom: sessionStorage.getItem('currentRoom') ? JSON.parse(sessionStorage.getItem('currentRoom')) : '',
 			editingRoom: [],
-
+			favorites: sessionStorage.getItem('favorites') ? JSON.parse(sessionStorage.getItem('favorites')) : '',
 		},
 		actions: {
 			getMessage: async () => {
@@ -49,7 +49,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ message: data.message })
 				return data;  // Don't forget to return something, that is how the async resolves
 			},
-
 			loginUser: async (userData) => {
 				const uri = `${process.env.BACKEND_URL}/api/login`
 				const options = {
@@ -74,7 +73,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('token', data.access_token)
 				localStorage.setItem('user', JSON.stringify(data.data))
 			},
-
+			getFavorites: async (studentId) => {
+				const uri = `${process.env.BACKEND_URL}/api/favorites`
+				const options = {
+					method: 'GET'
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json()
+				setStore({ favorites: data.results });
+				sessionStorage.setItem('favorites', JSON.stringify(data.results))
+			},
 			getStudent: async (studentId) => {
 				const uri = `${process.env.BACKEND_URL}/api/students/${studentId}`
 				const options = {

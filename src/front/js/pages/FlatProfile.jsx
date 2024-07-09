@@ -54,7 +54,6 @@ export const FlatProfile = () => {
                         }
                     </div>
 
-
                     <div className="row justify-content-evenly">
                         {!store.rooms.length > 0 ?
                             ""
@@ -63,12 +62,12 @@ export const FlatProfile = () => {
                                 {store.rooms.map((item, key) =>
                                     <>
                                         {item.id_flat === store.currentFlat.id ?
-                                            <div className="col-4">
+                                            <div key={key} className="col-4">
                                                 <div className="rooms-container">
                                                     <div className="photo-container">
                                                         <PhotoGallery userId={item.id} />
                                                     </div>
-                                                    <div key={key} className="room">
+                                                    <div className="room">
                                                         <h3 className="red-color">{item.title}</h3>
                                                         <p>{item.description}</p>
                                                         <div className='d-flex justify-content-evenly'>
@@ -81,7 +80,6 @@ export const FlatProfile = () => {
                                                     </div>
                                                 </div>
                                             </div>
-
                                             :
                                             ""
                                         }

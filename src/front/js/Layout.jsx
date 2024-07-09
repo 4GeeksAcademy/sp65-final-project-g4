@@ -17,11 +17,12 @@ import { Map } from "./pages/Map.jsx";
 import { UploadImagesFlats } from "./component/UploadImagesFlats.jsx";
 import { Chats } from "./pages/Chats.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
-import { FlatProfile } from "./pages/flatProfile.jsx";
+import { FlatProfile } from "./pages/FlatProfile.jsx";
 import { LOPDPG } from "./pages/LOPDPG.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
 import { UploadRooms } from "./pages/UploadRooms.jsx";
-import { RoomProfile } from "./pages/roomProfile.jsx";
+import { RoomProfile } from "./pages/RoomProfile.jsx";
+import { FavoritesProfile } from "./pages/FavoritesProfile.jsx";
 import { MyFlats } from "./pages/myFlats.jsx";
 import { NoAccess } from "./pages/NoAccess.jsx";
 import { AllRooms } from "./pages/Rooms.jsx";
@@ -64,6 +65,7 @@ const Layout = () => {
                             <Route element={<Dashboard />} path="/dashboard" />
                             <Route element={<RoomProfile />} path="/RoomProfile/:theid" />
                             <Route element={<FlatProfile />} path="/FlatProfile/:theid" />
+                            <Route element={<FavoritesProfile />} path="/FavoritesProfile/" />
                             <Route element={<LOPDPG />} path="/LPD" />
                             <Route element={<Contacto />} path="/contact" />
                             <Route element= {<UploadFlats/>} path="/uploadflat" />
