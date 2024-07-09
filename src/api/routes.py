@@ -290,10 +290,11 @@ def handle_flats_post():
         flat.id_landlord = current_landlord
         db.session.add(flat)
         db.session.commit()
+        last_id = flat.id
         response_body['results'] = flat.serialize()
         response_body['message'] = 'Flat posted'
+        response_body['redirect'] = f'{last_id}'
         return response_body, 200
-
 
 
 @api.route('/flats/<int:flat_id>', methods=['GET'])
