@@ -26,6 +26,7 @@ export const UploadRooms = () => {
         actions.createNewRoom(formData);
         
         const newRoom = store.rooms[(store.rooms.length - 1)];
+
         if (newRoom) {
         const roomId = (newRoom.id);
         navigate(`/roomprofile/${roomId}`)

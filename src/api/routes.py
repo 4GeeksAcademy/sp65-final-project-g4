@@ -382,6 +382,7 @@ def handle_rooms_post():
     db.session.commit()
     response_body['results'] = row.serialize()
     response_body['message'] = 'Room posted'
+    response_body['redirect'] = jsonify({'redirect': '/new_route'})
     return response_body, 200
 
 
