@@ -4,7 +4,7 @@ import "../../styles/flatProfile.css";
 import { Favorites } from "../component/Favorites.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 import { Link, useNavigate } from "react-router-dom";
-import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { motion } from 'framer-motion'
 
 export const RoomProfile = () => {
     const { store, actions } = useContext(Context);
@@ -68,7 +68,10 @@ export const RoomProfile = () => {
     
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+        animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             {store.currentRoom.id == undefined ?
                 "Habitación no encontrada"
                 :
@@ -143,7 +146,7 @@ export const RoomProfile = () => {
                     }
                 </div>
             }
-        </>
+        </motion.div>
     );
 };
 

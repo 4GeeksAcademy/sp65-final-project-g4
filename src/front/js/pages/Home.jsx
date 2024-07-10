@@ -6,6 +6,7 @@ import "../../styles/home.css";
 import { useTranslation } from 'react-i18next';
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { Contacto } from "./Contacto.jsx";
+import { motion } from 'framer-motion'
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
@@ -16,7 +17,12 @@ export const Home = () => {
 	}
 
 	return (
-		<div className="home-container">
+		<motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
 			<div className="row justify-content-center">
 				<div className="col-12">
 					<div className="image-container">
@@ -61,6 +67,6 @@ export const Home = () => {
 			<div className="section-custom justify-content-center">
 				<Contacto />
 			</div>
-		</div>
+		</motion.div>
 	);
 };

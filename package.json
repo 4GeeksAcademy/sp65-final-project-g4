@@ -74,6 +74,7 @@
 	"dependencies": {
 		"axios": "^1.7.2",
 		"emailjs-com": "^3.2.0",
+		"framer-motion": "^11.2.14",
 		"i18next": "^23.11.5",
 		"i18next-browser-languagedetector": "^8.0.0",
 		"i18next-http-backend": "^2.5.2",

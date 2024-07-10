@@ -5,6 +5,7 @@ import "../../styles/flatProfile.css";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
+import { motion } from "framer-motion";
 
 export const FlatProfile = () => {
     const { store, actions } = useContext(Context);
@@ -18,7 +19,10 @@ export const FlatProfile = () => {
     }, [])
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             {store.currentFlat.id == undefined ?
                 <NoAccess/>
                 :
@@ -92,6 +96,6 @@ export const FlatProfile = () => {
                 </div>
             </>
             }
-        </>
+        </motion.div>
     );
 };
