@@ -45,11 +45,12 @@ export const PhotoGalleryRooms = ({ roomId }) => {
             </div>
           </SwiperSlide>
         ))}
-        {store.flats.map((item, index) =>
-        <SwiperSlide key={index}>
-            <PhotoGallery userId={store.currentRoom.id_flat}/>
+
+        {store.rooms.filter(room => room.id === roomId).map((room, index) => (
+          <SwiperSlide key={`flat-${index}`}>
+            <PhotoGallery userId={room.id_flat} />
         </SwiperSlide>
-        )}
+        ))}
       </Swiper>
     </div>
   );

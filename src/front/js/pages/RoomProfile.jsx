@@ -55,7 +55,18 @@ export const RoomProfile = () => {
         handleModalReset();
     }
 
-    const createChat = async (chat) => {
+    const createChat = async () => {
+        const currentFlat = store.flats.find(flat => flat.id === store.currentRoom.id_flat)
+        if (!currentFlat) {
+            console.error("Current flat not found");
+            return;
+        }
+    
+        const chat = {
+            room_id: store.currentRoom.id,
+            landlord_id: currentFlat.landlord_user_id  
+        };
+    
         const url = `${process.env.BACKEND_URL}/api/chats`;
         const options = {
             method: 'POST',
@@ -64,11 +75,11 @@ export const RoomProfile = () => {
                 'Authorization': `Bearer ${store.accessToken}`
             },
             body: JSON.stringify(chat)
-        }
+        };
 
         const response = await fetch(url, options);
         if (!response.ok) {
-            console.log("Error");
+            console.log("Error creating chat:", response.statusText);
             return;
         }
 
@@ -80,6 +91,12 @@ export const RoomProfile = () => {
 
         await actions.getAllChats();
         actions.createNewChat(newChat)
+    };
+
+    const handleCreateChat = () => {
+        createChat()
+            .then(() => console.log("Chat created successfully"))
+            .catch(error => console.error("Failed to create chat:", error));
     };
 
     useEffect(() => {
@@ -151,11 +168,9 @@ export const RoomProfile = () => {
                     <p className='price'><strong>Superficie:</strong> {store.currentRoom.square_meters}m2</p>
                     <p><strong>Publicado el: </strong>{store.currentRoom.publication_date}</p>
                     {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
-                        <div>
-                            <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> Editar</button>
-                        </div>
+                        <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> Editar</button>
                         :
-                        <button className="btn-custom red-background mx-2 mb-2" onClick={createChat()}>Contacta</button>
+                        <button className="btn-custom send-button red-background mb-2" onClick={handleCreateChat}>Contacta</button>
 
                     }
                     {store.userData.is_student ?

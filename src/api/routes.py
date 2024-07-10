@@ -757,6 +757,7 @@ def create_chat():
         response_body['message'] = 'Chat created'
         response_body['redirect'] = f'{last_id}' 
         return response_body, 200
+    return {'message': 'Unauthorized'}, 401
 
   
 @api.route('/messages' , methods=['GET'])
