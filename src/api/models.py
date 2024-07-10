@@ -165,7 +165,8 @@ class Landlords(db.Model):
                 'birth_date': self.birth_date,
                 'dni': self.dni,
                 'phone_number': self.phone_number,
-                'profile_picture': self.profile_picture}
+                'profile_picture': self.profile_picture,
+                'id_user': self.id_user}
 
 
 class Flats(db.Model):
@@ -184,8 +185,10 @@ class Flats(db.Model):
         return f'<Flat {self.address}>'
 
     def serialize(self):
+        landlord = self.id_landlord_to
         return {'id': self.id,
                 'id_landlord': self.id_landlord,
+                'landlord_user_id': landlord.id_user if landlord else None,
                 'address': self.address,
                 'description': self.description,
                 'postal_code': self.postal_code,
