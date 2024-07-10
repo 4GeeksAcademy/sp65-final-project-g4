@@ -17,13 +17,14 @@ return (
             <AllChats />        
         </div>
         <div className="col-lg-8 col-md-8 col-sm-12 pr-0 ">
-        <h3 className="red-color">{t('traduccion33')}</h3>
-            < Messages/>
+
+       <h3 className="red-color">{t('traduccion33')}</h3>
+        {!store.currentChat.id ?
+        ""
+        :
+            < Messages/>}
         </div>
-      {/*   
-        <div className="col-3 overflow-auto">
-            <h3>Room details</h3>
-      </div> */}
+      
     </div>
     </div>
   );

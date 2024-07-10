@@ -50,6 +50,9 @@ export const MyRooms = () => {
                                     <h5>{item.address}</h5>
                                     <p>{item.city}</p>
                                     <p className="description">{item.description}</p>
+                                    <p>{item.price}</p>
+                                    <p>{item.square_meters}</p>
+                                    <p>{item.publication_date}</p>
                                 </div>
                                 <div className="red-color float-end">
                                     <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleRoom(item.id)}><strong>{t('traduccion68')}</strong></Link>

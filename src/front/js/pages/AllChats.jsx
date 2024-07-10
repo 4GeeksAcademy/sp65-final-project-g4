@@ -6,7 +6,15 @@ export const AllChats = () => {
 
     const {store , actions} = useContext(Context)
 
-  
+    const handleChatClick = (chatId) => {
+        actions.setChatId(chatId);
+        actions.getMessagesWithChatId();
+    };
+
+    useEffect(() => {
+        actions.getChats();
+      }, [])
+
 
     return(
     <>
@@ -16,31 +24,33 @@ export const AllChats = () => {
             :
             
             <>
+            <ul className="list-group">
             
-             {store.chats.map((item, index) =>   
-             <Link
-             to={`/chats/${item.id}`} 
-                            key={index} 
-                            onClick={() => actions.setChatId(item.id)} 
-                            className="text-decoration-none"> 
+             {store.chats.map((chat) => (  
+                <li 
+                key={chat.id} 
+                className={`list-group-item ${chat.id === store.selectedChatId ? 'bg-gray' : ''} ${!chat.is_read ? 'font-weight-bold' : ''}`}
+                onClick={() => handleChatClick(chat.id)}
+            >
             <div className="card mt-2 ">                
                 <div className="card-header" id="chat-header">
                     <p>
                     {store.userData.is_student ?
-                        item.landlord_name
+                        chat.landlord_name
                         :
-                        item.student_name}
+                        chat.student_name}
                     </p>
                 </div>
                 <div className="card-body">
-                    <p className="card-text">{item.last_message}</p>
+                    <p className="card-text">{chat.last_message}</p>
                 </div> 
               
             </div> 
-            </Link>
-        )} </>
+            </li>
+        ))} 
+    </ul>
+        </>
          }
-   
     </>
 
     )

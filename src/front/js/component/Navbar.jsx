@@ -74,7 +74,8 @@ export const Navbar = () => {
 										}
 									</li>
 									<li>
-										<Link className="dropdown-item" to="/chats/1">
+
+										<Link className="dropdown-item" to="/chats/">
 											<span>{t('navbar8')}</span>
 										</Link>
 									</li>

@@ -39,7 +39,7 @@ export const AnimationRoutes = () => {
                 <Route element={<NoAccess />} path="*" />
                 <Route element={<Signup />} path="/signup" />
                 <Route element={<UploadImagesFlats />} path="/uploadimg" />
-                <Route element={<Chats />} path="/chats/:id" />
+                <Route element={<Chats />} path="/chats/:theid?"  />
                 <Route element={<Dashboard />} path="/dashboard" />
                 <Route element={<RoomProfile />} path="/RoomProfile/:theid" />
                 <Route element={<FlatProfile />} path="/FlatProfile/:theid" />

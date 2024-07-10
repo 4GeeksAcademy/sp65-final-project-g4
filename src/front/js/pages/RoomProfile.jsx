@@ -101,6 +101,10 @@ export const RoomProfile = () => {
             .catch(error => console.error("Failed to create chat:", error));
     };
 
+    const handleSendToSignUp = () => {
+        navigate("/signup")
+    }
+
     useEffect(() => {
         actions.getRoomId();
         actions.getRooms();
@@ -169,12 +173,18 @@ export const RoomProfile = () => {
                     <p className='price'><strong>{t('traduccion14')}:</strong> {store.currentRoom.price}€</p>
                     <p className='price'><strong>{t('traduccion15')}:</strong> {store.currentRoom.square_meters}m²</p>
                     <p><strong>Publicado el: </strong>{store.currentRoom.publication_date}</p>
+                    {!store.userData ?
+                        <button className="btn-custom send-button red-background mb-2" onClick={handleSendToSignUp}>Contacta</button>
+                        :
+                        <>
                     {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
+
                         <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> {t('traduccion25')}</button>
                         :
                         <button className="btn-custom send-button red-background mb-2" onClick={handleCreateChat}>{t('traduccion31')}</button>
 
                     }
+                    </> }
                     {store.userData.is_student ?
                         <div>
                             <Favorites id={store.currentRoom.id} />
