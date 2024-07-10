@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
+import { useTranslation } from 'react-i18next';
 
 export const UploadImagesUsers = () => {
+  const { t, i18n } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const { store, actions } = useContext(Context);
@@ -30,10 +32,10 @@ export const UploadImagesUsers = () => {
         setImageUrl(data.img_url);
         console.log("Sucessful uploading", data.img_url)
         actions.settingLastProfPicUrl(data.img_url)
-        alert("Your picture has been sucessfully uploaded")
+        localStorage.setItem('profileImageUrl', data.img_url)
       } else {
         console.log("Error uploading picture", response.status, response.statusText)
-        alert("Error! Tu no imagen no se ha subido")
+        alert("Error! Tu imagen no se ha subido")
       }
     } else {
       alert('Please, select a file to upload');
@@ -57,7 +59,7 @@ export const UploadImagesUsers = () => {
   return (
     <div className="container mt-3 justify-content-center">
       <div className='col-12 justify-content-center'>
-        <p className="mb-4 text-center red-color">¡Sube tu foto de perfil!</p>
+        <p className="mb-4 text-center red-color">{t('traduccion44')}</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
@@ -67,7 +69,7 @@ export const UploadImagesUsers = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn-custom red-background justify-content-center">Upload picture</button>
+          <button type="submit" className="btn-custom red-background justify-content-center">{t('traduccion45')}</button>
         </form>
         <img src={imageUrl}></img>
       </div>

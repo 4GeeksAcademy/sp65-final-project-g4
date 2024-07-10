@@ -54,7 +54,7 @@ class Students(db.Model):
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(60), unique=False, nullable=False)
     lastname = db.Column(db.String(120), unique=False, nullable=False)
-    birth_date = db.Column(db.Date, unique=False, nullable=True)
+    birth_date = db.Column(db.String(), unique=False, nullable=True)
     dni = db.Column(db.String(9), unique=False, nullable=False)
     phone_number = db.Column(db.String(13), unique=True, nullable=True) # Formato 034-XXXXXXXXX 13 caracteres
     profile_picture = db.Column(db.String(), unique=True, nullable=True)
@@ -73,6 +73,7 @@ class Students(db.Model):
                     'profile_picture': self.profile_picture}
     def public_serialize(self):
         return {'id_student': self.id,
+                'id_university': self.id_university,
                 'student_name': self.name,
                 'student_lastname': self.lastname,
                 'birth_date': self.birth_date,
@@ -89,12 +90,6 @@ class Rooms(db.Model):
     square_meters = db.Column(db.Float(), nullable = False)
     id_flat = db.Column(db.Integer() , db.ForeignKey('flats.id'))
     to_id_flat = db.relationship('Flats' , foreign_keys=[id_flat])
-    id_assigned_student = db.Column(db.Integer() , db.ForeignKey('students.id'))
-    to_id_assigned_student = db.relationship('Students' , foreign_keys=[id_assigned_student])
-    image_url_1 = db.Column(db.String())
-    image_url_2 = db.Column(db.String())
-    flat_img = db.Column(db.Integer() , db.ForeignKey('albums.id'))
-    to_flat_img = db.relationship('Albums' , foreign_keys=[flat_img]) 
     publication_date = db.Column(db.Date() , unique = False)
 
     def __repr__(self):
@@ -102,16 +97,12 @@ class Rooms(db.Model):
 
     def serialize(self):
         return {"id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "price" : self.price,
-            "square_meters": self.square_meters,
-            "id_flat" : self.id_flat,
-            "id_assigned_student" : self.id_assigned_student, 
-            "publication_date" : self.publication_date,
-            "image_url_1" : self.image_url_1,
-            "image_url_2" : self.image_url_2,
-            "flat_img": self.flat_img}
+                "title": self.title,
+                "description": self.description,
+                "price" : self.price,
+                "square_meters": self.square_meters,
+                "id_flat" : self.id_flat,
+                "publication_date" : self.publication_date}
 
 
 class Favorites(db.Model):
@@ -149,7 +140,7 @@ class Landlords(db.Model):
     id_user_to = db.relationship('Users', foreign_keys=[id_user])
     name = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
-    birth_date = db.Column(db.Date, nullable=True)
+    birth_date = db.Column(db.String(), nullable=True)
     dni = db.Column(db.String(), unique=False)
     phone_number = db.Column(db.String(), unique=True)
     profile_picture = db.Column(db.String())
@@ -174,7 +165,8 @@ class Landlords(db.Model):
                 'birth_date': self.birth_date,
                 'dni': self.dni,
                 'phone_number': self.phone_number,
-                'profile_picture': self.profile_picture}
+                'profile_picture': self.profile_picture,
+                'id_user': self.id_user}
 
 
 class Flats(db.Model):
@@ -193,8 +185,10 @@ class Flats(db.Model):
         return f'<Flat {self.address}>'
 
     def serialize(self):
+        landlord = self.id_landlord_to
         return {'id': self.id,
                 'id_landlord': self.id_landlord,
+                'landlord_user_id': landlord.id_user if landlord else None,
                 'address': self.address,
                 'description': self.description,
                 'postal_code': self.postal_code,

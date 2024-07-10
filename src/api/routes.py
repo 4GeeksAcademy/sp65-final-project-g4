@@ -108,12 +108,13 @@ def login():
         return jsonify({"msg": "Wrong password"}) , 401
     if user.is_student:
         student = db.session.execute(db.select(Students).where(Students.id_user == user.id)).scalar()
+        university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
         access_token = create_access_token(identity={'user_id': user.id,
                                                      'user_is_student': True,
                                                      'user_is_landlord': False,
                                                      'email': user.email,
                                                      'student_id': student.id})
-        serialized_data = {**user.serialize(), **student.public_serialize()}
+        serialized_data = {**user.serialize(), **student.public_serialize(), **university.public_serialize()}
         response_body['message'] = 'Student logged in'
         response_body['access_token'] = access_token
         response_body['data'] = serialized_data
@@ -289,10 +290,11 @@ def handle_flats_post():
         flat.id_landlord = current_landlord
         db.session.add(flat)
         db.session.commit()
+        last_id = flat.id
         response_body['results'] = flat.serialize()
         response_body['message'] = 'Flat posted'
+        response_body['redirect'] = f'{last_id}'
         return response_body, 200
-
 
 
 @api.route('/flats/<int:flat_id>', methods=['GET'])
@@ -312,11 +314,8 @@ def handle_flat(flat_id):
 @jwt_required()
 def handle_flat_edit(flat_id):
     response_body = {}
-    user_info = get_jwt_identity()
-    user_id = user_info['id_landlord']
     flat = db.session.execute(db.select(Flats).where(Flats.id == flat_id)).scalar()
-    if flat.id_landlord == user_id:
-        if request.method == 'PUT':
+    if request.method == 'PUT':
             data = request.json
             if flat:
                 flat.description = data['description']
@@ -324,7 +323,6 @@ def handle_flat_edit(flat_id):
                 flat.address = data['address']
                 flat.postal_code = data['postal_code']
                 flat.city = data['city']
-                flat.id_album = data.get('album_id', flat.album_id)
                 db.session.commit()
                 response_body['message'] = 'Flat updated'
                 response_body['results'] = flat.serialize()
@@ -332,7 +330,7 @@ def handle_flat_edit(flat_id):
             response_body['message'] = 'Flat not found'
             response_body['results'] = {}
             return response_body, 404
-        if request.method == 'DELETE':
+    if request.method == 'DELETE':
             if flat:
                 db.session.delete(flat)
                 db.session.commit()
@@ -360,8 +358,10 @@ def handle_rooms_post():
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
+    print(current_landlord)
     data = request.json
     id_flat = data.get('id_flat')
+    print(id_flat)
     if not id_flat:
         return {"message": "id_flat is required"}, 400
     flat = db.session.execute(db.select(Flats).where(Flats.id == id_flat, Flats.id_landlord == current_landlord)).scalar()
@@ -377,8 +377,10 @@ def handle_rooms_post():
     )
     db.session.add(row)
     db.session.commit()
+    last_id = row.id
     response_body['results'] = row.serialize()
     response_body['message'] = 'Room posted'
+    response_body['redirect'] = f'{last_id}'
     return response_body, 200
 
 
@@ -401,8 +403,7 @@ def handle_room_id(room_id):
     response_body = {}
     user_info = get_jwt_identity()
     current_landlord = user_info['landlord_id']
-    if Landlords.id == current_landlord:
-        if request.method == 'PUT':
+    if request.method == 'PUT':
             data = request.json
             print(data)
             room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
@@ -413,9 +414,6 @@ def handle_room_id(room_id):
                 room.square_meters = data['square_meters']
                 room.id_flat = data['id_flat']
                 room.publication_date = datetime.today()
-                room.image_url_1 = data['image_url_1']
-                room.image_url_2 = data['image_url_2']
-                room.flat_img = data['flat_img']
                 db.session.commit()
                 response_body['message'] = 'Room updated'
                 response_body['results'] = room.serialize()
@@ -423,7 +421,7 @@ def handle_room_id(room_id):
             response_body['message'] = 'Room not found'
             response_body['results'] = {}
             return response_body, 404
-        if request.method == 'DELETE':
+    if request.method == 'DELETE':
             room = db.session.execute(db.select(Rooms).where(Rooms.id == room_id)).scalar()
             if room:
                 db.session.delete(room)
@@ -531,10 +529,10 @@ def handle_favorites_post():
 @jwt_required()
 def handle_favorite_id(favorite_id):
     response_body = {}
+    favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
     if request.method == 'PUT':
         data = request.json
         print(data)
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             favorite.id_student = data['id_student']
             favorite.id_room = data['id_room']
@@ -546,17 +544,16 @@ def handle_favorite_id(favorite_id):
         response_body['results'] = {}
         return response_body, 404
     if request.method == 'DELETE':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             db.session.delete(favorite)
             db.session.commit()
             response_body['message'] = 'Favorite deleted'
             response_body['results'] = {}
+            return response_body, 200
         response_body['message'] = 'Favorite not found'
         response_body['results'] = {}
         return response_body, 200
     if request.method == 'GET':
-        favorite = db.session.execute(db.select(Favorites).where(Favorites.id == favorite_id)).scalar()
         if favorite:
             response_body['results'] = favorite.serialize()
             response_body['message'] = 'Favorite found'
@@ -591,8 +588,9 @@ def handle_single_student(id):
     response_body = {}
     student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
     user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
+    university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
     if student:
-        serialized_data = {**user.serialize(), **student.public_serialize()}
+        serialized_data = {**user.serialize(), **student.public_serialize(), **university.serialize()}
         response_body['results'] = serialized_data
         return response_body, 200
     response_body['message'] = 'ID estudiante inexistente'
@@ -607,6 +605,7 @@ def modify_single_student(id):
         data = request.json
         student = db.session.execute(db.select(Students).where(Students.id == id)).scalar()
         user = db.session.execute(db.select(Users).where(Users.id == Students.id_user)).scalar()
+        university = db.session.execute(db.select(Universities).where(Universities.id == student.id_university)).scalar()
         if student:
             student.id_university = data['id_university']
             student.name = data['name']
@@ -617,7 +616,7 @@ def modify_single_student(id):
             student.profile_picture = data['profile_picture']
             db.session.commit()
             response_body['message'] = 'Datos del estudiante actualizados'
-            response_body['results'] = {**user.serialize(), **student.public_serialize()}
+            response_body['results'] = {**user.serialize(), **student.public_serialize(), **university.public_serialize()}
             return response_body, 200
         response_body['message'] = 'ID estudiante inexistente'
         response_body['results'] = {}
@@ -682,6 +681,30 @@ def get_images_flats(flat_id):
     image_urls = [resource['secure_url'] for resource in resources['resources']]
     return jsonify({"urls": image_urls}), 200
 
+
+@api.route('/photorooms/<room_id>', methods=['POST'])
+@jwt_required()
+def upload_photo_rooms(room_id):
+    response_body = {}
+    img = request.files["img"]
+    folder_path = f"rooms/{room_id}"
+    img_url = cloudinary.uploader.upload(img, folder=folder_path)
+    response_body["img_url"] = img_url["url"]
+    response_body['message'] = "Sucessful upload"
+    return response_body , 200
+
+@api.route('/imagesrooms/<room_id>', methods=['GET'])
+def get_images_rooms(room_id):
+    folder_path = f"rooms/{room_id}"
+    resources = cloudinary.api.resources(
+        type='upload',
+        prefix=folder_path,
+        max_results=100
+    )
+    image_urls = [resource['secure_url'] for resource in resources['resources']]
+    return jsonify({"urls": image_urls}), 200
+
+
 @api.route('/chats', methods=['GET'])
 @jwt_required()
 def get_all_chats_with_last_message():
@@ -719,17 +742,22 @@ def get_all_chats_with_last_message():
 @api.route('/chats' , methods=['POST'])
 @jwt_required()
 def create_chat():
-    response_body = {}
-    data = request.json
-    row = Chats()
-    row.student_id = data['student_id']
-    row.landlord_id = data['landlord_id']
-    row.room_id = data['room_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created' 
-    return response_body, 200
+    user_info = get_jwt_identity()  
+    if user_info['user_is_student']:
+        response_body = {}
+        data = request.json
+        row = Chats()
+        row.student_id = user_info['user_id']
+        row.landlord_id = data['landlord_id']
+        row.room_id = data['room_id']
+        db.session.add(row)
+        db.session.commit()
+        last_id = row.id
+        response_body['results'] = row.serialize()
+        response_body['message'] = 'Chat created'
+        response_body['redirect'] = f'{last_id}' 
+        return response_body, 200
+    return {'message': 'Unauthorized'}, 401
 
   
 @api.route('/messages' , methods=['GET'])

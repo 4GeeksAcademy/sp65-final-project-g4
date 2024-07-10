@@ -35,15 +35,15 @@ export const Footer = () => {
 						</div>
 					</div>
 					<div className="col-4">
-						<h5 className="red-color">Información</h5>
+						<h5 className="red-color">{t('traduccion94')}</h5>
 						<Link to="/LPD">
-							Protección de datos
+						{t('traduccion95')}
 						</Link>
 					</div>
 					<div className="col-4">
-						<h5 className="red-color">Contacto</h5>
+						<h5 className="red-color">{t('traduccion96')}</h5>
 						<Link to="contact">
-							Formulario de contacto
+						{t('traduccion97')}
 						</Link>
 					</div>
 				</div>

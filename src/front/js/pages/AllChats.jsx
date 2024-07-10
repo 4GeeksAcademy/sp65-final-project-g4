@@ -1,47 +1,62 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
 
 export const AllChats = () => {
 
     const {store , actions} = useContext(Context)
 
-  
+    const handleChatClick = (chatId) => {
+        actions.setChatId(chatId);
+        actions.getMessagesWithChatId();
+    };
+
+    useEffect(() => {
+        actions.getChats();
+      }, [])
+
 
     return(
-    <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
             {!store.chats ?
 
             "No hay chats"
             :
             
             <>
+            <ul className="list-group">
             
-             {store.chats.map((item, index) =>   
-             <Link
-             to={`/chats/${item.id}`} 
-                            key={index} 
-                            onClick={() => actions.setChatId(item.id)} 
-                            className="text-decoration-none"> 
+             {store.chats.map((chat) => (  
+                <li 
+                key={chat.id} 
+                className={`list-group-item ${chat.id === store.selectedChatId ? 'bg-gray' : ''} ${!chat.is_read ? 'font-weight-bold' : ''}`}
+                onClick={() => handleChatClick(chat.id)}
+            >
             <div className="card mt-2 ">                
                 <div className="card-header" id="chat-header">
-                    <p>
+                    <p id="sendername">
                     {store.userData.is_student ?
-                        item.landlord_name
+                        chat.landlord_name
                         :
-                        item.student_name}
+                        chat.student_name}
                     </p>
                 </div>
                 <div className="card-body">
-                    <p className="card-text">{item.last_message}</p>
+                    <p className="card-text">{chat.last_message}</p>
                 </div> 
               
             </div> 
-            </Link>
-        )} </>
+            </li>
+        ))} 
+    </ul>
+        </>
          }
-   
-    </>
+    </motion.div>
 
     )
 }

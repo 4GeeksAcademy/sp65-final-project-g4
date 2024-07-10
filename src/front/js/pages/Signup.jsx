@@ -3,8 +3,11 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
+import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const Signup = () => {
+  const { t, i18n } = useTranslation();
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
@@ -112,11 +115,18 @@ export const Signup = () => {
   };
 
   return (
-    <>
+    <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
       <div className="row d-flex justify-content-end">
         <div className="col-6 d-flex justify-content-center">
           <a type="button" className="detalles p-3 mt-4 mx-auto" onClick={switchRole}>
-            {role ? 'Soy propietario' : 'Soy estudiante'}
+            {role ? 
+            <>{t('traduccion79')}</>
+            : 
+            <>{t('traduccion80')}</>
+            }
           </a>
         </div>
       </div>
@@ -129,12 +139,12 @@ export const Signup = () => {
                 <div className="header"></div>
                 <div className="card-body">
                   <h2 className="red-color mt-2">
-                    Darme de alta como estudiante
+                  {t('traduccion81')}
                   </h2>
                   <form onSubmit={handleStudentSubmit}>
                     <div className="form-group mt-3">
                       <label htmlFor="email" className="form-label red-color">
-                        Email:
+                      {t('traduccion36')}:
                       </label>
                       <input
                         type="email"
@@ -145,11 +155,11 @@ export const Signup = () => {
                         onChange={handleEmailChange}
                         required
                       />
-                      <div id="emailHelp" className="form-text">Nunca compartiremos tu email con nadie.</div>
+                      <div id="emailHelp" className="form-text">{t('traduccion60')}</div>
                     </div>
                     <div className="form-group mt-3">
                       <label htmlFor="password1" className="form-label red-color">
-                        Contraseña:
+                      {t('traduccion61')}:
                       </label>
                       <input
                         type="password"
@@ -163,7 +173,7 @@ export const Signup = () => {
                     </div>
                     <div className="form-group mt-2">
                       <label htmlFor="password2" className="form-label red-color">
-                        Repetir contraseña:
+                      {t('traduccion82')}:
                       </label>
                       <input
                         type="password"
@@ -175,13 +185,13 @@ export const Signup = () => {
                         required
                       />
                     </div>
-                    <div id="password2ControlHelp" className="form-text">¿Ya tienes cuenta? <Link to="/login">Inicia sesión aquí.</Link></div>
+                    <div id="password2ControlHelp" className="form-text">{t('traduccion83')} <Link to="/login">{t('traduccion84')}</Link></div>
                     <div>
                       {warning ? <div className="alert alert-warning text-center" role="alert">
-                        ¡Las contraseñas no coinciden!
+                        {t('traduccion85')}
                       </div> : <></>}
                       <button type="submit" className="btn-custom red-background my-4">
-                        Darme de alta
+                      {t('traduccion86')}
                       </button>
                     </div>
                   </form>
@@ -197,12 +207,12 @@ export const Signup = () => {
               <div className="">
                 <div className="card-body">
                   <h2 className="red-color mt-2">
-                    Darme de alta como propietario
+                  {t('traduccion87')}
                   </h2>
                   <form onSubmit={handleLandlordSubmit}>
                     <div className="form-group mt-3">
                       <label htmlFor="email" className="form-label red-color">
-                        Email:
+                      {t('traduccion36')}:
                       </label>
                       <input
                         type="email"
@@ -217,7 +227,7 @@ export const Signup = () => {
                     </div>
                     <div className="form-group mt-3">
                       <label htmlFor="password1" className="form-label red-color">
-                        Contraseña:
+                      {t('traduccion61')}:
                       </label>
                       <input
                         type="password"
@@ -230,7 +240,7 @@ export const Signup = () => {
                     </div>
                     <div className="form-group mt-2">
                       <label htmlFor="password2" className="form-label red-color">
-                        Repetir contraseña:
+                      {t('traduccion82')}:
                       </label>
                       <input
                         type="password"
@@ -242,13 +252,13 @@ export const Signup = () => {
                         required
                       />
                     </div>
-                    <div id="password2ControlHelp" className="form-text">¿Ya tienes cuenta? <Link to="/login">Inicia sesión aquí.</Link></div>
+                    <div id="password2ControlHelp" className="form-text">{t('traduccion83')} <Link to="/login">{t('traduccion84')}</Link></div>
                     <div>
                       {warning ? <div className="alert alert-warning text-center" role="alert">
-                        ¡Las contraseñas no coinciden!
+                        {t('traduccion85')}
                       </div> : <></>}
                       <button type="submit" className="btn-custom red-background my-4">
-                        Darme de alta
+                      {t('traduccion86')}
                       </button>
                     </div>
                   </form>
@@ -259,6 +269,6 @@ export const Signup = () => {
         </div>
       }
 
-    </>
+    </motion.div>
   );
 };

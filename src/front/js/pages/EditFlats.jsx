@@ -2,8 +2,11 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { UploadImagesFlats } from "../component/UploadImagesFlats.jsx";
 import { NoAccess } from "./NoAccess.jsx";
+import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const EditFlats = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const [activeStep, setActiveStep] = useState(0);
     const [formData, setFormData] = useState({
@@ -14,13 +17,20 @@ export const EditFlats = () => {
         
     });
    
-    const handleNext = (step) => {
-        setActiveStep(step);
-    };
+    const initializeFlatData = () => {
+		setName(store.userData.landlord_name);
+		setLastname(store.userData.landlord_lastname);
+		setBirthDate(store.userData.birth_Date);
+		setDni(store.userData.dni);
+		setPhoneNumber(store.userData.phone_number);
+		setUrlImage(store.userData.profile_picture)
+	}
 
-    const handleLast = (step) => {
-        setActiveStep(step);
-    };
+    const [description, setDescription] = useState('');
+	const [address, setAddress] = useState('');
+	const [postal_code, setPostal_code] = useState('');
+	const [city, setCity] = useState('');
+	const [albumId, setAlbumId] = useState('');
 
     const handleSave = () => {
         console.log("Saving data...", formData);
@@ -38,13 +48,18 @@ export const EditFlats = () => {
 
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
         {store.userData.is_student ? <NoAccess/>
         :
             <div className="container mt-3 mb-2">
                 <div className="row d-flex justify-content-center ">
                     <div className="col-xsm-12 col-sm-10 col-md-8 col-lg-8 ">
-                        <h3 className="red-color mb-2 mt-2 justify-content-center">Publica tu piso</h3>
+                        <h3 className="red-color mb-2 mt-2 justify-content-center">{t('traduccion47')}</h3>
                         <div className="accordion accordion-custom" id="accordionExample">
                             <div className="accordion-item pb-3">
                                 <h2 className="accordion-header" id="headingOne">
@@ -54,7 +69,7 @@ export const EditFlats = () => {
                                         data-bs-target="#collapseOne"
                                         aria-expanded={activeStep === 0}
                                         aria-controls="collapseOne">
-                                        <h6> Paso 1: Describe tu piso</h6>
+                                        <h6> {t('traduccion48')}</h6>
                                     </button>
                                 </h2>
                                 <div className={`accordion-collapse collapse ${activeStep === 0 ? "show" : ""}`}
@@ -62,16 +77,16 @@ export const EditFlats = () => {
                                     aria-labelledby="headingOne"
                                     data-bs-parent="#accordionExample">
                                     <div className="accordion-body">
-                                        <p><strong>Describe como es tu piso, cuantas habitaciones tiene, requisitos de entrada y cualqueir informacion que consideres relevante para tus futuros inquilinos</strong></p>
+                                        <p><strong>{t('traduccion49')}</strong></p>
                                         <input className="form-control"
                                             type="text"
                                             name="description"
                                             rows="2"
-                                            placeholder="Amplio piso exterior con 3 habitaciones..."
+                                            placeholder={t('traduccion50')}
                                             value={formData.description}
                                             onChange={handleChange}
                                         />
-                                        <button className="send-button action-btn-custom mt-1" onClick={() => handleNext(1)}><strong>Siguiente</strong></button>
+                                        <button className="send-button action-btn-custom mt-1" onClick={() => handleNext(1)}><strong>{t('traduccion51')}</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +98,7 @@ export const EditFlats = () => {
                                         data-bs-target="#collapseTwo"
                                         aria-expanded={activeStep === 1}
                                         aria-controls="collapseTwo">
-                                        <h6> Paso 2: ¿En dónde está ubicado?</h6>
+                                        <h6> {t('traduccion52')}</h6>
                                     </button>
                                 </h2>
                                 <div className={`accordion-collapse collapse ${activeStep === 1 ? "show" : ""}`}
@@ -91,7 +106,7 @@ export const EditFlats = () => {
                                     aria-labelledby="headingTwo"
                                     data-bs-parent="#accordionExample">
                                     <div className="accordion-body">
-                                        <p><strong>Indícanos tu dirección</strong></p>
+                                        <p><strong>{t('traduccion53')}</strong></p>
                                         <input className="form-control"
                                             type="text"
                                             name="address"
@@ -99,7 +114,7 @@ export const EditFlats = () => {
                                             value={formData.address}
                                             onChange={handleChange}
                                         />
-                                        <p><strong>Indícanos tu código postal</strong></p>
+                                        <p><strong>{t('traduccion54')}</strong></p>
                                         <input className="form-control"
                                             type="text"
                                             name="postal_code"
@@ -108,7 +123,7 @@ export const EditFlats = () => {
                                             onChange={handleChange}
                                             aria-label="default input example"
                                         />
-                                        <p><strong>Indícanos tu ciudad</strong></p>
+                                        <p><strong>{t('traduccion55')}</strong></p>
                                         <input className="form-control"
                                             type="text"
                                             name="city"
@@ -130,7 +145,7 @@ export const EditFlats = () => {
                                         data-bs-target="#collapseThree"
                                         aria-expanded={activeStep === 2}
                                         aria-controls="collapseThree">
-                                        <h6> Paso 3: Comparte fotos</h6>
+                                        <h6> {t('traduccion56')}</h6>
                                     </button>
                                 </h2>
                                 <div className={`accordion-collapse collapse ${activeStep === 2 ? "show" : ""}`}
@@ -138,11 +153,9 @@ export const EditFlats = () => {
                                     aria-labelledby="headingThree"
                                     data-bs-parent="#accordionExample">
                                     <div className="accordion-body">
-                                        <p><strong>Comparte al menos 3 fotos del piso. </strong> Recomendamos compartir fotos del salon, la cocina y los baños. </p>
-
+                                        <p><strong>{t('traduccion')}57</strong> {t('traduccion58')}</p>
                                         <UploadImagesFlats />
-                                        <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(1)}><strong>Anterior</strong></button>
-                                        
+                                        <button className="send-button action-btn-custom action-btn-left mt-1" onClick={() => handleLast(1)}><strong>{t('traduccion59')}</strong></button>
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +164,6 @@ export const EditFlats = () => {
                 </div>
             </div>
         }
-        </>
+        </motion.div>
     );
 };

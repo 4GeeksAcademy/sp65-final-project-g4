@@ -5,8 +5,10 @@ import axios from 'axios';
 import { Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { useTranslation } from 'react-i18next';
 
 export const Flats = (props) => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const [address, setAddress] = useState(`${props.item.address}, ${props.item.postal_code}, ${props.item.city}`);
     const [isVisible, setIsVisible] = useState(true);
@@ -38,7 +40,6 @@ export const Flats = (props) => {
     };
 
     const filterHandle = (filterOptions) => {
-        console.log("hi")
         if (filterOptions.lat !== 0 && filterOptions.lon !== 0 && coordinates.lon !== 0 && coordinates.lat !== 0) {
             const toRadians = (degrees) => degrees * (Math.PI / 180);
             let lat1 = toRadians(coordinates.lat);
@@ -104,16 +105,16 @@ export const Flats = (props) => {
                                 ""
                                 :
                                 <>
-                                    <p>Habitaciones disponibles: {store.rooms.filter(room => room.id_flat === props.item.id).length}</p>
+                                    <p>{t('traduccion16')}: {store.rooms.filter(room => room.id_flat === props.item.id).length}</p>
                                     <div className='d-flex justify-content-evenly room-info-container'>
                                         <span>
-                                            <p><strong>Habitacion:</strong></p>
-                                            <p><strong>Precio:</strong></p>
-                                            <p><strong>Superficie:</strong></p>
+                                            <p><strong>{t('traduccion13')}:</strong></p>
+                                            <p><strong>{t('traduccion14')}:</strong></p>
+                                            <p><strong>{t('traduccion15')}:</strong></p>
                                         </span>
                                         {store.rooms.filter(room => room.id_flat === props.item.id).map((item, key) =>
-                                            <span>
-                                                <p><strong>{key+1}</strong></p>
+                                            <span key={key}>
+                                                <p><strong>{key + 1}</strong></p>
                                                 <p className='price'>{item.price}€</p>
                                                 <p className='price'>{item.square_meters}m2</p>
                                             </span>
@@ -125,8 +126,6 @@ export const Flats = (props) => {
                     </Popup>
                 </Marker>
             }
-
         </>
-
     );
 };

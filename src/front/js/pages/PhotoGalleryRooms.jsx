@@ -8,15 +8,16 @@ import "../../styles/photoGallery.css";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { PhotoGallery } from '../component/PhotoGallery.jsx';
 import { useTranslation } from 'react-i18next';
 
-export const PhotoGallery = ({ userId }) => {
+export const PhotoGalleryRooms = ({ roomId }) => {
   const { t, i18n } = useTranslation();
   const [photos, setPhotos] = useState([]);
   const { store, actions } = useContext(Context);
 
   const fetchImages = async () => {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/imagesflats/${userId}`);
+    const response = await fetch(`${process.env.BACKEND_URL}/api/imagesrooms/${roomId}`);
     if (!response.ok) {
       console.log("Error loading message from backend", response.status, response.statusText)
       return
@@ -29,6 +30,7 @@ export const PhotoGallery = ({ userId }) => {
     fetchImages()
   }, [])
 
+  
   return (
     <div className="photo-gallery">
       <Swiper  
@@ -37,12 +39,19 @@ export const PhotoGallery = ({ userId }) => {
         slidesPerView={1} 
         navigation 
       >
+        
         {photos.map((url, index) => (
           <SwiperSlide key={index}>
             <div className="photo-item">
               <img src={url} alt={`Uploaded ${index}`} />
             </div>
           </SwiperSlide>
+        ))}
+
+        {store.rooms.filter(room => room.id === roomId).map((room, index) => (
+          <SwiperSlide key={`flat-${index}`}>
+            <PhotoGallery userId={room.id_flat} />
+        </SwiperSlide>
         ))}
       </Swiper>
     </div>

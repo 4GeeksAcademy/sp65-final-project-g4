@@ -31,9 +31,7 @@
 .piso-container {
     margin-top: 30px;
     display: block;
-    background-color: rgba(230,230,230);
     padding: 20px 15px 0;
-    border: 1px solid red;
     height: 100%;
     .photo-container {
         height: 200px;

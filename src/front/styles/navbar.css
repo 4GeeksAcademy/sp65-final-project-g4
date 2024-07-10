@@ -1,9 +1,9 @@
 .navbar-custom {
-    padding: 12px 50px;
+    padding: 0 50px;
     color: #000;
     background-color: rgba(230, 230, 230, 0.9);
     display: flex;
-    height: 53px;
+    min-height: 53px;
     width: 100%;
     justify-content: space-between;
     z-index: 100;
@@ -11,9 +11,6 @@
     .custom-link-container {
         display: flex;
         align-items: center;
-        a {
-            height: 25px;
-        }
     }
 
     .profile-picutre img {
@@ -61,5 +58,16 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+
+    .dropdown {
+
+        a {
+            margin: 0;
+        }
+
+        .dropdown-toggle {
+            line-height: 29px;
+        }
     }
 }

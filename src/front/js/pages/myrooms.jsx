@@ -3,17 +3,16 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
+import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 import "../../styles/cardsviews.css";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
-
-export const MyFlats = () => {
+export const MyRooms = () => {
     const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
 
     const currentUser = store.userData;
-    console.log(currentUser);
     if (!currentUser || !currentUser.id_landlord) {
         return <div className="container mt-4 red-color">
             <NoAccess />
@@ -21,13 +20,18 @@ export const MyFlats = () => {
     }
 
     const myFlats = store.flats.filter(flat => flat.id_landlord === currentUser.id_landlord);
+    const myFlatIds = myFlats.map(flat => flat.id);
+    // Filter rooms by flat IDs
+    const mrooms = store.rooms.filter(room => myFlatIds.includes(room.id_flat));
 
-    const handleFlat = (id) => {
-        actions.setFlatId(id)
+
+    const handleRoom = (id) => {
+        actions.setRoomId(id)
     }
 
     useEffect(() => {
         actions.getFlats();
+        actions.getRooms();
     }, []);
 
     return (
@@ -36,21 +40,26 @@ export const MyFlats = () => {
 		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
 		exit={{opacity: 0, transition: {duration: 1}}}>
             <div className="container mt-4">
-                <h3 className="red-color mb-4 text-center">{t('traduccion66')}</h3>
-                {myFlats.length === 0 ? (
-                    <h3 className="mb-4 text-center">{t('traduccion67')}</h3>
+                <h3 className="red-color mb-4 text-center">{t('traduccion69')}</h3>
+                {mrooms.length === 0 ? (
+                    <h3 className="mb-4 text-center">{t('traduccion70')}</h3>
                 ) : (
-                    <div className="row">
-                        {myFlats.map((item, index) => (
+                    <div className="row ">
+                        {mrooms.map((item, index) => (
                             <div className="col-lg-3 col-md-4 col-sm-6 col-xsm-12 view-container" key={item.id}>
-                                <PhotoGallery userId={item.id} className="photo-container" />
+                                <div className="photo-container">
+                                    <PhotoGalleryRooms roomId={item.id} />
+                                </div>
                                 <div className="view-text">
                                     <h5>{item.address}</h5>
                                     <p>{item.city}</p>
-                                    <p className="description">{item.description}</p>
+                                    <p className="description">{t('traduccion18')}: {item.description}</p>
+                                    <p>{t('traduccion14')}: {item.price}€</p>
+                                    <p>{t('traduccion30')}: {item.square_meters}m2</p>
+                                    <p>{t('traduccion75')}: {item.publication_date}</p>
                                 </div>
                                 <div className="red-color float-end">
-                                    <Link to={`/FlatProfile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleFlat(item.id)}><strong>{t('traduccion68')}</strong></Link>
+                                    <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleRoom(item.id)}><strong>{t('traduccion68')}</strong></Link>
                                 </div>
                             </div>
                         ))}
