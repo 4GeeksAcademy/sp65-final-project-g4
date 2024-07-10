@@ -17,12 +17,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			chats: [],
 			currentChat: [],
 			selectedChatId: null,
-			/* Chats */
-			/* chats: [],
-			chatId: "",
-			currentChat: [],
-			allMessages: [],
-			newChat: [], */
 			userName: "",
 			/* Flats */
 			flats: [],
@@ -430,107 +424,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ students: data.results });
 			},
 
-			/* getAllChats: async () => {
-				const url = `${process.env.BACKEND_URL}/api/chats`;
-				const options = {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`,
-						'mode': 'no-cors'
-					}
-				}
-
-				const response = await fetch(url, options)
-				if (!response.ok) {
-					console.log('Error: ', response.status, response.statusText);
-					return
-				}
-				const data = await response.json();
-				setStore({ chats: data.results });
-			},
-
-			createChat: async (chat) => {
-				setStore({ newChat: [...getStore().newChat, newChat]})
-			},
-
-			getAllMessages: async () => {
-				const url = `${process.env.BACKEND_URL}/api/messages`;
-				const options = {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`,
-						'mode': 'no-cors'
-					}
-				};
-
-				const response = await fetch(url, options);
-				if (!response.ok) {
-					console.log('Error: ', response.status, response.statusText);
-					return;
-				}
-				const data = await response.json();
-				setStore({ allMessages: data.results });
-			},
-
-			setChatId: (id) => {
-				console.log("Setting chat ID:", id);
-				setStore({ chatId: id });
-			},
-
-			getMessagesWithChatId: async () => {
-				const chatId = getStore().chatId;
-				const url = `${process.env.BACKEND_URL}/api/messages/${chatId}`;
-				const options = {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`
-					}
-				};
-
-
-				const response = await fetch(url, options);
-				if (!response.ok) {
-					console.log("Error Error fetching messages, status:", response.status);
-					return;
-				}
-				const data = await response.json();
-				setStore({ currentChat: data.results });
-			},
-
-			postNewMessage: async (dataToSend) => {
-				const { accessToken, currentChat } = getStore();
-				console.log("Posting new message:", dataToSend);
-				console.log("Using access token:", accessToken);
-
-				if (!accessToken) {
-					console.log("Access token missing");
-					return;
-				}
-
-				const url = `${process.env.BACKEND_URL}/api/messages`;
-				const options = {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${accessToken}`
-					},
-					body: JSON.stringify(dataToSend)
-				};
-
-				console.log(`Posting new message to ${url}`, dataToSend);
-				const response = await fetch(url, options);
-				if (!response.ok) {
-					console.log("Error posting message, status:", response.status);
-					return;
-				}
-				const newMessage = await response.json();
-				setStore({ currentChat: [...currentChat, newMessage.results] });
-			}, */
-		
-			// chat test
 			getChats: async () => {
                 const url = `${process.env.BACKEND_URL}/api/chats`;
 				const options = {

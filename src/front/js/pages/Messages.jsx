@@ -37,7 +37,7 @@ export const Messages = () => {
 		exit={{opacity: 0, transition: {duration: 1}}}>
             <ul className="list-group chat-cont overflow-auto">
                 {store.currentChat.map((item, index) => (
-                    <li key={index} className={`list-group-item mb-4 rounded ${item.sender_id === store.userData.id ? 'sent-message' : 'received-message'}`}>                        <p id="timestamp">{item.timestamp}</p>
+                    <li key={index} className={`list-group-item mb-4 rounded ${item.sender_id === store.userData.id ? 'sent-message' : 'received-message'}`}>              
                         <p id="sendername">{item.sender_name} {item.sender_lastname}</p>
                         <p>{item.message}</p>
                         <p id="timestamp">{item.timestamp}</p>

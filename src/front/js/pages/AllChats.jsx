@@ -39,7 +39,7 @@ export const AllChats = () => {
             >
             <div className="card mt-2 ">                
                 <div className="card-header" id="chat-header">
-                    <p>
+                    <p id="sendername">
                     {store.userData.is_student ?
                         chat.landlord_name
                         :
