@@ -1,7 +1,9 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext.js";
+import { useTranslation } from 'react-i18next';
 
 export const Favorites = (props) => {
+  const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
 
     const handleFavorites = async (event) => {
@@ -57,9 +59,9 @@ export const Favorites = (props) => {
     return (
         <>
             {store.favorites.some(obj => obj.id_room === props.id) ?
-                <button onClick={deleteFavorites} id={props.id} className="btn-custom red-background">Quitar favorito</button>
+                <button onClick={deleteFavorites} id={props.id} className="btn-custom red-background">{t('traduccion92')}</button>
                 :
-                <button onClick={handleFavorites} id={props.id} className="btn-custom red-background">Añadir favorito</button>
+                <button onClick={handleFavorites} id={props.id} className="btn-custom red-background">{t('traduccion93')}</button>
             }
         </>
     )

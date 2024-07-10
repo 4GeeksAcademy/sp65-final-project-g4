@@ -7,15 +7,10 @@ import "../../styles/map.css";
 import { Flats } from "../component/Flats.jsx";
 import { Universities } from "../component/Universities.jsx";
 import { motion } from 'framer-motion'
-
+import { useTranslation } from 'react-i18next';
 export const Map = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
-
-    const [radio, setRadio] = useState({
-        lat: 0,
-        lon: 0,
-        distance: 100
-    });
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
     const [distance, setDistance] = useState(100);
@@ -74,10 +69,10 @@ export const Map = () => {
             <div className="filter-menu">
                 <form>
                     <div className="filter-item">
-                        <label className="legend">Radio de busqueda</label>
+                        <label className="legend">{t('traduccion6')}</label>
                         <div>
                             <select name="university" onChange={(event) => handleUniversity(event.target.value)}>
-                                <option>Selecciona una Universidad</option>
+                                <option>{t('traduccion7')}</option>
                                 {!store.universities ?
                                     ""
                                     :
@@ -89,7 +84,7 @@ export const Map = () => {
                                 }
                             </select>
                             <select name="radio" onChange={(event) => handleRadio(event.target.value)}>
-                                <option value={100}>Todas las distancias</option>
+                                <option value={100}>{t('traduccion8')}</option>
                                 <option value={1}>1km</option>
                                 <option value={5}>5km</option>
                                 <option value={10}>10km</option>
@@ -99,7 +94,7 @@ export const Map = () => {
                     <div className="filter-item">
                         <div>
                             <label className="legend">
-                                Min Price: {price.min}
+                            {t('traduccion9')}: {price.min}
                                 <input
                                     type="range"
                                     min="0"
@@ -109,7 +104,7 @@ export const Map = () => {
                                 />
                             </label>
                             <label className="legend">
-                                Max Price: {price.max}
+                            {t('traduccion10')}: {price.max}
                                 <input
                                     type="range"
                                     min="0"
@@ -121,13 +116,13 @@ export const Map = () => {
                         </div>
                     </div>
                     <div className="filter-item">
-                        <label className="legend">Superfície Minima</label>
+                        <label className="legend">{t('traduccion11')}</label>
                         <div>
                             <select name="" id="" onChange={(event) => handleSurface(event.target.value)}>
-                                <option value={0}>Todas</option>
-                                <option value={5}>5m2</option>
-                                <option value={10}>10m2</option>
-                                <option value={15}>15m2</option>
+                                <option value={0}>{t('traduccion12')}</option>
+                                <option value={5}>5m²</option>
+                                <option value={10}>10m²</option>
+                                <option value={15}>15m²</option>
                             </select>
                         </div>
                     </div>
