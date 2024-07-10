@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { UploadImagesFlats } from "../component/UploadImagesFlats.jsx";
 import { NoAccess } from "./NoAccess.jsx";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const EditFlats = () => {
     const { t, i18n } = useTranslation();
@@ -47,7 +48,12 @@ export const EditFlats = () => {
 
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
         {store.userData.is_student ? <NoAccess/>
         :
             <div className="container mt-3 mb-2">
@@ -158,6 +164,6 @@ export const EditFlats = () => {
                 </div>
             </div>
         }
-        </>
+        </motion.div>
     );
 };

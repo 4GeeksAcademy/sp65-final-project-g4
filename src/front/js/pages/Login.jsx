@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 // 5 Exportar y 2 Crear el componente
 export const Login = () => {
@@ -49,7 +50,11 @@ export const Login = () => {
 
   // 4 última instrucción JS, que retorna un solo elemento HTML
   return (
-    <div className="login-container card-body">
+    <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+     className="login-container card-body">
       <h2 className="red-color">{t('navbar10')}</h2>
       <form onSubmit={handleSumbit}>
         <div className="mb-3">
@@ -77,6 +82,6 @@ export const Login = () => {
           {t('traduccion64')}
         </button>
       </form>
-    </div>
+    </motion.div>
   )
 }

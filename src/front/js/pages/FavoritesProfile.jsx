@@ -4,23 +4,32 @@ import { Link } from "react-router-dom";
 import "../../styles/flatProfile.css";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const FavoritesProfile = () => {
     const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
 
+    const handleRoom = (id) => {
+        actions.setRoomId(id)
+    }
 
     useEffect(() => {
 
     }, [])
 
     return (
-        <div className="flat-profile-container">
+        
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+        className="flat-profile-container">
             <div className="row justify-content-evenly">
                 {store.favorites.filter(obj => obj.id_student == store.userData.id).map(item =>
                     <>
                         {store.rooms.filter(obj => obj.id == item.id_room).map((item2, key) =>
-                            <div key={key} className="col-4">
+                            <div key={key} className="col-lg-4 col-md-6 col-sm-12 mt-4">
                                 <div className="rooms-container">
                                     <div className="photo-container">
                                         <PhotoGallery userId={item2.id} />
@@ -42,6 +51,6 @@ export const FavoritesProfile = () => {
                     </>
                 )}
             </div>
-        </div>
+        </motion.div>
     )
 }

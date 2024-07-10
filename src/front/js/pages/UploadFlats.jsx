@@ -3,6 +3,7 @@ import { Context } from "../store/appContext.js";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const UploadFlats = () => {
     const { t, i18n } = useTranslation();
@@ -53,7 +54,10 @@ export const UploadFlats = () => {
     };
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             {store.userData.is_student ? <NoAccess />
                 :
                 <div className="container mt-3 mb-2">
@@ -105,6 +109,6 @@ export const UploadFlats = () => {
                     </div>
                 </div>
             }
-        </>
+        </motion.div>
     )
 }

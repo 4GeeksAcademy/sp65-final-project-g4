@@ -5,6 +5,7 @@ import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { NoAccess } from "./NoAccess.jsx";
 import "../../styles/cardsviews.css";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 
 export const MyFlats = () => {
@@ -30,7 +31,10 @@ export const MyFlats = () => {
     }, []);
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             <div className="container mt-4">
                 <h3 className="red-color mb-4 text-center">{t('traduccion66')}</h3>
                 {myFlats.length === 0 ? (
@@ -53,6 +57,6 @@ export const MyFlats = () => {
                     </div>
                 )}
             </div>
-        </>
+        </motion.div>
     )
 }

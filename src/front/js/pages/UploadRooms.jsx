@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const UploadRooms = () => {
     const { t, i18n } = useTranslation();
@@ -68,7 +69,10 @@ export const UploadRooms = () => {
 
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             {store.userData.is_student ? <NoAccess />
                 :
                 <>
@@ -122,6 +126,6 @@ export const UploadRooms = () => {
                     </div>
                 </>
             }
-        </>
+        </motion.div>
     )
 }

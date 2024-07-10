@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import emailjs from 'emailjs-com';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const Contacto = () => {
     const { t, i18n } = useTranslation();
@@ -23,7 +24,12 @@ export const Contacto = () => {
     }
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
             <div className="container">
                 <div className="row d-flex justify-content-center">
                     <div className="col-xsm-12 col-sm-10 col-md-9 col-lg-9">
@@ -56,6 +62,6 @@ export const Contacto = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </motion.div>
     )
 }

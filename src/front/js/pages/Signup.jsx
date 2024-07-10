@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const Signup = () => {
   const { t, i18n } = useTranslation();
@@ -114,7 +115,10 @@ export const Signup = () => {
   };
 
   return (
-    <>
+    <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
       <div className="row d-flex justify-content-end">
         <div className="col-6 d-flex justify-content-center">
           <a type="button" className="detalles p-3 mt-4 mx-auto" onClick={switchRole}>
@@ -265,6 +269,6 @@ export const Signup = () => {
         </div>
       }
 
-    </>
+    </motion.div>
   );
 };

@@ -8,6 +8,7 @@ import { Flats } from "../component/Flats.jsx";
 import { Universities } from "../component/Universities.jsx";
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next';
+
 export const Map = () => {
     const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);

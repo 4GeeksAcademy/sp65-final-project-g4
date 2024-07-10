@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const Messages = () => {
     const { t, i18n } = useTranslation();
@@ -30,7 +31,10 @@ export const Messages = () => {
     };
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             <ul className="list-group chat-cont overflow-auto">
                 {store.currentChat.map((item, index) => (
                     <li key={index} className={`list-group-item mb-4 rounded ${item.sender_id === store.userData.id ? 'sent-message' : 'received-message'}`}>                        <p id="timestamp">{item.timestamp}</p>
@@ -53,6 +57,6 @@ export const Messages = () => {
                 </div>
                 <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>{t('traduccion38')}</button>
             </div>
-    </>
+    </motion.div>
     );
 };
