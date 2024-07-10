@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext.js";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export const UploadFlats = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -57,10 +59,10 @@ export const UploadFlats = () => {
                 <div className="container mt-3 mb-2">
                     <div className="row d-flex justify-content-center ">
                         <div className="col-xsm-12 col-sm-11 col-md-10 col-lg-8 ">
-                            <h3 className="red-color mb-2 mt-2 text-center">Publica tu piso</h3>
+                            <h3 className="red-color mb-2 mt-2 text-center">{t('traduccion47')}</h3>
                             <div className="card-body">
-                                <h6> Paso 1: Describe tu piso</h6>
-                                <p>Describe como es tu piso, cuantas habitaciones tiene, requisitos de entrada y cualqueir informacion que consideres relevante para tus futuros inquilinos</p>
+                                <h6> {t('traduccion48')}</h6>
+                                <p>{t('traduccion49')}</p>
                                 <textarea
                                     className="form-control"
                                     rows="2"
@@ -70,8 +72,8 @@ export const UploadFlats = () => {
                                     value={formData.description}
                                     onChange={handleChange}>
                                 </textarea>
-                                <h6 className="mt-4 mb-4"> Paso 2: ¿En dónde está ubicado?</h6>
-                                <p className="mb-0 pb-0">Calle y número</p>
+                                <h6 className="mt-4 mb-4"> {t('traduccion52')}</h6>
+                                <p className="mb-0 pb-0">{t('traduccion53')}</p>
                                 <input className="form-control mb-3"
                                     type="text"
                                     name="address"
@@ -79,7 +81,7 @@ export const UploadFlats = () => {
                                     value={formData.address}
                                     onChange={handleChange}
                                 />
-                                <p className="mb-0 pb-0">Código postal</p>
+                                <p className="mb-0 pb-0">{t('traduccion54')}</p>
                                 <input className="form-control mb-3"
                                     type="text"
                                     name="postal_code"
@@ -88,7 +90,7 @@ export const UploadFlats = () => {
                                     onChange={handleChange}
                                     aria-label="default input example"
                                 />
-                                <p className="mb-0 pb-0">Ciudad</p>
+                                <p className="mb-0 pb-0">{t('traduccion55')}</p>
                                 <input className="form-control mb-3"
                                     type="text"
                                     name="city"
@@ -97,7 +99,7 @@ export const UploadFlats = () => {
                                     onChange={handleChange}
                                     aria-label="default input example"
                                 />
-                                <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => handleSubmit()}>Publicar y subir fotos</button>
+                                <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => handleSubmit()}>{t('traduccion90')}</button>
                             </div>
                         </div>
                     </div>

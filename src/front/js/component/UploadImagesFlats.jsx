@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
+import { useTranslation } from 'react-i18next';
 
 export const UploadImagesFlats = () => {
+  const { t, i18n } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const { store, actions } = useContext(Context);
@@ -73,10 +75,10 @@ export const UploadImagesFlats = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
+          <button type="submit" className="btn action-btn-center mt-0"><strong>{t('traduccion88')}</strong></button>
         </form>
         {imageUrl && ( 
-          <button className="send-button btn-custom red-background mt-1" onClick={() => handleAddImg()}><strong>Publicar</strong></button>
+          <button className="send-button btn-custom red-background mt-1" onClick={() => handleAddImg()}><strong>{t('traduccion89')}</strong></button>
         )}
       </div>
     </div>

@@ -2,8 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { NoAccess } from "./NoAccess.jsx";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export const UploadRooms = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -73,9 +75,9 @@ export const UploadRooms = () => {
                     <div className="container mt-3 mb-2">
                         <div className="row d-flex justify-content-center ">
                             <div className="col-xsm-12 col-sm-11 col-md-10 col-lg-8 ">
-                                <h3 className="red-color mb-2 mt-2 text-center">Publica una habitación</h3>
+                                <h3 className="red-color mb-2 mt-2 text-center">{t('traduccion91')}</h3>
                                 <div className="card-body">
-                                    <h6> Título </h6>
+                                    <h6> {t('traduccion29')} </h6>
                                     <input className="form-control mb-3"
                                         type="text"
                                         name="title"
@@ -83,7 +85,7 @@ export const UploadRooms = () => {
                                         value={formData.title}
                                         onChange={handleChange}
                                     />
-                                    <h6 >Descripción</h6>
+                                    <h6 >{t('traduccion18')}</h6>
                                     <textarea
                                         className="form-control"
                                         rows="2"
@@ -93,7 +95,7 @@ export const UploadRooms = () => {
                                         value={formData.description}
                                         onChange={handleChange}>
                                     </textarea>
-                                    <h6 className="mt-4 mb-4"> Precio </h6>
+                                    <h6 className="mt-4 mb-4"> {t('traduccion14')} </h6>
                                     <div className="input-group mb-3">
                                         <span className="input-group-text">€</span>
                                         <input type="text" className="form-control"
@@ -104,7 +106,7 @@ export const UploadRooms = () => {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <h6>Metros cuadrados</h6>
+                                    <h6>{t('traduccion30')}</h6>
                                     <input className="form-control mb-3"
                                         type="text"
                                         name="square_meters"
@@ -113,7 +115,7 @@ export const UploadRooms = () => {
                                         onChange={handleChange}
                                         aria-label="default input example"
                                     />
-                                    <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => { handleSubmit(); handleRoomId() }}>Publicar y subir fotos</button>
+                                    <button className="send-button btn-custom red-background mt-1 mb-4" onClick={() => { handleSubmit(); handleRoomId() }}>{t('traduccion90')}</button>
                                 </div>
                             </div>
                         </div>

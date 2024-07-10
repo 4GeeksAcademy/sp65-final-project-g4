@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
+import { useTranslation } from 'react-i18next';
 
 export const PostFlatImg = () => {
+    const { t, i18n } = useTranslation();
     const [selectedFiles, setSelectedFiles] = useState([]);
     const { store, actions } = useContext(Context);
 
@@ -47,7 +49,7 @@ export const PostFlatImg = () => {
                                 multiple
                             />
                         </div>
-                        <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
+                        <button type="submit" className="btn action-btn-center mt-0"><strong>{t('traduccion88')}</strong></button>
                     </form>
                 </div>
             </div>

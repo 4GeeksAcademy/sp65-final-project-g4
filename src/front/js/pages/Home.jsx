@@ -28,22 +28,23 @@ export const Home = () => {
 					<div className="image-container">
 						<img src={mapImageUrl} />
 						<div className="title-container">
-							<h1 className="red-color">{t('title')}</h1>
-							<h2 className="red-color"> {t('description')}</h2>
+							<h1 className="red-color">{t('traduccion1')}</h1>
+							<h2 className="red-color"> {t('traduccion2')}</h2>
 							<Link to="/map">
-								<button className="btn-custom red-background">Ver Mapa</button>
+								<button className="btn-custom red-background">{t('traduccion3')}</button>
 							</Link>
 						</div>
 					</div>
 				</div>
 			</div>
 
+			{t('traduccion')}
 
 			{!store.flats.length > 0 ?
 				""
 				:
 				<div className="row justify-content-between section-custom">
-					<h2 className="red-color">Pisos Recientes</h2>
+					<h2 className="red-color">{t('traduccion4')}</h2>
 					{store.flats.slice(0, 3).map((item, key) =>
 						<div key={key} className="col-lg-4 col-md-6 col-sm-12 mt-4">
 							<div className="piso-container">
@@ -54,16 +55,14 @@ export const Home = () => {
 									<h3 className="red-color">{item.address}</h3>
 									<p>{item.description.substring(0, 50)}...</p>
 									<Link className="detalles mt-1 mb-4" to={`/FlatProfile/${item.id}`} onClick={() => handleFlat(item.id)}>
-										<strong>Ver Piso</strong>
+										<strong>{t('traduccion5')}</strong>
 									</Link>
 								</div>
 							</div>
 						</div>
 					)}
 				</div>
-
 			}
-
 			<div className="section-custom justify-content-center">
 				<Contacto />
 			</div>
