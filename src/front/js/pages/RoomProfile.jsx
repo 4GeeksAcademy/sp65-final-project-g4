@@ -50,6 +50,7 @@ export const RoomProfile = () => {
             square_meters: squareMeters,
             id_flat: store.currentRoom.id_flat
         }
+       
         actions.putRoom(dataToSend, store.accessToken, store.currentRoom.id);
         handleModalReset();
     }
