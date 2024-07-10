@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext.js";
 import "../../styles/sidebar.css";
-import getState from "../store/flux.js";
 import { useNavigate } from "react-router-dom";
 import { Login } from "./Login.jsx";
-import { Signup } from "./Signup.jsx";
-import { UploadImagesUsers } from "../component/UploadImagesUsers.jsx";
+import { motion } from 'framer-motion';
 
 import profilePicture from "../../img/placeholder-profile-picture.jpg";
 import { useTranslation } from 'react-i18next';
@@ -138,7 +135,12 @@ export const Dashboard = () => {
 	}
 
 	return (
-		<>
+		<motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container mt-5"
+		>
 			{!store.isLogedIn ?
 				<Login />
 				:
@@ -303,22 +305,7 @@ export const Dashboard = () => {
 						</div>
 					</div>
 			}
-		</>
+		</motion.div>
 
 	);
 };
-
-
-
-
-
-
-/* {!store.universities ?
-	""
-	:
-	<>
-		{store.universities.map((item, key) =>
-			<Universities key={key} item={item} />
-		)}
-	</>
-} */

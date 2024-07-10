@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 import "../../styles/cardsviews.css";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 
 export const AllRooms = () => {
@@ -65,7 +66,11 @@ export const AllRooms = () => {
 
 
     return (
-        <div className="container mt-4">
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+         className="container mt-4">
             <h3 className="red-color text-center mb-4">{t('traduccion72')}</h3>
             {!store.rooms ?
                 "Pantalla de carga"
@@ -118,6 +123,6 @@ export const AllRooms = () => {
                     )
                 </div>
             }
-        </div>
+        </motion.div>
     );
 };

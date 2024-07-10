@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 
 export const EditImg = () => {
@@ -58,7 +59,11 @@ export const EditImg = () => {
 
     
     return (
-    <div className="container mt-5 d-flex justify-content-center">
+      <motion.div 
+      initial={{opacity: 0}}
+      animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+      exit={{opacity: 0, transition: {duration: 1}}}
+       className="container mt-5 d-flex justify-content-center">
       <div className='col-12'>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
@@ -74,6 +79,6 @@ export const EditImg = () => {
         <img src={imageUrl}></img>
           <Link to={`/FlatProfile/${store.currentFlat.id}`} className="send-button btn-custom red-background mt-1"><strong>{t('traduccion89')}</strong></Link>
       </div>
-    </div>
+    </motion.div>
     )
 }

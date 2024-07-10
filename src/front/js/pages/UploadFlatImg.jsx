@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext.js";
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 
 export const PostFlatImg = () => {
     const { t, i18n } = useTranslation();
@@ -36,7 +37,10 @@ export const PostFlatImg = () => {
     };
 
     return (
-        <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}>
             <div className="container mt-5 d-flex justify-content-center">
                 <div className='col-12'>
                     <form onSubmit={handleSubmit}>
@@ -53,6 +57,6 @@ export const PostFlatImg = () => {
                     </form>
                 </div>
             </div>
-        </>
+        </motion.div>
     );
 };

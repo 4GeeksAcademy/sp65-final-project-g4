@@ -6,7 +6,7 @@ import "../../styles/home.css";
 import { useTranslation } from 'react-i18next';
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { Contacto } from "./Contacto.jsx";
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
 
 export const AllChats = () => {
 
@@ -17,7 +17,12 @@ export const AllChats = () => {
 
 
     return(
-    <>
+        <motion.div 
+		initial={{opacity: 0}}
+		animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+		className="home-container"
+		>
             {!store.chats ?
 
             "No hay chats"
@@ -51,7 +56,7 @@ export const AllChats = () => {
     </ul>
         </>
          }
-    </>
+    </motion.div>
 
     )
 }
