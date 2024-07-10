@@ -214,6 +214,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ currentRoom: data.results });
 				sessionStorage.setItem('currentRoom', JSON.stringify(data.results))
 			},
+			putRoom: async (roomData, token, room_id) => {
+				const uri = `${process.env.BACKEND_URL}/api/rooms/${room_id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					},
+					body: JSON.stringify(roomData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				setStore({ currentRoom: data.results })
+			},
 
 			createNewRoom: (newRoom) => {
 				setStore({ rooms: [...actions.getStore().rooms, newRoom] })
@@ -292,6 +306,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ flats: getStore().flats.map(flat => flat.id === updatedFlat.id ? updatedFlat : flat) });
 				console.log("Flat updated successfully");
 			},
+			putFlat: async (flatData, token, flat_id) => {
+				const uri = `${process.env.BACKEND_URL}/api/flats/${flat_id}`
+				const options = {
+					method: 'PUT',
+					headers: {
+						'Content-type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					},
+					body: JSON.stringify(flatData)
+				}
+				const response = await fetch(uri, options);
+				const data = await response.json();
+				setStore({ currentFlat: data.results })
+			},
+
 			
 			createAlbum: async (dataToSend) => {
 				const url = `${process.env.BACKEND_URL}/api/albums`;

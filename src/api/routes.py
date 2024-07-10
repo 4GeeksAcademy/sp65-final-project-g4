@@ -314,11 +314,8 @@ def handle_flat(flat_id):
 @jwt_required()
 def handle_flat_edit(flat_id):
     response_body = {}
-    user_info = get_jwt_identity()
-    user_id = user_info['id_landlord']
     flat = db.session.execute(db.select(Flats).where(Flats.id == flat_id)).scalar()
-    if flat.id_landlord == user_id:
-        if request.method == 'PUT':
+    if request.method == 'PUT':
             data = request.json
             if flat:
                 flat.description = data['description']
@@ -326,7 +323,6 @@ def handle_flat_edit(flat_id):
                 flat.address = data['address']
                 flat.postal_code = data['postal_code']
                 flat.city = data['city']
-                flat.id_album = data.get('album_id', flat.album_id)
                 db.session.commit()
                 response_body['message'] = 'Flat updated'
                 response_body['results'] = flat.serialize()
@@ -334,7 +330,7 @@ def handle_flat_edit(flat_id):
             response_body['message'] = 'Flat not found'
             response_body['results'] = {}
             return response_body, 404
-        if request.method == 'DELETE':
+    if request.method == 'DELETE':
             if flat:
                 db.session.delete(flat)
                 db.session.commit()
