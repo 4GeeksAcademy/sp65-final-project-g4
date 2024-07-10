@@ -76,7 +76,7 @@ export const EditFlats = () => {
                                             type="text"
                                             name="description"
                                             rows="2"
-                                            placeholder="{t('traduccion50')}"
+                                            placeholder={t('traduccion50')}
                                             value={formData.description}
                                             onChange={handleChange}
                                         />
