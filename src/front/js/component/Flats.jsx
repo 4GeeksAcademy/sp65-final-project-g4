@@ -5,8 +5,10 @@ import axios from 'axios';
 import { Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
+import { useTranslation } from 'react-i18next';
 
 export const Flats = (props) => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const [address, setAddress] = useState(`${props.item.address}, ${props.item.postal_code}, ${props.item.city}`);
     const [isVisible, setIsVisible] = useState(true);
@@ -103,12 +105,12 @@ export const Flats = (props) => {
                                 ""
                                 :
                                 <>
-                                    <p>Habitaciones disponibles: {store.rooms.filter(room => room.id_flat === props.item.id).length}</p>
+                                    <p>{t('traduccion16')}: {store.rooms.filter(room => room.id_flat === props.item.id).length}</p>
                                     <div className='d-flex justify-content-evenly room-info-container'>
                                         <span>
-                                            <p><strong>Habitacion:</strong></p>
-                                            <p><strong>Precio:</strong></p>
-                                            <p><strong>Superficie:</strong></p>
+                                            <p><strong>{t('traduccion13')}:</strong></p>
+                                            <p><strong>{t('traduccion14')}:</strong></p>
+                                            <p><strong>{t('traduccion15')}:</strong></p>
                                         </span>
                                         {store.rooms.filter(room => room.id_flat === props.item.id).map((item, key) =>
                                             <span key={key}>
