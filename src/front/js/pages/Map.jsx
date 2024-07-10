@@ -6,6 +6,7 @@ import L from 'leaflet';
 import "../../styles/map.css";
 import { Flats } from "../component/Flats.jsx";
 import { Universities } from "../component/Universities.jsx";
+import { motion } from 'framer-motion'
 
 export const Map = () => {
     const { store, actions } = useContext(Context);
@@ -65,7 +66,11 @@ export const Map = () => {
 
 
     return (
-        <div className="map-container">
+        <motion.div 
+		initial={{opacity: 0}}
+        animate={{opacity: 1, transition: {duration: 0.5, delay: 0.5}}}
+		exit={{opacity: 0, transition: {duration: 1}}}
+         className="map-container">
             <div className="filter-menu">
                 <form>
                     <div className="filter-item">
@@ -152,6 +157,6 @@ export const Map = () => {
                     </>
                 }
             </MapContainer>
-        </div>
+        </motion.div>
     );
 };
