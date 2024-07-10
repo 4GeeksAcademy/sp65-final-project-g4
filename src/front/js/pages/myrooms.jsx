@@ -46,9 +46,11 @@ export const MyRooms = () => {
                                 <PhotoGalleryRooms roomId={item.id} />
                             </div>
                             <div className="view-text">
-                                    <h5>{item.address}</h5>
-                                    <p>{item.city}</p>
+                                    <h5>{item.title}</h5>
                                     <p className="description">{item.description}</p>
+                                    <p>{item.price}</p>
+                                    <p>{item.square_meters}</p>
+                                    <p>{item.publication_date}</p>
                                 </div>
                                 <div className="red-color float-end">
                                     <Link to={`/roomprofile/${item.id}`} className="red-color link-custom mt-1 mb-4" onClick={() => handleRoom(item.id)}><strong>Ver detalles</strong></Link>
