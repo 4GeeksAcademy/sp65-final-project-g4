@@ -214,34 +214,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.setItem('currentRoom', JSON.stringify(data.results))
 			},
 
-			createNewRoom: async (dataToSend) => {
-				const url = `${process.env.BACKEND_URL}/api/rooms`;
-				const options = {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`,
-						'Mode': 'no-cors'					},
-					body: JSON.stringify(dataToSend)
-				}
-
-				const response = await fetch(url, options);
-			
-				if (!response.ok) {
-					console.log("Error");
-					return;
-				}
-				const newRoom = await response.json();
-				if (newRoom.redirect) { console.log(newRoom.redirect); }
-				await getActions().getRooms();
-				setStore({ rooms: [...getStore().rooms, newRoom] });;
-				setStore({ roomID: newRoom.id });
-
+			createNewRoom: (newRoom) => {
+				setStore({ rooms: [...actions.getStore().rooms, newRoom] })
 			},
 
-
-
-			
 			getFlats: async () => {
 				const url = `${process.env.BACKEND_URL}/api/flats`;
 				const options = {

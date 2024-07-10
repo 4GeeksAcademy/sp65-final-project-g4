@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import injectContext from "./store/appContext.js";
 // Custom Components
 import ScrollToTop from "./component/ScrollToTop.jsx";
@@ -48,47 +49,55 @@ const Layout = () => {
 
     return (
         <div>
-            <BrowserRouter basename={basename}>
-                <ScrollToTop>
-                    <Navbar />
-                    <div className="container-custom">
-                        <Routes>
-                            <Route element={<Home />} path="/" />
-                            <Route element={<Demo />} path="/demo" />
-                            <Route element={<Login />} path="/login" />
-                            <Route element={<Map />} path="/map" />
-                            <Route element={<Single />} path="/single/:theid" />
-                            <Route element={<NoAccess/>} path="*" />
-                            <Route element={<Signup />} path="/signup" />
-                            <Route element={<UploadImagesFlats />} path="/uploadimg" />
-                            <Route element={<Chats />} path="/chats/:id" />
-                            <Route element={<Dashboard />} path="/dashboard" />
-                            <Route element={<RoomProfile />} path="/RoomProfile/:theid" />
-                            <Route element={<FlatProfile />} path="/FlatProfile/:theid" />
-                            <Route element={<FavoritesProfile />} path="/FavoritesProfile/" />
-                            <Route element={<LOPDPG />} path="/LPD" />
-                            <Route element={<Contacto />} path="/contact" />
-                            <Route element= {<UploadFlats/>} path="/uploadflat" />
-                            <Route element= {<UploadRooms/>} path="/uploadroom/:theid" />
-                            <Route element= {<RoomProfile/>} path="/roomprofile/:theid"/>
-                            <Route element= {<MyFlats/>} path="/myflats"/>
-                            <Route element= {<AllRooms/>} path="/rooms"/>
-                            <Route element= {<PostFlatImg />} path="/uploadflatimg/:theid"/>
-                            <Route element= {<UploadImagesUsers />} path="/imgusers"/>
-                            <Route element= {<EditImg />} path="/editimg/:theid"/>
-                            <Route element= {<UploadRoomImg />} path="/uploadroomimg/:theid"/>
-                            <Route element= {<PhotoGallery />} path="/photosflat/:theid"/>
-                            <Route element= {<MyRooms />} path="/myrooms"/>
+            <TransitionGroup>
+                <CSSTransition
+                    key={location.key}
+                    timeout={300}
+                    classNames="fade"
+                >
+                <BrowserRouter basename={basename}>
+                    <ScrollToTop>
+                        <Navbar />
+                        <div className="container-custom">
+                            <Routes>
+                                <Route element={<Home />} path="/" />
+                                <Route element={<Demo />} path="/demo" />
+                                <Route element={<Login />} path="/login" />
+                                <Route element={<Map />} path="/map" />
+                                <Route element={<Single />} path="/single/:theid" />
+                                <Route element={<NoAccess />} path="*" />
+                                <Route element={<Signup />} path="/signup" />
+                                <Route element={<UploadImagesFlats />} path="/uploadimg" />
+                                <Route element={<Chats />} path="/chats/:id" />
+                                <Route element={<Dashboard />} path="/dashboard" />
+                                <Route element={<RoomProfile />} path="/RoomProfile/:theid" />
+                                <Route element={<FlatProfile />} path="/FlatProfile/:theid" />
+                                <Route element={<FavoritesProfile />} path="/FavoritesProfile/" />
+                                <Route element={<LOPDPG />} path="/LPD" />
+                                <Route element={<Contacto />} path="/contact" />
+                                <Route element={<UploadFlats />} path="/uploadflat" />
+                                <Route element={<UploadRooms />} path="/uploadroom/:theid" />
+                                <Route element={<RoomProfile />} path="/roomprofile/:theid" />
+                                <Route element={<MyFlats />} path="/myflats" />
+                                <Route element={<AllRooms />} path="/rooms" />
+                                <Route element={<PostFlatImg />} path="/uploadflatimg/:theid" />
+                                <Route element={<UploadImagesUsers />} path="/imgusers" />
+                                <Route element={<EditImg />} path="/editimg/:theid" />
+                                <Route element={<UploadRoomImg />} path="/uploadroomimg/:theid" />
+                                <Route element={<PhotoGallery />} path="/photosflat/:theid" />
+                                <Route element={<MyRooms />} path="/myrooms" />
 
 
 
-                        </Routes>
-                    </div>
+                            </Routes>
+                        </div>
 
-                    <Footer />
-                </ScrollToTop>
-            </BrowserRouter>
-        </div>
+                        <Footer />
+                    </ScrollToTop>
+                </BrowserRouter>
+            </CSSTransition>
+        </TransitionGroup>
+        </div >
     );
 };
 
