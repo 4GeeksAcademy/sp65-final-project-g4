@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 
 export const UploadRoomImg = () => {
-
+  
+  const { t, i18n } = useTranslation();
     const {store, actions} = useContext(Context);
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageUrl, setImageUrl] = useState("");
@@ -66,10 +68,10 @@ export const UploadRoomImg = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="btn action-btn-center mt-0"><strong>Cargar imágenes</strong></button>
+          <button type="submit" className="btn action-btn-center mt-0"><strong>{t('traduccion88')}</strong></button>
         </form>
         <img src={imageUrl}></img>
-          <Link to={`/roomprofile/${store.currentRoom.id}`} className="send-button btn-custom red-background mt-1"><strong>Publicar</strong></Link>
+          <Link to={`/roomprofile/${store.currentRoom.id}`} className="send-button btn-custom red-background mt-1"><strong>{t('traduccion89')}</strong></Link>
       </div>
     </div>
     )

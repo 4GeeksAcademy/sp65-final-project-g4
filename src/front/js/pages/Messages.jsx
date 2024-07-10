@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useTranslation } from 'react-i18next';
 
 export const Messages = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const [message, setMessage] = useState("");
     const { id } = useParams();
@@ -52,10 +54,10 @@ export const Messages = () => {
                        rows="1" 
                        value={message} 
                        onChange={handleMessageChange}
-                       placeholder="Escribe un mensaje nuevo"
+                       placeholder="{t('traduccion65')}"
                     ></textarea>
                 </div>
-                <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>Enviar</button>
+                <button className="send-button btn-custom red-background pb-2 mb-2" onClick={handleSendMessage}>{t('traduccion38')}</button>
             </div>
     </>
     );

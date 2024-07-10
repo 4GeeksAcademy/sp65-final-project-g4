@@ -4,10 +4,12 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
+import { useTranslation } from 'react-i18next';
 
 // 5 Exportar y 2 Crear el componente
 export const Login = () => {
   const { store, actions } = useContext(Context);
+  const { t, i18n } = useTranslation();
   // 3 Code JS
   // 3.1 Declarar estados
   const [email, setEmail] = useState('');
@@ -48,17 +50,17 @@ export const Login = () => {
   // 4 última instrucción JS, que retorna un solo elemento HTML
   return (
     <div className="login-container card-body">
-      <h2 className="red-color">Login</h2>
+      <h2 className="red-color">{t('navbar10')}</h2>
       <form onSubmit={handleSumbit}>
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label red-color">Email: </label>
+          <label htmlFor="exampleInputEmail1" className="form-label red-color">{t('traduccion36')}: </label>
           <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             value={email} onChange={handleEmail} />  {/* 3.1. value 3.2. onChange */}
-          <div id="emailHelp" className="form-text">Nunca compartiremos tu email con nadie.</div>
+          <div id="emailHelp" className="form-text">{t('traduccion60')}</div>
         </div>
 
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label red-color">Contraseña</label>
+          <label htmlFor="exampleInputPassword1" className="form-label red-color">{t('traduccion61')}</label>
           <div className="input-group">
             <input type={viewPassword ? "text" : "password"} className="form-control" id="exampleInputPassword1" aria-describedby="passwordHelp"
               value={password} onChange={handlePassword} />
@@ -66,13 +68,13 @@ export const Login = () => {
               {viewPassword ? <i className="far fa-eye-slash"></i> : <i className="far fa-eye"></i>}
             </span>
           </div>
-            <div id="passwordHelp" className="form-text">¿No tienes cuenta? <Link to="/signup">Regístrate aquí.</Link></div>
+            <div id="passwordHelp" className="form-text">{t('traduccion62')} <Link to="/signup">{t('traduccion63')}</Link></div>
         </div>
 
-        <button type="submit" className="btn-custom red-background">Submit</button>
+        <button type="submit" className="btn-custom red-background">{t('traduccion38')}</button>
         <button type="reset" className="btn-custom btn-secondary ms-3 mt-3"
           onClick={handleReset}>
-          Reset
+          {t('traduccion64')}
         </button>
       </form>
     </div>

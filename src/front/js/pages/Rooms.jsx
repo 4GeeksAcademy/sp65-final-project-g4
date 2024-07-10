@@ -4,9 +4,11 @@ import { PhotoGallery } from "../component/PhotoGallery.jsx";
 import { Link } from "react-router-dom";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 import "../../styles/cardsviews.css";
+import { useTranslation } from 'react-i18next';
 
 
 export const AllRooms = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const [sortCriteria, setSortCriteria] = useState('publication_date');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -64,7 +66,7 @@ export const AllRooms = () => {
 
     return (
         <div className="container mt-4">
-            <h3 className="red-color text-center mb-4">Habitaciones publicadas</h3>
+            <h3 className="red-color text-center mb-4">{t('traduccion72')}</h3>
             {!store.rooms ?
                 "Pantalla de carga"
                 :
@@ -72,23 +74,23 @@ export const AllRooms = () => {
                     <div className="row">
                         <div className="col-md-2 col-lg-3 col-sm-3 col-xs-12">
                             <div className="sort-buttons justify-content-left">
-                                <p><strong>Ordenar por:</strong></p>
-                                <button className="sort-btn-custom" onClick={() => handleSort('price')}><i className="fa-solid fa-sort sort-btn-custom"></i>Precio</button>
-                                <button className="sort-btn-custom" onClick={() => handleSort('square_meters')}><i className="fa-solid fa-sort sort-btn-custom"></i>Tamaño</button>
-                                <button className="sort-btn-custom" onClick={() => handleSort('publication_date')}><i className="fa-solid fa-sort sort-btn-custom"></i>Fecha de publicación</button>
+                                <p><strong>{t('traduccion73')}</strong></p>
+                                <button className="sort-btn-custom" onClick={() => handleSort('price')}><i className="fa-solid fa-sort sort-btn-custom"></i>{t('traduccion14')}</button>
+                                <button className="sort-btn-custom" onClick={() => handleSort('square_meters')}><i className="fa-solid fa-sort sort-btn-custom"></i>{t('traduccion15')}</button>
+                                <button className="sort-btn-custom" onClick={() => handleSort('publication_date')}><i className="fa-solid fa-sort sort-btn-custom"></i>{t('traduccion75')}</button>
                             </div>
                             <div className="filter-inputs mt-3">
-                                <p><strong>Filtrar por:</strong></p>
+                                <p><strong>{t('traduccion74')}</strong></p>
                                 <div>
-                                    <label>Precio mínimo</label>
+                                    <label>{t('traduccion9')}</label>
                                     <input type="number" name="min" value={priceFilter.min} onChange={handlePriceFilterChange} />
-                                    <label>Precio máximo</label>
+                                    <label>{t('traduccion10')}</label>
                                     <input type="number" name="max" value={priceFilter.max} onChange={handlePriceFilterChange} />
                                 </div>
                                 <div>
-                                    <label>Mínimo m²</label>
+                                    <label>{t('traduccion76')}</label>
                                     <input type="number" name="min" value={squareMetersFilter.min} onChange={handleSquareMetersFilterChange} />
-                                    <label>Máximo m²</label>
+                                    <label>{t('traduccion77')}</label>
                                     <input type="number" name="max" value={squareMetersFilter.max} onChange={handleSquareMetersFilterChange} />
                                 </div>
                             </div>
@@ -103,14 +105,12 @@ export const AllRooms = () => {
                                     <p>{item.price} €</p>
                                     <p className="description">{item.description}</p>
                                     <p>{item.square_meters}m²</p>
-                                    <p>Publicado el {item.publication_date}</p>
+                                    <p>{t('traduccion78')} {item.publication_date}</p>
                                 </div>
                                 <div className="d-flex justify-content-between ml-0 pl-0">
-
                                     <Link to={`/roomprofile/${item.id}`} className="send-button action-btn-custom mt-1" onClick={() => handleRoom(item.id)}>
-                                        <strong>Ver detalle</strong>
+                                        <strong>{t('traduccion68')}</strong>
                                     </Link>
-
                                 </div>
                             </div>
                         ))}

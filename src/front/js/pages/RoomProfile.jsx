@@ -5,8 +5,10 @@ import { Favorites } from "../component/Favorites.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next';
 
 export const RoomProfile = () => {
+    const { t, i18n } = useTranslation();
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
@@ -119,32 +121,32 @@ export const RoomProfile = () => {
                             <div className="modal-dialog">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h1 className="modal-title fs-5" id="roomModalLabel">Editar mi habitación</h1>
+                                        <h1 className="modal-title fs-5" id="roomModalLabel">{t('traduccion28')}</h1>
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
                                         <div className="mb-3">
                                             <div className="mb-2">
-                                                <label htmlFor="FormControlRoomTitle" className="form-label">Título:</label>
+                                                <label htmlFor="FormControlRoomTitle" className="form-label">{t('traduccion29')}:</label>
                                                 <input type="string" className="form-control" id="FormControlRoomTitle" onChange={handleTitle} placeholder={store.currentRoom.title} />
                                             </div>
                                             <div className="mb-2">
-                                                <label htmlFor="FormControlRoomDescription" className="form-label">Descripción:</label>
+                                                <label htmlFor="FormControlRoomDescription" className="form-label">{t('traduccion18')}:</label>
                                                 <input type="string" className="form-control" id="FormControlRoomDescription" onChange={handleDescription} placeholder={store.currentRoom.description} />
                                             </div>
                                             <div className="mb-2">
-                                                <label htmlFor="FormControlRoomPrice" className="form-label">Precio:</label>
+                                                <label htmlFor="FormControlRoomPrice" className="form-label">{t('traduccion14')}:</label>
                                                 <input type="float" className="form-control" id="FormControlRoomPrice" onChange={handlePrice} placeholder={store.currentRoom.price} />
                                             </div>
                                             <div className="mb-2">
-                                                <label htmlFor="FormControlRoomSquareMeters" className="form-label">Metros cuadrados:</label>
+                                                <label htmlFor="FormControlRoomSquareMeters" className="form-label">{t('traduccion30')}:</label>
                                                 <input type="float" className="form-control" id="FormControlRoomSquareMeters" onChange={handleSquareMeters} placeholder={store.currentRoom.square_meters} />
                                             </div>
                                         </div>
                                     </div>
                                     <div className="modal-footer">
-                                        <button type="button" className="btn-custom btn-secondary" data-bs-dismiss="modal" onClick={handleModalReset}>Close</button>
-                                        <button type="submit" className="btn-custom red-background" data-bs-dismiss="modal" onClick={handleModalSubmit}>Save changes</button>
+                                        <button type="button" className="btn-custom btn-secondary" data-bs-dismiss="modal" onClick={handleModalReset}>{t('traduccion22')}</button>
+                                        <button type="submit" className="btn-custom red-background" data-bs-dismiss="modal" onClick={handleModalSubmit}>{t('traduccion23')}</button>
                                     </div>
                                 </div>
                             </div>
@@ -152,9 +154,9 @@ export const RoomProfile = () => {
 
                         <h3 className="red-color mb-6 pb-6 col-8">{store.currentRoom.title}</h3>
                         {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
-                            <Link to={`/uploadroomimg/${store.currentRoom.id}`} className="fotos-add-custom mb-2 col-4">Añadir fotos</Link>
+                            <Link to={`/uploadroomimg/${store.currentRoom.id}`} className="fotos-add-custom mb-2 col-4">{t('traduccion24')}</Link>
                             :
-                            <Link to={`/FlatProfile/${store.currentRoom.id_flat}`} className="fotos-add-custom mb-2 col-4">Ver piso</Link>
+                            <Link to={`/FlatProfile/${store.currentRoom.id_flat}`} className="fotos-add-custom mb-2 col-4">{t('traduccion5')}</Link>
                         }
 
                     </div>
@@ -163,14 +165,14 @@ export const RoomProfile = () => {
                     <div className="photo-container">
                         <PhotoGalleryRooms roomId={store.currentRoom.id} />
                     </div>
-                    <p className="mt-5"><strong>Descripción: </strong>{store.currentRoom.description}</p>
-                    <p className='price'><strong>Precio:</strong> {store.currentRoom.price}€</p>
-                    <p className='price'><strong>Superficie:</strong> {store.currentRoom.square_meters}m2</p>
+                    <p className="mt-5"><strong>{t('traduccion18')}: </strong>{store.currentRoom.description}</p>
+                    <p className='price'><strong>{t('traduccion14')}:</strong> {store.currentRoom.price}€</p>
+                    <p className='price'><strong>{t('traduccion15')}:</strong> {store.currentRoom.square_meters}m²</p>
                     <p><strong>Publicado el: </strong>{store.currentRoom.publication_date}</p>
                     {store.userData.is_landlord && store.userData.id_landlord == store.currentFlat.id_landlord ?
-                        <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> Editar</button>
+                        <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> {t('traduccion25')}</button>
                         :
-                        <button className="btn-custom send-button red-background mb-2" onClick={handleCreateChat}>Contacta</button>
+                        <button className="btn-custom send-button red-background mb-2" onClick={handleCreateChat}>{t('traduccion31')}</button>
 
                     }
                     {store.userData.is_student ?

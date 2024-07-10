@@ -8,8 +8,10 @@ import "../../styles/photoGallery.css";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useTranslation } from 'react-i18next';
 
 export const PhotoGallery = ({ userId }) => {
+  const { t, i18n } = useTranslation();
   const [photos, setPhotos] = useState([]);
   const { store, actions } = useContext(Context);
 
