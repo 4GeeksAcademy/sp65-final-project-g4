@@ -3,16 +3,24 @@ import { Context } from "../store/appContext.js";
 import "../../styles/flatProfile.css";
 import { Favorites } from "../component/Favorites.jsx";
 import { PhotoGalleryRooms } from "./PhotoGalleryRooms.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PhotoGallery } from "../component/PhotoGallery.jsx";
 
 export const RoomProfile = () => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+
+    const handleCreateChat = () =>{
+        actions.createChat();
+       /*  const newChatId = 
+        navigate('/chats/${newChatId}') */
+    }
 
     useEffect(() => {
         actions.getRoomId();
         actions.getRooms();
     }, [])
+    
 
     return (
         <>
@@ -43,7 +51,8 @@ export const RoomProfile = () => {
                             <button className="btn-custom red-background mx-2 mb-2">Editar</button>
                         </div>
                         :
-                        ""
+                        <button className="btn-custom red-background mx-2 mb-2" onClick={handleCreateChat()}>Contacta</button>
+
                     }
                     {store.userData.is_student ?
                         <div>

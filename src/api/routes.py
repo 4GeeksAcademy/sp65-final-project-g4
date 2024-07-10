@@ -746,6 +746,7 @@ def get_all_chats_with_last_message():
 @api.route('/chats' , methods=['POST'])
 @jwt_required()
 def create_chat():
+    
     response_body = {}
     data = request.json
     row = Chats()
