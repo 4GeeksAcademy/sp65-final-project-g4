@@ -38,8 +38,6 @@ export const Home = () => {
 				</div>
 			</div>
 
-			{t('traduccion')}
-
 			{!store.flats.length > 0 ?
 				""
 				:
