@@ -418,23 +418,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			createChat: async (chat) => {
-				const url = `${process.env.BACKEND_URL}/api/chats`;
-				const options = {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${getStore().accessToken}`
-					},
-					body: JSON.stringify(chat)
-				};
-
-				const response = await fecth(url, options);
-				if (!response.ok) {
-					console.log("Error");
-					return;
-				}
-
-				const newChat = await response.json();
 				setStore({ newChat: [...getStore().newChat, newChat]})
 			},
 

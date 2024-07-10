@@ -9,13 +9,6 @@ import { PhotoGallery } from "../component/PhotoGallery.jsx";
 export const RoomProfile = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
-
-    const handleCreateChat = () =>{
-        actions.createChat();
-       /*  const newChatId = 
-        navigate('/chats/${newChatId}') */
-    }
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -61,10 +54,37 @@ export const RoomProfile = () => {
         handleModalReset();
     }
 
+    const createChat = async (chat) => {
+        const url = `${process.env.BACKEND_URL}/api/chats`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${store.accessToken}`
+            },
+            body: JSON.stringify(chat)
+        }
+
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            console.log("Error");
+            return;
+        }
+
+        const newChat = await response.json();
+        actions.setChatId(newChat.redirect)
+        if (newChat.redirect) {
+            navigate(`/chats/${newChat.redirect}`)
+        }
+
+        await actions.getAllChats();
+        actions.createNewChat(newChat)
+    };
+
     useEffect(() => {
         actions.getRoomId();
         actions.getRooms();
-    }, [])
+    }, []);
     
 
     return (
@@ -131,7 +151,7 @@ export const RoomProfile = () => {
                             <button className="btn-custom red-background mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#roomModal" onClick={initializeModal}> <i className="fas fa-edit"></i> Editar</button>
                         </div>
                         :
-                        <button className="btn-custom red-background mx-2 mb-2" onClick={handleCreateChat()}>Contacta</button>
+                        <button className="btn-custom red-background mx-2 mb-2" onClick={createChat()}>Contacta</button>
 
                     }
                     {store.userData.is_student ?

@@ -746,18 +746,21 @@ def get_all_chats_with_last_message():
 @api.route('/chats' , methods=['POST'])
 @jwt_required()
 def create_chat():
-    
-    response_body = {}
-    data = request.json
-    row = Chats()
-    row.student_id = data['student_id']
-    row.landlord_id = data['landlord_id']
-    row.room_id = data['room_id']
-    db.session.add(row)
-    db.session.commit()
-    response_body['results'] = row.serialize()
-    response_body['message'] = 'Chat created' 
-    return response_body, 200
+    user_info = get_jwt_identity()  
+    if user_info['user_is_student']:
+        response_body = {}
+        data = request.json
+        row = Chats()
+        row.student_id = user_info['user_id']
+        row.landlord_id = data['landlord_id']
+        row.room_id = data['room_id']
+        db.session.add(row)
+        db.session.commit()
+        last_id = row.id
+        response_body['results'] = row.serialize()
+        response_body['message'] = 'Chat created'
+        response_body['redirect'] = f'{last_id}' 
+        return response_body, 200
 
   
 @api.route('/messages' , methods=['GET'])
