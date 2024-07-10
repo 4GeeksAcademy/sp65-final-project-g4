@@ -18,11 +18,10 @@ return (
         </div>
         <div className="col-lg-8 col-md-8 col-sm-12 pr-0 ">
 
-       <h3 className="red-color">{t('traduccion33')}</h3>
-        {!store.currentChat.id ?
-        ""
-        :
-            < Messages/>}
+        <h3 className="red-color"> Mensajes </h3>
+       
+            < Messages/>
+
         </div>
       
     </div>

@@ -51,3 +51,39 @@
   .send-button:hover {
     background-color: #0056b3;
   }
+
+  .list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item.bg-gray {
+    background-color: #f0f0f0;
+}
+
+.list-group-item.font-weight-bold {
+    font-weight: bold;
+}
+
+.chat-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-counterpart {
+    flex: 1;
+    font-size: 1rem;
+}
+
+.chat-last-message {
+    flex: 2;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.chat-timestamp {
+    flex: 1;
+    font-size: 0.8rem;
+    text-align: right;
+    color: #999;
+}
