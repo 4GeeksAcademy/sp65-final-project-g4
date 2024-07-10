@@ -11,8 +11,6 @@ export const UploadRooms = () => {
         description: "",
         price: "",
         square_meters: "",
-        image_url_1: "",
-        image_url_2: "",
         id_flat: store.currentFlat?.id || "",
         flat_img: store.currentFlat?.id_album || "",
     });
