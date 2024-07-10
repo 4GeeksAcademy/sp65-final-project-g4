@@ -89,18 +89,6 @@ h5 {
 }
 
 
-.custom-accordion-button {
-    background-color: grey;
-    color: black;
-    outline: none;
-}
-
-.custom-accordion-button:not(.collapsed) {
-    background-color: grey;
-    color: black;
-}
-
-
 .action-btn-custom {
     color: #BF0000;
     border: none;
